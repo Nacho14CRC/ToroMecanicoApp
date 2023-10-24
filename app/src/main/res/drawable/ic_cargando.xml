@@ -1,0 +1,50 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group>
+        <!--Marco central-->
+        <path
+
+            android:fillColor="#FEFEFE"
+            android:fillType="nonZero"
+            android:pathData="M 49.986 75 H 61 V 41 H 47 V 74.999 H 43 V 37 H 65 V 79.001 H 43.001 V 75 Z"
+            android:strokeWidth="1"
+            android:strokeColor="#FEFEFE" />
+        <!--Ojos-->
+        <path
+
+            android:fillColor="#000000"
+            android:fillType="nonZero"
+            android:pathData="M 49 48 V 53.964 H 52.019 V 48 Z M 56 48 V 54.064 H 58.999 V 48 Z "
+            android:strokeWidth="1"
+            android:strokeColor="#000000" />
+        <!--Cuerno derecho-->
+        <path
+
+            android:fillColor="#000000"
+            android:fillType="nonZero"
+            android:pathData="
+M 66.014 48.003 H 68.148 V 47.994 H 73.01 V 47.992 H 74.971 V 36.958 H 78.983 V 57.006 H 65.996 Z "
+            android:strokeWidth="1"
+            android:strokeColor="#000000" />
+        <!--Cuerno izquierdo-->
+        <path
+
+            android:fillColor="#000000"
+            android:fillType="nonZero"
+            android:pathData="M 42.002 48 H 40.001 V 48 H 34.991 V 47.995 H 33.023 V 37.052 H 29.008 V 57.001 H 42.001 Z"
+            android:strokeWidth="1"
+            android:strokeColor="#000000" />
+        <!--Nariz-->
+        <path
+
+            android:fillColor="#000000"
+            android:fillType="nonZero"
+            android:pathData="M 60.983 68.994 A 1 1 0 0 0 60.963 74.972 Z M 47.069 74.963 A 1 1 0 0 0 47.019 68.989 Z"
+            android:strokeWidth="1"
+            android:strokeColor="#000000" />
+    </group>
+</vector>

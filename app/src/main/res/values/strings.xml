@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ToroMecanico</string>
+    <string name="ic_cargando_label">Imagen Cargando</string>
 </resources>
