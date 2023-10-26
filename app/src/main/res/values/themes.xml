@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.ToroMecanicoApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- AAC: Agregar tema para el inicio de sesion -->
+    <style name="Theme.ToroMecanicoApp.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/principal</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_cargando</item>
+        <item name="windowSplashScreenAnimationDuration">1200</item>
+        <item name="postSplashScreenTheme">@style/Theme.ToroMecanicoApp</item>
+    </style>
 </resources>

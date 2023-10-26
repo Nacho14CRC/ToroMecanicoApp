@@ -1,50 +1,127 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <group>
-        <!--Marco central-->
-        <path
-
-            android:fillColor="#FEFEFE"
-            android:fillType="nonZero"
-            android:pathData="M 49.986 75 H 61 V 41 H 47 V 74.999 H 43 V 37 H 65 V 79.001 H 43.001 V 75 Z"
-            android:strokeWidth="1"
-            android:strokeColor="#FEFEFE" />
-        <!--Ojos-->
-        <path
-
-            android:fillColor="#000000"
-            android:fillType="nonZero"
-            android:pathData="M 49 48 V 53.964 H 52.019 V 48 Z M 56 48 V 54.064 H 58.999 V 48 Z "
-            android:strokeWidth="1"
-            android:strokeColor="#000000" />
-        <!--Cuerno derecho-->
-        <path
-
-            android:fillColor="#000000"
-            android:fillType="nonZero"
-            android:pathData="
-M 66.014 48.003 H 68.148 V 47.994 H 73.01 V 47.992 H 74.971 V 36.958 H 78.983 V 57.006 H 65.996 Z "
-            android:strokeWidth="1"
-            android:strokeColor="#000000" />
-        <!--Cuerno izquierdo-->
-        <path
-
-            android:fillColor="#000000"
-            android:fillType="nonZero"
-            android:pathData="M 42.002 48 H 40.001 V 48 H 34.991 V 47.995 H 33.023 V 37.052 H 29.008 V 57.001 H 42.001 Z"
-            android:strokeWidth="1"
-            android:strokeColor="#000000" />
-        <!--Nariz-->
-        <path
-
-            android:fillColor="#000000"
-            android:fillType="nonZero"
-            android:pathData="M 60.983 68.994 A 1 1 0 0 0 60.963 74.972 Z M 47.069 74.963 A 1 1 0 0 0 47.019 68.989 Z"
-            android:strokeWidth="1"
-            android:strokeColor="#000000" />
-    </group>
-</vector>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="108dp"
+            android:height="108dp"
+            android:viewportWidth="108"
+            android:viewportHeight="108">
+            <group android:name="grupo_marco">
+                <path
+                    android:name="marco_toro"
+                    android:pathData="M 49.986 75 L 61 75 L 61 41 L 47 41 L 47 74.999 L 43 74.999 L 43 37 L 65 37 L 65 79.001 L 43.001 79.001 L 43.001 75 Z"
+                    android:fillColor="#ffff"
+                    android:strokeColor="#ffff"
+                    android:strokeWidth="1"/>
+            </group>
+            <group android:name="grupo_cara">
+                <path
+                    android:name="ojos"
+                    android:pathData="M 49 48 L 49 53.964 L 52.019 53.964 L 52.019 48 Z M 56 48 L 56 54.064 L 58.999 54.064 L 58.999 48 Z"
+                    android:fillColor="#000000"
+                    android:strokeColor="#000000"
+                    android:strokeWidth="1"/>
+            </group>
+            <group android:name="grupo_cuernos">
+                <path
+                    android:name="cuerno_d"
+                    android:pathData="M 66.014 48.003 L 68.148 48.003 L 68.148 47.994 L 73.01 47.994 L 73.01 47.992 L 74.971 47.992 L 74.971 36.958 L 78.983 36.958 L 78.983 57.006 L 65.996 57.006 Z"
+                    android:fillColor="#000000"
+                    android:strokeColor="#000000"
+                    android:strokeWidth="1"/>
+                <path
+                    android:name="cuerno_i"
+                    android:pathData="M 42.002 48 L 40.001 48 L 40.001 48 L 34.991 48 L 34.991 47.995 L 33.023 47.995 L 33.023 37.052 L 29.008 37.052 L 29.008 57.001 L 42.001 57.001 Z"
+                    android:fillColor="#000000"
+                    android:strokeColor="#000000"
+                    android:strokeWidth="1"/>
+            </group>
+            <group android:name="grupo_nariz">
+                <path
+                    android:name="trompa"
+                    android:pathData="M 60.983 68.994 C 60.192 68.994 59.433 69.308 58.873 69.866 C 58.312 70.424 57.996 71.182 57.993 71.973 C 57.991 72.764 58.302 73.524 58.859 74.086 C 59.415 74.648 60.172 74.967 60.963 74.972 Z M 47.069 74.963 C 47.859 74.954 48.614 74.632 49.168 74.067 C 49.721 73.503 50.028 72.741 50.022 71.951 C 50.015 71.161 49.695 70.405 49.132 69.85 C 48.57 69.295 47.809 68.985 47.019 68.989 Z"
+                    android:fillColor="#000000"
+                    android:strokeColor="#000000"
+                    android:strokeWidth="1"/>
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="grupo_cuernos">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="scaleY"
+                android:duration="1000"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:interpolator/linear_out_slow_in"/>
+        </aapt:attr>
+    </target>
+    <target android:name="marco_toro">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="fillColor"
+                    android:startOffset="2900"
+                    android:duration="100"
+                    android:valueFrom="#ffff"
+                    android:valueTo="#ffff"
+                    android:valueType="colorType"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"/>
+                <objectAnimator
+                    android:propertyName="fillColor"
+                    android:startOffset="2800"
+                    android:duration="100"
+                    android:valueFrom="#ffff"
+                    android:valueTo="#ffff"
+                    android:valueType="colorType"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"/>
+                <objectAnimator
+                    android:propertyName="strokeColor"
+                    android:startOffset="2900"
+                    android:duration="100"
+                    android:valueFrom="#ffff"
+                    android:valueTo="#ffff"
+                    android:valueType="colorType"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"/>
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="grupo_cara">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="translateY"
+                android:duration="1000"
+                android:valueFrom="65"
+                android:valueTo="0"
+                android:valueType="floatType"
+                android:interpolator="@android:interpolator/linear_out_slow_in"/>
+        </aapt:attr>
+    </target>
+    <target android:name="grupo_nariz">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="translateY"
+                android:duration="600"
+                android:valueFrom="2"
+                android:valueTo="0"
+                android:valueType="floatType"
+                android:repeatMode="restart"
+                android:repeatCount="infinite"
+                android:interpolator="@android:interpolator/linear_out_slow_in"/>
+        </aapt:attr>
+    </target>
+    <target android:name="grupo_marco">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="scaleX"
+                android:duration="1000"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:interpolator/linear_out_slow_in"/>
+        </aapt:attr>
+    </target>
+</animated-vector>
