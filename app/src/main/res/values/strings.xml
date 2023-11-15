@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">ToroMecanicoApp</string>
+    <string name="app_name">Toro Mecánico</string>
+    <string name="login_usuario">Usuario</string>
+    <string name="login_contrasena">Contraseña</string>
+    <string name="login_usuario_ph">Ingrese el usuario de acceso</string>
+    <string name="empty_string" />
+    <string name="login_button_text">Iniciar sesión</string>
+    <string name="olvido_contrasena_text">¿Olvidó su contraseña?</string>
+    <string name="crear_cuenta_text">Crear cuenta</string>
+    <string name="antes_crear_cuenta">Comienza tu aventura!</string>
+    <string name="bienvenida">Bienvenido a ToroMecánico!</string>
 </resources>
