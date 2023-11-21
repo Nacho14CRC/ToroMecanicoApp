@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.example.toromecanicoapp.navegacion.toroMecanicoScreens
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -32,14 +33,23 @@ class LoginScreenViewModel : ViewModel() {
 		}
 	
 	}
-	fun CrearCuenta() {
-	
-	}
-	
-	fun NavegarACrearCuenta(navController: NavHostController) {
-		navController.navigate("r2") {
-			popUpTo(navController.graph.startDestinationId)
+	fun CrearCuenta(email:String, password:String, home: ()-> Unit){
+		if (_loading.value == false){
+			_loading.value = true
+			auth.createUserWithEmailAndPassword(email, password)
+				.addOnCompleteListener { task ->
+					if (task.isSuccessful){
+						Log.d("toroMecanicoApp", "toroMecanicoApp CrearCuenta-> usuario creado")
+						home()
+					} else {
+						Log.d("toroMecanicoApp", "CrearCuenta Error ->: ${task.result.toString()}")
+					}
+					_loading.value = false
+				}
 		}
+	}
+	fun NavegarACrearCuenta(navController: NavHostController) {
+		navController.navigate(toroMecanicoScreens.CrearCuenta.name)
 	}
 	
 	fun NavegarARestablerContrasena(navController: NavHostController) {

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.toromecanicoapp.screens.crear_cuenta.MostrarCrearCuentaScreen
 import com.example.toromecanicoapp.screens.home.Home
 import com.example.toromecanicoapp.ui.screens.MostrarLoginScreen
 
@@ -20,6 +21,9 @@ fun toroMecanicoNavegation(){
 		}
 		composable(toroMecanicoScreens.HomeScreen.name){
 			Home(navControllerCurrent);
+		}
+		composable(toroMecanicoScreens.CrearCuenta.name){
+			MostrarCrearCuentaScreen(navControllerCurrent);
 		}
 	}
 	

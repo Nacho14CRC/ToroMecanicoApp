@@ -34,17 +34,15 @@ import java.util.Date
 /*Inputs*/
 @Composable
 fun MostrarOutlinedTextField(
+	text: MutableState<String>,
 	label: String,
 	placeholder: String,
-	text: String,
 	leadingIcon: Painter,
-	singleLine: Boolean,
-	isError: Boolean,
-	onValueChange: (String) -> Unit
+	singleLine: Boolean
 ) {
 	OutlinedTextField(
-		value = text,
-		onValueChange = onValueChange,
+		value = text.value,
+		onValueChange = {text.value = it},
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(
@@ -59,8 +57,7 @@ fun MostrarOutlinedTextField(
 			)
 		},
 		singleLine = singleLine,
-		modifier = Modifier.fillMaxWidth(),
-		isError = isError
+		modifier = Modifier.fillMaxWidth()
 	)
 }
 
