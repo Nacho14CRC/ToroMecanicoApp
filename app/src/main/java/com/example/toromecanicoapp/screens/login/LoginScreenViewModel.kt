@@ -1,5 +1,7 @@
 package com.example.toromecanicoapp.screens.login
 
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.toromecanicoapp.navegacion.toroMecanicoScreens
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -14,38 +18,49 @@ import kotlinx.coroutines.launch
 class LoginScreenViewModel : ViewModel() {
 	private val auth: FirebaseAuth = Firebase.auth
 	private val _loading = MutableLiveData(false)
-	fun Login(email:String, password:String, home: ()-> Unit)
-			= viewModelScope.launch {
-		
-		try {
-			auth.signInWithEmailAndPassword(email, password)
-				.addOnCompleteListener { task ->
-					if (task.isSuccessful){
-						Log.d("toroMecanicoApp", "Login: logueado")
-						home()
-						
-					} else {
-						Log.d("toroMecanicoApp", "Login Error : ${task.result.toString()}")
+
+	fun Login(email: String, password: String, context: Context, home: ()-> Unit) {
+		auth.signInWithEmailAndPassword(email, password)
+			.addOnCompleteListener { task ->
+				if (task.isSuccessful) {
+					Log.d("Firebase", "signInWithEmailAndPassword logueado")
+					home()
+				}
+			}
+			.addOnFailureListener { exception ->
+				when (exception) {
+					is FirebaseAuthInvalidCredentialsException -> {
+						mostrarAlerta("Credenciales inválidas", context)
+					}
+					else -> {
+						mostrarAlerta(exception.message ?: "Error desconocido", context)
 					}
 				}
-		} catch (ex: Exception){
-			Log.d("toroMecanicoApp", "Login Catch: ${ex.message}")
-		}
-	
+			}
 	}
-	fun CrearCuenta(email:String, password:String, home: ()-> Unit){
+
+	private fun mostrarAlerta(mensaje: String, context: Context) {
+		val builder = AlertDialog.Builder(context)
+		builder.setTitle("Error de autenticación")
+		builder.setMessage(mensaje)
+		builder.setPositiveButton("Aceptar", null)
+		val alertDialog: AlertDialog = builder.create()
+		alertDialog.show()
+	}
+
+	fun CrearCuenta(email:String, password:String, context: Context, home: ()-> Unit) {
 		if (_loading.value == false){
 			_loading.value = true
-			auth.createUserWithEmailAndPassword(email, password)
-				.addOnCompleteListener { task ->
-					if (task.isSuccessful){
-						Log.d("toroMecanicoApp", "toroMecanicoApp CrearCuenta-> usuario creado")
-						home()
-					} else {
-						Log.d("toroMecanicoApp", "CrearCuenta Error ->: ${task.result.toString()}")
-					}
-					_loading.value = false
+		auth.createUserWithEmailAndPassword(email, password)
+			.addOnCompleteListener { task ->
+				if (task.isSuccessful) {
+					Log.d("Firebase", "createUserWithEmailAndPassword creado")
+					home()
 				}
+			}
+			.addOnFailureListener { exception ->
+				mostrarAlerta(exception.message ?: "Error desconocido", context)
+			}
 		}
 	}
 	fun NavegarACrearCuenta(navController: NavHostController) {
