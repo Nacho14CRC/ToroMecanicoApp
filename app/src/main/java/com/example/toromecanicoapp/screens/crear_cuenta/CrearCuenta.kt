@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -41,6 +42,7 @@ import com.example.toromecanicoapp.screens.login.LoginScreenViewModel
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: LoginScreenViewModel = viewModel()) {
+	val context = LocalContext.current
 	val email = rememberSaveable {
 		mutableStateOf("")
 	}
@@ -157,7 +159,7 @@ fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: LoginScree
 					sLabel = stringResource(R.string.btn_crear_cuenta),
 					inputValido = valido){
 					keyboardController?.hide()
-					modelo.CrearCuenta(email.value,password.value){
+					modelo.CrearCuenta(email.value,password.value, context){
 						navController.navigate(toroMecanicoScreens.LoginScreen.name)
 					}
 				}
