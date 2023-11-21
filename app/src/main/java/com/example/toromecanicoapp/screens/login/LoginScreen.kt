@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -36,6 +37,7 @@ import com.example.toromecanicoapp.screens.login.LoginScreenViewModel
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MostrarLoginScreen(navController: NavHostController,modelo: LoginScreenViewModel = viewModel()) {
+	val context = LocalContext.current
 	val email = rememberSaveable {
 		mutableStateOf("")
 	}
@@ -111,7 +113,7 @@ fun MostrarLoginScreen(navController: NavHostController,modelo: LoginScreenViewM
 					sLabel = stringResource(R.string.login_button_text),
 					inputValido = valido){
 					keyboardController?.hide()
-					modelo.Login(email.value,password.value)
+					modelo.Login(email.value,password.value, context)
 				}
 				Spacer(modifier = Modifier.height(8.dp))
 				Row(
