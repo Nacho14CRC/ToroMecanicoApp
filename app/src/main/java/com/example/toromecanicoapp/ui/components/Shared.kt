@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,17 +66,15 @@ fun MostrarOutlinedTextField(
 
 @Composable
 fun MostrarOutlinedEmailTextField(
+	emailState: MutableState<String>,
 	label: String,
 	placeholder: String,
-	text: String,
 	leadingIcon: Painter,
 	singleLine: Boolean,
-	isError: Boolean,
-	onValueChange: (String) -> Unit
 ) {
 	OutlinedTextField(
-		value = text,
-		onValueChange = onValueChange,
+		value = emailState.value,
+		onValueChange = {emailState.value = it},
 		keyboardOptions = KeyboardOptions(
 			keyboardType = KeyboardType.Email
 		),
@@ -93,25 +92,22 @@ fun MostrarOutlinedEmailTextField(
 			)
 		},
 		singleLine = singleLine,
-		modifier = Modifier.fillMaxWidth(),
-		isError = isError
+		modifier = Modifier.fillMaxWidth()
 	)
 }
 
 @Composable
 fun MostrarPasswordTextField(
+	passwordState: MutableState<String>,
 	label: String,
 	placeholder: String,
-	text: String,
-	leadingIcon: Painter,
-	isError: Boolean,
-	onValueChange: (String) -> Unit
+	leadingIcon: Painter
 ) {
 	var contrasenaVisible by remember { mutableStateOf(false) }
 	
 	OutlinedTextField(
-		value = text,
-		onValueChange = onValueChange,
+		value = passwordState.value,
+		onValueChange = {passwordState.value = it},
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(
@@ -131,7 +127,6 @@ fun MostrarPasswordTextField(
 			keyboardType = KeyboardType.Password
 		),
 		modifier = Modifier.fillMaxWidth(),
-		isError = isError,
 		trailingIcon = {
 			IconButton(
 				onClick = { contrasenaVisible = !contrasenaVisible }
@@ -163,16 +158,18 @@ fun MostrarTextButton(sLabel: String, onClick: () -> Unit, modifier: Modifier) {
 }
 
 @Composable
-fun MostrarButton(
+fun MostrarSubmitButton(
 	sLabel: String,
-	onClick: (String) -> Unit
+	inputValido: Boolean,
+	onClick: () -> Unit
 ) {
 	Button(
 		modifier = Modifier
 			.fillMaxWidth()
 			.height(48.dp),
-		onClick = { onClick },
-		shape = Shapes.extraLarge
+		onClick = { onClick() },
+		shape = Shapes.extraLarge,
+		enabled = inputValido
 	) {
 		Text(
 			text = sLabel,
@@ -229,5 +226,5 @@ fun MostrarOutlinedDateField(
 	onValueChange: (String) -> Unit,
 	modifier: Modifier
 ) {
-
+//
 }
