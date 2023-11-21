@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class LoginScreenViewModel() : ViewModel() {
 	private val auth: FirebaseAuth = Firebase.auth
 
-	fun Login(email: String, password: String, context: Context) {
+	fun Login(email: String, password: String, context: Context, home: ()-> Unit) {
 		auth.signInWithEmailAndPassword(email, password)
 			.addOnCompleteListener { task ->
 				if (task.isSuccessful) {
@@ -46,31 +46,16 @@ class LoginScreenViewModel() : ViewModel() {
 		alertDialog.show()
 	}
 
-	fun CrearCuenta(email:String, password:String) {
-		try {
-			auth.createUserWithEmailAndPassword(email, password)
-				.addOnCompleteListener { task ->
-					if (task.isSuccessful){
-						Log.d("Firebase", "createUserWithEmailAndPassword logueado")
-	private val _loading = MutableLiveData(false)
-	fun Login(email:String, password:String, home: ()-> Unit)
-			= viewModelScope.launch {
-
-		try {
-			auth.signInWithEmailAndPassword(email, password)
-				.addOnCompleteListener { task ->
-					if (task.isSuccessful){
-						Log.d("toroMecanicoApp", "Login: logueado")
-						home()
-
-					} else {
-						Log.d("toroMecanicoApp", "Login Error : ${task.result.toString()}")
-					}
+	fun CrearCuenta(email:String, password:String, context: Context) {
+		auth.createUserWithEmailAndPassword(email, password)
+			.addOnCompleteListener { task ->
+				if (task.isSuccessful) {
+					Log.d("Firebase", "createUserWithEmailAndPassword creado")
 				}
-		} catch (ex: Exception){
-			Log.d("toroMecanicoApp", "Login Catch: ${ex.message}")
-			Log.d("Firebase", "createUserWithEmailAndPassword: ${ex.message}")
-		}
+			}
+			.addOnFailureListener { exception ->
+				mostrarAlerta(exception.message ?: "Error desconocido", context)
+			}
 	}
 	
 	fun NavegarACrearCuenta(navController: NavHostController) {
