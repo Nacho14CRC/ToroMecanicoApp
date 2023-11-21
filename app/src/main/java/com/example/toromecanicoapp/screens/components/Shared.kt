@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.ui.components
+package com.example.toromecanicoapp.screens.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

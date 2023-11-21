@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.ui.screens
+package com.example.toromecanicoapp.screens.crear_cuenta
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DatePicker
@@ -11,10 +11,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.toromecanicoapp.viewModel.LoginViewModel
+import com.example.toromecanicoapp.screens.login.LoginScreenViewModel
 
 @Composable
-fun CrearCuentaScreen(modelo: LoginViewModel = viewModel(), navController: NavHostController) {
+fun CrearCuentaScreen(modelo: LoginScreenViewModel = viewModel(), navController: NavHostController) {
 	/*val LoginUiState by modelo.uiState.collectAsState()
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
 	val iconoNombreCompleto = painterResource(id = R.drawable.ic_person)

@@ -72,4 +72,5 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    //
 }

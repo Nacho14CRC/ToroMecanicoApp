@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.toromecanicoapp.screens.home.Home
-import com.example.toromecanicoapp.screens.login.MostrarLoginScreen
+import com.example.toromecanicoapp.ui.screens.MostrarLoginScreen
 
 @Composable
 fun toroMecanicoNavegation(){

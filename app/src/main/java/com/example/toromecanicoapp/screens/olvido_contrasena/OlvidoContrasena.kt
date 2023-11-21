@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.ui.screens
+package com.example.toromecanicoapp.screens.olvido_contrasena
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
