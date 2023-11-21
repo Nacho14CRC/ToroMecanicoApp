@@ -98,7 +98,7 @@ fun LoginScreen(modelo: LoginViewModel = viewModel(), navController: NavHostCont
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarButton(
 					sLabel = stringResource(R.string.login_button_text),
-					onClick = { modelo.Login() })
+					onClick = { modelo.Login(modelo.sCorreo, modelo.sContrasena) })
 				Spacer(modifier = Modifier.height(8.dp))
 				Row(
 					modifier = Modifier.fillMaxWidth(),
