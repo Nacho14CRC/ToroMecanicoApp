@@ -1,0 +1,29 @@
+  {
+  "project_info": {
+    "project_number": "839802295424",
+    "project_id": "toromecanicoapp-2d9b6",
+    "storage_bucket": "toromecanicoapp-2d9b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839802295424:android:f874e7362076a86d2f0265",
+        "android_client_info": {
+          "package_name": "com.example.toromecanicoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBawfiXGdMuLpy7m6Gk2xebzDEeTyOBUmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
