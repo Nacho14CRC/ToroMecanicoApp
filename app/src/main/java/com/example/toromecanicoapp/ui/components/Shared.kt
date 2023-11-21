@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.theme.Shapes
 import com.example.toromecanicoapp.ui.theme.Typography
+import java.util.Date
 
 /*Inputs*/
 @Composable
@@ -61,6 +62,42 @@ fun MostrarOutlinedTextField(
 		isError = isError
 	)
 }
+
+@Composable
+fun MostrarOutlinedEmailTextField(
+	label: String,
+	placeholder: String,
+	text: String,
+	leadingIcon: Painter,
+	singleLine: Boolean,
+	isError: Boolean,
+	onValueChange: (String) -> Unit
+) {
+	OutlinedTextField(
+		value = text,
+		onValueChange = onValueChange,
+		keyboardOptions = KeyboardOptions(
+			keyboardType = KeyboardType.Email
+		),
+		label = { Text(text = label) },
+		placeholder = { Text(placeholder) },
+		colors = TextFieldDefaults.colors(
+			focusedContainerColor = MaterialTheme.colorScheme.surface,
+			unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+			disabledContainerColor = MaterialTheme.colorScheme.surface,
+		),
+		leadingIcon = {
+			Icon(
+				painter = leadingIcon,
+				contentDescription = null
+			)
+		},
+		singleLine = singleLine,
+		modifier = Modifier.fillMaxWidth(),
+		isError = isError
+	)
+}
+
 @Composable
 fun MostrarPasswordTextField(
 	label: String,
@@ -124,6 +161,7 @@ fun MostrarTextButton(sLabel: String, onClick: () -> Unit, modifier: Modifier) {
 		)
 	}
 }
+
 @Composable
 fun MostrarButton(
 	sLabel: String,
@@ -145,5 +183,51 @@ fun MostrarButton(
 	}
 }
 
-/*Iconos*/
+@Composable
+fun MostrarOutlinedTextPhoneField(
+	label: String,
+	placeholder: String,
+	text: String,
+	leadingIcon: Painter,
+	singleLine: Boolean,
+	isError: Boolean,
+	onValueChange: (String) -> Unit,
+	modifier: Modifier
+) {
+	OutlinedTextField(
+		value = text,
+		onValueChange = onValueChange,
+		label = { Text(text = label) },
+		placeholder = { Text(placeholder) },
+		colors = TextFieldDefaults.colors(
+			focusedContainerColor = MaterialTheme.colorScheme.surface,
+			unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+			disabledContainerColor = MaterialTheme.colorScheme.surface,
+		),
+		leadingIcon = {
+			Icon(
+				painter = leadingIcon,
+				contentDescription = null
+			)
+		},
+		modifier = modifier,
+		singleLine = singleLine,
+		isError = isError,
+		keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+	)
+}
 
+
+@Composable
+fun MostrarOutlinedDateField(
+	label: String,
+	placeholder: String,
+	text: Date?,
+	leadingIcon: Painter,
+	singleLine: Boolean,
+	isError: Boolean,
+	onValueChange: (String) -> Unit,
+	modifier: Modifier
+) {
+
+}

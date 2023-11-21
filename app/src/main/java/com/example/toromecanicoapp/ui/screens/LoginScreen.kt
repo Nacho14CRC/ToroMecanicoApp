@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.components.MostrarButton
 import com.example.toromecanicoapp.ui.components.MostrarOutlinedTextField
@@ -30,10 +31,9 @@ import com.example.toromecanicoapp.ui.components.MostrarTextButton
 import com.example.toromecanicoapp.viewModel.LoginViewModel
 
 @Composable
-fun MostrarLoginScreen(modelo: LoginViewModel = viewModel()) {
+fun LoginScreen(modelo: LoginViewModel = viewModel(), navController: NavHostController) {
 	val LoginUiState by modelo.uiState.collectAsState()
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
-	
 	val iconoUsuario = painterResource(id = R.drawable.ic_account_circle)
 	val iconoContrasena = painterResource(id = R.drawable.ic_lock)
 	
@@ -92,7 +92,7 @@ fun MostrarLoginScreen(modelo: LoginViewModel = viewModel()) {
 				)
 				MostrarTextButton(
 					sLabel = stringResource(R.string.olvido_contrasena_text),
-					onClick = { modelo.RestablecerContrasena() },
+					onClick = { modelo.NavegarARestablerContrasena(navController) },
 					modifier = Modifier.align(Alignment.End)
 				)
 				Spacer(modifier = Modifier.height(40.dp))
@@ -110,7 +110,7 @@ fun MostrarLoginScreen(modelo: LoginViewModel = viewModel()) {
 					)
 					MostrarTextButton(
 						sLabel = stringResource(R.string.crear_cuenta_text),
-						onClick = { modelo.CrearCuenta() },
+						onClick = { modelo.NavegarACrearCuenta(navController) },
 						modifier = Modifier
 					)
 				}
