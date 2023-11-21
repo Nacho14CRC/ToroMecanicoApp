@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.toromecanicoapp.R
+import com.example.toromecanicoapp.navegacion.toroMecanicoScreens
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
@@ -113,7 +114,9 @@ fun MostrarLoginScreen(navController: NavHostController,modelo: LoginScreenViewM
 					sLabel = stringResource(R.string.login_button_text),
 					inputValido = valido){
 					keyboardController?.hide()
-					modelo.Login(email.value,password.value, context)
+					modelo.Login(email.value,password.value, context){
+						navController.navigate(toroMecanicoScreens.HomeScreen.name)
+					}
 				}
 				Spacer(modifier = Modifier.height(8.dp))
 				Row(
