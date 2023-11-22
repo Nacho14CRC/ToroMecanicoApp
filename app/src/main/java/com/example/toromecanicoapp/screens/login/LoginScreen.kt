@@ -28,16 +28,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.navegacion.toroMecanicoScreens
+import com.example.toromecanicoapp.navegation.Screens
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.screens.components.MostrarTextButton
-import com.example.toromecanicoapp.screens.login.UsuarioViewModel
+import com.example.toromecanicoapp.viewmodels.UserViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MostrarLoginScreen(navController: NavHostController,modelo: UsuarioViewModel = viewModel()) {
+fun ShowLoginScreen(navController: NavHostController, modelo: UserViewModel = viewModel()) {
 	val context = LocalContext.current
 	val email = rememberSaveable {
 		mutableStateOf("")
@@ -45,7 +45,7 @@ fun MostrarLoginScreen(navController: NavHostController,modelo: UsuarioViewModel
 	val password = rememberSaveable {
 		mutableStateOf("")
 	}
-	val valido = remember(email.value, password.value){
+	val valido = remember(email.value, password.value) {
 		email.value.trim().isNotEmpty() &&
 				password.value.trim().isNotEmpty()
 	}
@@ -92,9 +92,9 @@ fun MostrarLoginScreen(navController: NavHostController,modelo: UsuarioViewModel
 			) {
 				MostrarOutlinedEmailTextField(
 					emailState = email,
-					label = stringResource(R.string.correo_usuario) ,
-					placeholder = stringResource(R.string.correo_usuario_ph) ,
-					leadingIcon = iconoUsuario ,
+					label = stringResource(R.string.correo_usuario),
+					placeholder = stringResource(R.string.correo_usuario_ph),
+					leadingIcon = iconoUsuario,
 					singleLine = true
 				)
 				Spacer(modifier = Modifier.height(16.dp))
@@ -112,10 +112,11 @@ fun MostrarLoginScreen(navController: NavHostController,modelo: UsuarioViewModel
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarSubmitButton(
 					sLabel = stringResource(R.string.login_button_text),
-					inputValido = valido){
+					inputValido = valido
+				) {
 					keyboardController?.hide()
-					modelo.Login(email.value,password.value, context){
-						navController.navigate(toroMecanicoScreens.HomeScreen.name)
+					modelo.Login(email.value, password.value, context) {
+						navController.navigate(Screens.HomeScreen.name)
 					}
 				}
 				Spacer(modifier = Modifier.height(8.dp))

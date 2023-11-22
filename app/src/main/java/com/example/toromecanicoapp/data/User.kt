@@ -1,15 +1,15 @@
 package com.example.toromecanicoapp.data
 
-data class Usuario(
+data class User(
 	val id: String?,
 	val userId: String,
-	val nombreCompleto: String
+	val fullName: String
 ){
 
 	fun toMap(): MutableMap<String,Any>{
 		return  mutableMapOf(
 			"user_id" to this.userId,
-			"nombre_completo" to this.nombreCompleto
+			"fullName" to this.fullName
 		)
 	}
 }

@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.screens.login
+package com.example.toromecanicoapp.viewmodels
 
 import android.app.AlertDialog
 import android.content.Context
@@ -6,15 +6,15 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
-import com.example.toromecanicoapp.data.Usuario
-import com.example.toromecanicoapp.navegacion.toroMecanicoScreens
+import com.example.toromecanicoapp.data.User
+import com.example.toromecanicoapp.navegation.Screens
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
-class UsuarioViewModel : ViewModel() {
+class UserViewModel : ViewModel() {
 	private val auth: FirebaseAuth = Firebase.auth
 	private val _loading = MutableLiveData(false)
 
@@ -77,9 +77,9 @@ class UsuarioViewModel : ViewModel() {
 	private fun crearUsuarioDB(email: String, password: String, nombreCompleto: String) {
 		val userId= auth.currentUser?.uid
 		
-		val newUsuario = Usuario(
+		val newUsuario = User(
 			userId=userId.toString(),
-			nombreCompleto = nombreCompleto.toString(),
+			fullName = nombreCompleto.toString(),
 			id= null
 		).toMap()
 		
@@ -95,13 +95,13 @@ class UsuarioViewModel : ViewModel() {
 	}
 	
 	fun NavegarALogin(navController: NavHostController) {
-		navController.navigate(toroMecanicoScreens.LoginScreen.name)
+		navController.navigate(Screens.LoginScreen.name)
 	}
 	fun NavegarACrearCuenta(navController: NavHostController) {
-		navController.navigate(toroMecanicoScreens.CrearCuentaScreen.name)
+		navController.navigate(Screens.CreateAccountScreen.name)
 	}
 	
 	fun NavegarARestablerContrasena(navController: NavHostController) {
-		navController.navigate(toroMecanicoScreens.RestablecerContrasenaScreen.name)
+		navController.navigate(Screens.ResetPasswordScreen.name)
 	}
 }

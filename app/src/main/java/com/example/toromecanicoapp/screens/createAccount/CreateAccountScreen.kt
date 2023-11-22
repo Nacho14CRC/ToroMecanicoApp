@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.screens.crear_cuenta
+package com.example.toromecanicoapp.screens.createAccount
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,17 +32,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.navegacion.toroMecanicoScreens
+import com.example.toromecanicoapp.navegation.Screens
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.screens.components.MostrarTextButton
-import com.example.toromecanicoapp.screens.login.UsuarioViewModel
+import com.example.toromecanicoapp.viewmodels.UserViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: UsuarioViewModel = viewModel()) {
+fun ShowCreateAccountScreen(navController: NavHostController, modelo: UserViewModel = viewModel()) {
 	val context = LocalContext.current
 	val email = rememberSaveable {
 		mutableStateOf("")
@@ -53,7 +53,7 @@ fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: UsuarioVie
 	val password = rememberSaveable {
 		mutableStateOf("")
 	}
-	val valido = remember(email.value, password.value){
+	val valido = remember(email.value, password.value) {
 		email.value.trim().isNotEmpty() &&
 				password.value.trim().isNotEmpty()
 	}
@@ -111,9 +111,9 @@ fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: UsuarioVie
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarOutlinedEmailTextField(
 					emailState = email,
-					label = stringResource(R.string.correo_usuario) ,
-					placeholder = stringResource(R.string.correo_usuario_ph) ,
-					leadingIcon = iconoUsuario ,
+					label = stringResource(R.string.correo_usuario),
+					placeholder = stringResource(R.string.correo_usuario_ph),
+					leadingIcon = iconoUsuario,
 					singleLine = true
 				)
 				Spacer(modifier = Modifier.height(16.dp))
@@ -123,7 +123,8 @@ fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: UsuarioVie
 				) {
 					Box(
 						modifier = Modifier
-							.weight(1f).padding(end = 8.dp)
+							.weight(1f)
+							.padding(end = 8.dp)
 					) {
 						/*MostrarOutlinedTextPhoneField(
 							stringResource(R.string.telefono_usuario),
@@ -161,10 +162,11 @@ fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: UsuarioVie
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarSubmitButton(
 					sLabel = stringResource(R.string.btn_crear_cuenta),
-					inputValido = valido){
+					inputValido = valido
+				) {
 					keyboardController?.hide()
-					modelo.CrearCuenta(email.value,password.value,nombreCompleto.value, context){
-						navController.navigate(toroMecanicoScreens.LoginScreen.name)
+					modelo.CrearCuenta(email.value, password.value, nombreCompleto.value, context) {
+						navController.navigate(Screens.LoginScreen.name)
 					}
 				}
 				Row(
@@ -191,6 +193,6 @@ fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: UsuarioVie
 @Preview
 @Composable
 fun DateInputSample() {
-		val state = rememberDatePickerState(initialDisplayMode = DisplayMode.Input)
-		DatePicker(state = state, modifier = Modifier.padding(16.dp))
+	val state = rememberDatePickerState(initialDisplayMode = DisplayMode.Input)
+	DatePicker(state = state, modifier = Modifier.padding(16.dp))
 }

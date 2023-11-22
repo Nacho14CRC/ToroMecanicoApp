@@ -42,7 +42,7 @@ fun MostrarOutlinedTextField(
 ) {
 	OutlinedTextField(
 		value = text.value,
-		onValueChange = {text.value = it},
+		onValueChange = { text.value = it },
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(
@@ -71,7 +71,7 @@ fun MostrarOutlinedEmailTextField(
 ) {
 	OutlinedTextField(
 		value = emailState.value,
-		onValueChange = {emailState.value = it},
+		onValueChange = { emailState.value = it },
 		keyboardOptions = KeyboardOptions(
 			keyboardType = KeyboardType.Email
 		),
@@ -104,7 +104,7 @@ fun MostrarPasswordTextField(
 	
 	OutlinedTextField(
 		value = passwordState.value,
-		onValueChange = {passwordState.value = it},
+		onValueChange = { passwordState.value = it },
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(

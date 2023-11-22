@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.screens.olvido_contrasena
+package com.example.toromecanicoapp.screens.resetPassword
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,15 +28,15 @@ import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.screens.components.MostrarTextButton
-import com.example.toromecanicoapp.screens.login.UsuarioViewModel
+import com.example.toromecanicoapp.viewmodels.UserViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MostrarOlvidoContrasena(navController: NavHostController, modelo: UsuarioViewModel = viewModel()) {
+fun ShowForgotPassword(navController: NavHostController, modelo: UserViewModel = viewModel()) {
 	val email = rememberSaveable {
 		mutableStateOf("")
 	}
-	val valido = remember(email.value){
+	val valido = remember(email.value) {
 		email.value.trim().isNotEmpty()
 	}
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
@@ -69,15 +69,16 @@ fun MostrarOlvidoContrasena(navController: NavHostController, modelo: UsuarioVie
 				
 				MostrarOutlinedEmailTextField(
 					emailState = email,
-					label = stringResource(R.string.correo_usuario) ,
-					placeholder = stringResource(R.string.correo_usuario_ph) ,
-					leadingIcon = iconoCorreo ,
+					label = stringResource(R.string.correo_usuario),
+					placeholder = stringResource(R.string.correo_usuario_ph),
+					leadingIcon = iconoCorreo,
 					singleLine = true
 				)
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarSubmitButton(
 					sLabel = stringResource(R.string.btn_restablecer),
-					inputValido = valido){
+					inputValido = valido
+				) {
 					keyboardController?.hide()
 					modelo.RestablecerContrasena(email.value)
 				}
