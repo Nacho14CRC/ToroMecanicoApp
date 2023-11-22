@@ -64,6 +64,16 @@ class UsuarioViewModel : ViewModel() {
 		}
 	}
 	
+	fun RestablecerContrasena(email: String) {
+		auth.sendPasswordResetEmail(email)
+			.addOnCompleteListener { task ->
+				if (task.isSuccessful) {
+					Log.d("RestablecerContrasena", "Correo enviado")
+				} else {
+					Log.d("RestablecerContrasena", "Fallo el envi0")
+				}
+			}
+	}
 	private fun crearUsuarioDB(email: String, password: String, nombreCompleto: String) {
 		val userId= auth.currentUser?.uid
 		
@@ -84,13 +94,14 @@ class UsuarioViewModel : ViewModel() {
 		
 	}
 	
+	fun NavegarALogin(navController: NavHostController) {
+		navController.navigate(toroMecanicoScreens.LoginScreen.name)
+	}
 	fun NavegarACrearCuenta(navController: NavHostController) {
-		navController.navigate(toroMecanicoScreens.CrearCuenta.name)
+		navController.navigate(toroMecanicoScreens.CrearCuentaScreen.name)
 	}
 	
 	fun NavegarARestablerContrasena(navController: NavHostController) {
-		navController.navigate("r3") {
-			popUpTo(navController.graph.startDestinationId)
-		}
+		navController.navigate(toroMecanicoScreens.RestablecerContrasenaScreen.name)
 	}
 }
