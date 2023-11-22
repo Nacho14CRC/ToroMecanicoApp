@@ -33,11 +33,11 @@ import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextFi
 import com.example.toromecanicoapp.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.screens.components.MostrarTextButton
-import com.example.toromecanicoapp.screens.login.LoginScreenViewModel
+import com.example.toromecanicoapp.screens.login.UsuarioViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MostrarLoginScreen(navController: NavHostController,modelo: LoginScreenViewModel = viewModel()) {
+fun MostrarLoginScreen(navController: NavHostController,modelo: UsuarioViewModel = viewModel()) {
 	val context = LocalContext.current
 	val email = rememberSaveable {
 		mutableStateOf("")

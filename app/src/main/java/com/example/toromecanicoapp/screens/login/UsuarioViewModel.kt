@@ -5,17 +5,16 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.example.toromecanicoapp.data.Usuario
 import com.example.toromecanicoapp.navegacion.toroMecanicoScreens
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
-class LoginScreenViewModel : ViewModel() {
+class UsuarioViewModel : ViewModel() {
 	private val auth: FirebaseAuth = Firebase.auth
 	private val _loading = MutableLiveData(false)
 
@@ -48,12 +47,13 @@ class LoginScreenViewModel : ViewModel() {
 		alertDialog.show()
 	}
 
-	fun CrearCuenta(email:String, password:String, context: Context, home: ()-> Unit) {
+	fun CrearCuenta(email:String, password:String,nombreCompleto:String, context: Context, home: ()-> Unit) {
 		if (_loading.value == false){
 			_loading.value = true
 		auth.createUserWithEmailAndPassword(email, password)
 			.addOnCompleteListener { task ->
 				if (task.isSuccessful) {
+					crearUsuarioDB(email, password,nombreCompleto)
 					Log.d("Firebase", "createUserWithEmailAndPassword creado")
 					home()
 				}
@@ -63,6 +63,27 @@ class LoginScreenViewModel : ViewModel() {
 			}
 		}
 	}
+	
+	private fun crearUsuarioDB(email: String, password: String, nombreCompleto: String) {
+		val userId= auth.currentUser?.uid
+		
+		val newUsuario = Usuario(
+			userId=userId.toString(),
+			nombreCompleto = nombreCompleto.toString(),
+			id= null
+		).toMap()
+		
+		FirebaseFirestore.getInstance().collection("usuarios")
+			.add(newUsuario)
+			.addOnSuccessListener {
+				Log.d("Firebase", "Usuario agregado con el ID: ${it.id}")
+			}
+			.addOnFailureListener { e ->
+				Log.d("Firebase", "Error adding user", e)
+			}
+		
+	}
+	
 	fun NavegarACrearCuenta(navController: NavHostController) {
 		navController.navigate(toroMecanicoScreens.CrearCuenta.name)
 	}

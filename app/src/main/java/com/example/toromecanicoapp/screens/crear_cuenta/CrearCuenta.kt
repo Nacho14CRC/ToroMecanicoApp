@@ -34,16 +34,20 @@ import androidx.navigation.NavHostController
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.navegacion.toroMecanicoScreens
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
+import com.example.toromecanicoapp.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.screens.components.MostrarTextButton
-import com.example.toromecanicoapp.screens.login.LoginScreenViewModel
+import com.example.toromecanicoapp.screens.login.UsuarioViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: LoginScreenViewModel = viewModel()) {
+fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: UsuarioViewModel = viewModel()) {
 	val context = LocalContext.current
 	val email = rememberSaveable {
+		mutableStateOf("")
+	}
+	val nombreCompleto = rememberSaveable {
 		mutableStateOf("")
 	}
 	val password = rememberSaveable {
@@ -87,13 +91,13 @@ fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: LoginScree
 				)
 				
 				Spacer(modifier = Modifier.height(40.dp))
-				/*MostrarOutlinedTextField(
-					text = nomUsuario,
+				MostrarOutlinedTextField(
+					text = nombreCompleto,
 					stringResource(R.string.nombre_usuario),
 					stringResource(R.string.nombre_usuario_ph),
 					iconoNombreCompleto,
 					true
-				)*/
+				)
 				Spacer(modifier = Modifier.height(16.dp))
 				/*MostrarOutlinedTextField(
 					stringResource(R.string.identificacion_usuario),
@@ -159,7 +163,7 @@ fun MostrarCrearCuentaScreen(navController: NavHostController,modelo: LoginScree
 					sLabel = stringResource(R.string.btn_crear_cuenta),
 					inputValido = valido){
 					keyboardController?.hide()
-					modelo.CrearCuenta(email.value,password.value, context){
+					modelo.CrearCuenta(email.value,password.value,nombreCompleto.value, context){
 						navController.navigate(toroMecanicoScreens.LoginScreen.name)
 					}
 				}
