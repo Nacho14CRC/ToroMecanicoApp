@@ -1,5 +1,7 @@
 package com.example.toromecanicoapp.screens.resetPassword
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,26 +15,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.toromecanicoapp.R
+import com.example.toromecanicoapp.navegation.Screens
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.screens.components.MostrarTextButton
+import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ShowForgotPassword(navController: NavHostController, modelo: UserViewModel = viewModel()) {
+fun ShowForgotPassword(navigation: NavController, modelo: UserViewModel = viewModel()) {
 	val email = rememberSaveable {
 		mutableStateOf("")
 	}
@@ -42,7 +49,8 @@ fun ShowForgotPassword(navController: NavHostController, modelo: UserViewModel =
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
 	val iconoCorreo = painterResource(id = R.drawable.ic_email)
 	val keyboardController = LocalSoftwareKeyboardController.current
-	
+	val scope = rememberCoroutineScope()
+	val context = LocalContext.current
 	
 	Column(
 		modifier = Modifier
@@ -80,7 +88,9 @@ fun ShowForgotPassword(navController: NavHostController, modelo: UserViewModel =
 					inputValido = valido
 				) {
 					keyboardController?.hide()
-					modelo.RestablecerContrasena(email.value)
+					scope.launch {
+						forgotPassword(navigation, context, modelo, email.value)
+					}
 				}
 				Row(
 					modifier = Modifier.fillMaxWidth(),
@@ -88,8 +98,8 @@ fun ShowForgotPassword(navController: NavHostController, modelo: UserViewModel =
 					verticalAlignment = Alignment.CenterVertically
 				) {
 					MostrarTextButton(
-						sLabel = stringResource(R.string.login_button_text),
-						onClick = { modelo.NavegarALogin(navController) },
+						sLabel = stringResource(R.string.volver_login_button_text),
+						onClick = { navigation.navigate(Screens.LoginScreen.name) },
 						modifier = Modifier
 					)
 				}
@@ -99,16 +109,20 @@ fun ShowForgotPassword(navController: NavHostController, modelo: UserViewModel =
 	}
 }
 
-/*@Composable
-fun OlvidoContrasenaScreen(navController: NavHostController) {
-	val mediumPadding = dimensionResource(R.dimen.padding_medium)
-	
-	Column(
-		modifier = Modifier.fillMaxSize().background(Color.Blue),
-	) {
-		Text(
-			text = stringResource(R.string.restablecer_contrasena),
-			style = MaterialTheme.typography.displayMedium,
-		)
+private suspend fun forgotPassword(
+	navigation: NavController,
+	context: Context,
+	modelo: UserViewModel,
+	email: String
+) {
+	when (val result = modelo.resetPassword(email)) {
+		is AuthRes.Success -> {
+			Toast.makeText(context, "Correo enviado", Toast.LENGTH_SHORT).show()
+			navigation.navigate(Screens.LoginScreen.name)
+		}
+		
+		is AuthRes.Error -> {
+			Toast.makeText(context, "Error al enviar el correo", Toast.LENGTH_SHORT).show()
+		}
 	}
-}*/
+}

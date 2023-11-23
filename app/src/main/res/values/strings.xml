@@ -27,4 +27,5 @@
     <string name="antes_iniciar">¿Tienes una cuenta?</string>
     <string name="telefono_usuario">Telefono</string>
     <string name="telefono_usuario_ph">Ingrese el telefono</string>
+    <string name="volver_login_button_text">Volver al login</string>
 </resources>

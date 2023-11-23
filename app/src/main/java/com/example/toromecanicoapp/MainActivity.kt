@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
 		
 		setContent {
 			ToroMecanicoAppTheme {
-				Navigation()
+				Navigation(this)
 			}
 		}
 	}

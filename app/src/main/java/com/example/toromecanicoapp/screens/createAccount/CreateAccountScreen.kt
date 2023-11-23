@@ -1,5 +1,7 @@
 package com.example.toromecanicoapp.screens.createAccount
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,15 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DisplayMode
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -27,22 +26,22 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.navegation.Screens
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.screens.components.MostrarTextButton
+import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ShowCreateAccountScreen(navController: NavHostController, modelo: UserViewModel = viewModel()) {
+fun ShowCreateAccountScreen(navigation: NavController, modelo: UserViewModel = viewModel()) {
 	val context = LocalContext.current
 	val email = rememberSaveable {
 		mutableStateOf("")
@@ -57,7 +56,7 @@ fun ShowCreateAccountScreen(navController: NavHostController, modelo: UserViewMo
 		email.value.trim().isNotEmpty() &&
 				password.value.trim().isNotEmpty()
 	}
-	
+	val scope = rememberCoroutineScope()
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
 	val iconoNombreCompleto = painterResource(id = R.drawable.ic_person)
 	val iconoIdentificacion = painterResource(id = R.drawable.ic_person)
@@ -165,8 +164,8 @@ fun ShowCreateAccountScreen(navController: NavHostController, modelo: UserViewMo
 					inputValido = valido
 				) {
 					keyboardController?.hide()
-					modelo.CrearCuenta(email.value, password.value, nombreCompleto.value, context) {
-						navController.navigate(Screens.LoginScreen.name)
+					scope.launch {
+						createAccount(navigation, context, modelo, email.value, password.value,nombreCompleto.value)
 					}
 				}
 				Row(
@@ -179,7 +178,7 @@ fun ShowCreateAccountScreen(navController: NavHostController, modelo: UserViewMo
 					)
 					MostrarTextButton(
 						sLabel = stringResource(R.string.login_button_text),
-						onClick = { modelo.NavegarACrearCuenta(navController) },
+						onClick = {     navigation.popBackStack() },
 						modifier = Modifier
 					)
 				}
@@ -188,11 +187,22 @@ fun ShowCreateAccountScreen(navController: NavHostController, modelo: UserViewMo
 		
 	}
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun DateInputSample() {
-	val state = rememberDatePickerState(initialDisplayMode = DisplayMode.Input)
-	DatePicker(state = state, modifier = Modifier.padding(16.dp))
+private suspend fun createAccount(
+	navigation: NavController,
+	context: Context,
+	modelo: UserViewModel,
+	email: String,
+	password: String,
+	nombreCompleto: String
+) {
+	when (val result = modelo.createUserWithEmailAndPassword(email, password,nombreCompleto)) {
+		is AuthRes.Success -> {
+			Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
+			navigation.popBackStack()
+		}
+		
+		is AuthRes.Error -> {
+			Toast.makeText(context, "Error createAccount: ${result.errorMessage}", Toast.LENGTH_SHORT).show()
+		}
+	}
 }
