@@ -41,6 +41,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.navegation.BottomNavScreen
 import com.example.toromecanicoapp.navegation.Screens
+import com.example.toromecanicoapp.screens.citas.ShowCitasScreen
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -146,18 +147,17 @@ fun BottomNavGraph(
 	context: Context,
 	modelo: UserViewModel = viewModel()
 ) {
-	/*val realtime = RealtimeManager(context)
-	val firestore = FirestoreManager(context)
-	val storage = CloudStorageManager(context)*/
+	
 	NavHost(navController = navController, startDestination = BottomNavScreen.Home.route) {
 		composable(route = BottomNavScreen.Home.route) {
-			/*ContactsScreen(realtime = realtime, authManager = authManager)*/
+			//TODO
 		}
 		composable(route = BottomNavScreen.Citas.route) {
-			/*NotesScreen(firestore = firestore)*/
+			
+			ShowCitasScreen(modelo)
 		}
 		composable(route = BottomNavScreen.Cuenta.route) {
-			/*CloudStorageScreen(storage = storage)*/
+			//TODO
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.data
+package com.example.toromecanicoapp.data.model
 
 data class User(
 	val id: String?,
