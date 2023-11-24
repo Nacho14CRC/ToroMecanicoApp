@@ -11,10 +11,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.toromecanicoapp.ui.screens.LoginDestination
 import com.example.toromecanicoapp.ui.screens.ShowLoginScreen
-import com.example.toromecanicoapp.ui.screens.account.CreateAccountDestination
-import com.example.toromecanicoapp.ui.screens.account.CuentaDetailDestination
-import com.example.toromecanicoapp.ui.screens.account.ShowCreateAccountScreen
-import com.example.toromecanicoapp.ui.screens.account.ShowCuentaScreen
 import com.example.toromecanicoapp.ui.screens.cita.CitaDetailsDestination
 import com.example.toromecanicoapp.ui.screens.cita.CitaEntryDestination
 import com.example.toromecanicoapp.ui.screens.cita.CitaEntryScreen
@@ -22,8 +18,12 @@ import com.example.toromecanicoapp.ui.screens.cita.CitasDestination
 import com.example.toromecanicoapp.ui.screens.cita.ShowCitasScreen
 import com.example.toromecanicoapp.ui.screens.home.HomeDestination
 import com.example.toromecanicoapp.ui.screens.home.ShowHomeScreen
-import com.example.toromecanicoapp.ui.screens.resetPassword.ResetPasswordDestination
-import com.example.toromecanicoapp.ui.screens.resetPassword.ShowForgotPassword
+import com.example.toromecanicoapp.ui.screens.user.CreateAccountDestination
+import com.example.toromecanicoapp.ui.screens.user.CuentaDetailDestination
+import com.example.toromecanicoapp.ui.screens.user.ResetPasswordDestination
+import com.example.toromecanicoapp.ui.screens.user.ShowCreateAccountScreen
+import com.example.toromecanicoapp.ui.screens.user.ShowCuentaScreen
+import com.example.toromecanicoapp.ui.screens.user.ShowForgotPassword
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import com.google.firebase.auth.FirebaseUser
 
@@ -101,7 +101,8 @@ fun ToroMecanicoNavHost(
 						launchSingleTop = true
 					}
 				},
-				currentDestination
+				currentDestination,
+				userModel = modelo
 			)
 		}
 		composable(route = CitasDestination.route) {
@@ -138,8 +139,7 @@ fun ToroMecanicoNavHost(
 				navigateToLogin = { navController.navigate(LoginDestination.route) },
 				navigateBack = { navController.popBackStack() },
 				onNavigateUp = { navController.navigateUp() },
-				currentDestination,
-				modelo = modelo
+				userModel = modelo
 			)
 		}
 		composable(route = CuentaDetailDestination.route) {

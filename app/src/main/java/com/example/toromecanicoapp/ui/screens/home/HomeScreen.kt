@@ -8,7 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoBottomAppBar
@@ -29,7 +28,7 @@ fun ShowHomeScreen(
 	navigateToCitas: () -> Unit,
 	navigateToCuenta: () -> Unit,
 	currentDestination: NavDestination?,
-	modelo: UserViewModel = viewModel(),
+	userModel: UserViewModel,
 	modifier: Modifier = Modifier
 ) {
 	Scaffold(
@@ -39,7 +38,7 @@ fun ShowHomeScreen(
 				title = stringResource(HomeDestination.titleRes),
 				canNavigateBack = false,
 				navigateToLogin = navigateToLogin,
-				modelo = modelo,
+				modelo = userModel,
 				modifier = modifier
 			)
 		},

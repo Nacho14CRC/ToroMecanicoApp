@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ViewTimeline
@@ -25,13 +26,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.toromecanicoapp.ui.navegation.ToroMecanicoNavHost
-import com.example.toromecanicoapp.ui.screens.account.CuentaDetailDestination
+import com.example.toromecanicoapp.ui.screens.user.CuentaDetailDestination
 import com.example.toromecanicoapp.ui.screens.cita.CitasDestination
 import com.example.toromecanicoapp.ui.screens.home.HomeDestination
 import com.example.toromecanicoapp.viewmodels.UserViewModel
@@ -47,9 +47,9 @@ fun ToroMecanicoTopAppBar(
 	title: String,
 	canNavigateBack: Boolean,
 	navigateToLogin: () -> Unit,
-	modelo: UserViewModel = viewModel(),
 	modifier: Modifier,
-	navigateUp: () -> Unit = {}
+	navigateUp: () -> Unit = {},
+	modelo: UserViewModel
 ) {
 	
 	var showDialog by remember { mutableStateOf(false) }
@@ -141,7 +141,7 @@ fun ToroMecanicoBottomAppBar(
 		if (currentDestination != null) {
 			NavigationBarItem(
 				label = { Text(text = CuentaDetailDestination.desIcono) },
-				icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Icons") },
+				icon = { Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Icons") },
 				selected = currentDestination.hierarchy?.any {
 					it.route == CuentaDetailDestination.route
 				} == true,

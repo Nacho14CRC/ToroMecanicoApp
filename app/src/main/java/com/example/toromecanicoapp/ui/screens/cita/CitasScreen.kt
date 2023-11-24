@@ -44,7 +44,7 @@ import com.example.toromecanicoapp.viewmodels.UserViewModel
 
 object CitasDestination : Destinations {
 	override val route = "citas"
-	override val titleRes = R.string.identificacion_usuario
+	override val titleRes = R.string.app_name
 	override val desIcono = "Citas"
 }
 

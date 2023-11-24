@@ -10,15 +10,7 @@ import kotlinx.coroutines.flow.callbackFlow
 class FirestoreManager(userModel: UserViewModel) {
 	private val firestore = FirebaseFirestore.getInstance()
 	var userId = userModel.getCurrentUser()?.uid
-	suspend fun addCita(observaciones: String) {
-	/*	val newCita = Cita(
-			id= null,
-			userId = userId.toString(),
-			observaciones = observaciones
-		).toMap()
-		
-		firestore.collection("citas").add(newCita).await()*/
-	}
+	
 	fun getCitasFlow(): Flow<List<Cita>> = callbackFlow {
 		val citasRef = firestore.collection("citas")
 			.whereEqualTo("userId", userId).orderBy("userId")

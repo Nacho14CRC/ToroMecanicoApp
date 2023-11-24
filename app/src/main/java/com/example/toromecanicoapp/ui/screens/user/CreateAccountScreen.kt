@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.ui.screens.account
+package com.example.toromecanicoapp.ui.screens.user
 
 import android.content.Context
 import android.widget.Toast
