@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.screens.resetPassword
+package com.example.toromecanicoapp.ui.screens.resetPassword
 
 import android.content.Context
 import android.widget.Toast
@@ -27,19 +27,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.navegation.Screens
-import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
-import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
-import com.example.toromecanicoapp.screens.components.MostrarTextButton
+import com.example.toromecanicoapp.ui.navegation.Destinations
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
+import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
+import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
 import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
+object ResetPasswordDestination : Destinations {
+	override val route = "resetPassword"
+	override val titleRes = R.string.correo_usuario
+	override val desIcono = ""
+}
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ShowForgotPassword(navigation: NavController, modelo: UserViewModel = viewModel()) {
+fun ShowForgotPassword(navigateToLogin: () -> Unit, modelo: UserViewModel = viewModel()) {
 	val email = rememberSaveable {
 		mutableStateOf("")
 	}
@@ -89,7 +93,7 @@ fun ShowForgotPassword(navigation: NavController, modelo: UserViewModel = viewMo
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						forgotPassword(navigation, context, modelo, email.value)
+						forgotPassword(navigateToLogin, context, modelo, email.value)
 					}
 				}
 				Row(
@@ -99,7 +103,7 @@ fun ShowForgotPassword(navigation: NavController, modelo: UserViewModel = viewMo
 				) {
 					MostrarTextButton(
 						sLabel = stringResource(R.string.volver_login_button_text),
-						onClick = { navigation.navigate(Screens.LoginScreen.name) },
+						onClick = { navigateToLogin() },
 						modifier = Modifier
 					)
 				}
@@ -110,7 +114,7 @@ fun ShowForgotPassword(navigation: NavController, modelo: UserViewModel = viewMo
 }
 
 private suspend fun forgotPassword(
-	navigation: NavController,
+	navigateToLogin: () -> Unit,
 	context: Context,
 	modelo: UserViewModel,
 	email: String
@@ -118,7 +122,7 @@ private suspend fun forgotPassword(
 	when (val result = modelo.resetPassword(email)) {
 		is AuthRes.Success -> {
 			Toast.makeText(context, "Correo enviado", Toast.LENGTH_SHORT).show()
-			navigation.navigate(Screens.LoginScreen.name)
+			navigateToLogin()
 		}
 		
 		is AuthRes.Error -> {

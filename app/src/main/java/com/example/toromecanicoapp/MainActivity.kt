@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.toromecanicoapp.navegation.Navigation
 import com.example.toromecanicoapp.ui.theme.ToroMecanicoAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +15,7 @@ class MainActivity : ComponentActivity() {
 		
 		setContent {
 			ToroMecanicoAppTheme {
-				Navigation(this)
+				ToroMecanicoApp(this)
 			}
 		}
 	}

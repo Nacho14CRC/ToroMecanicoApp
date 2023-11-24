@@ -1,4 +1,4 @@
-package com.example.toromecanicoapp.screens.createAccount
+package com.example.toromecanicoapp.ui.screens.account
 
 import android.content.Context
 import android.widget.Toast
@@ -28,20 +28,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
-import com.example.toromecanicoapp.screens.components.MostrarOutlinedTextField
-import com.example.toromecanicoapp.screens.components.MostrarPasswordTextField
-import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
-import com.example.toromecanicoapp.screens.components.MostrarTextButton
+import com.example.toromecanicoapp.ui.navegation.Destinations
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
+import com.example.toromecanicoapp.ui.screens.components.MostrarPasswordTextField
+import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
+import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
 import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
+object CreateAccountDestination : Destinations {
+	override val route = "createAcount"
+	override val titleRes = R.string.correo_usuario
+	override val desIcono = ""
+}
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ShowCreateAccountScreen(navigation: NavController, modelo: UserViewModel = viewModel()) {
+fun ShowCreateAccountScreen(navigateToLogin: () -> Unit, modelo: UserViewModel = viewModel()) {
 	val context = LocalContext.current
 	val email = rememberSaveable {
 		mutableStateOf("")
@@ -165,7 +171,7 @@ fun ShowCreateAccountScreen(navigation: NavController, modelo: UserViewModel = v
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						createAccount(navigation, context, modelo, email.value, password.value,nombreCompleto.value)
+						createAccount(navigateToLogin, context, modelo, email.value, password.value,nombreCompleto.value)
 					}
 				}
 				Row(
@@ -178,7 +184,7 @@ fun ShowCreateAccountScreen(navigation: NavController, modelo: UserViewModel = v
 					)
 					MostrarTextButton(
 						sLabel = stringResource(R.string.login_button_text),
-						onClick = {     navigation.popBackStack() },
+						onClick = {     navigateToLogin() },
 						modifier = Modifier
 					)
 				}
@@ -188,7 +194,7 @@ fun ShowCreateAccountScreen(navigation: NavController, modelo: UserViewModel = v
 	}
 }
 private suspend fun createAccount(
-	navigation: NavController,
+	navigateToLogin: () -> Unit,
 	context: Context,
 	modelo: UserViewModel,
 	email: String,
@@ -198,7 +204,7 @@ private suspend fun createAccount(
 	when (val result = modelo.createUserWithEmailAndPassword(email, password,nombreCompleto)) {
 		is AuthRes.Success -> {
 			Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
-			navigation.popBackStack()
+			navigateToLogin()
 		}
 		
 		is AuthRes.Error -> {

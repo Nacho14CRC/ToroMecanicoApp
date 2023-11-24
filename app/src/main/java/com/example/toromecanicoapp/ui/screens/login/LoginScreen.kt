@@ -29,20 +29,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.navegation.Screens
-import com.example.toromecanicoapp.screens.components.MostrarOutlinedEmailTextField
-import com.example.toromecanicoapp.screens.components.MostrarPasswordTextField
-import com.example.toromecanicoapp.screens.components.MostrarSubmitButton
-import com.example.toromecanicoapp.screens.components.MostrarTextButton
+import com.example.toromecanicoapp.ui.navegation.Destinations
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
+import com.example.toromecanicoapp.ui.screens.components.MostrarPasswordTextField
+import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
+import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
 import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
+object LoginDestination : Destinations {
+	override val route = "login"
+	override val titleRes = R.string.correo_usuario
+	override val desIcono = ""
+}
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ShowLoginScreen(navigation: NavController, modelo: UserViewModel = viewModel()) {
+fun ShowLoginScreen(
+	navigateToResetPassword: () -> Unit,
+	navigateToCreateAccount: () -> Unit,
+	navigateToHome: () -> Unit,
+	modelo: UserViewModel = viewModel()
+) {
 	val email = rememberSaveable { mutableStateOf("andreiac@hotmail.es") }
 	val password = rememberSaveable { mutableStateOf("123456") }
 	val context = LocalContext.current
@@ -107,11 +116,7 @@ fun ShowLoginScreen(navigation: NavController, modelo: UserViewModel = viewModel
 				)
 				MostrarTextButton(
 					sLabel = stringResource(R.string.olvido_contrasena_text),
-					onClick = {
-						navigation.navigate(Screens.ResetPasswordScreen.name) {
-							popUpTo(Screens.LoginScreen.name) { inclusive = true }
-						}
-					},
+					onClick = {	navigateToResetPassword()	},
 					modifier = Modifier.align(Alignment.End)
 				)
 				Spacer(modifier = Modifier.height(40.dp))
@@ -121,7 +126,7 @@ fun ShowLoginScreen(navigation: NavController, modelo: UserViewModel = viewModel
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						login(navigation, context, modelo, email.value, password.value)
+						login(navigateToHome, context, modelo, email.value, password.value)
 					}
 				}
 				Spacer(modifier = Modifier.height(8.dp))
@@ -135,7 +140,7 @@ fun ShowLoginScreen(navigation: NavController, modelo: UserViewModel = viewModel
 					)
 					MostrarTextButton(
 						sLabel = stringResource(R.string.crear_cuenta_text),
-						onClick = { navigation.navigate(Screens.CreateAccountScreen.name) },
+						onClick = { navigateToCreateAccount() },
 						modifier = Modifier
 					)
 				}
@@ -144,7 +149,7 @@ fun ShowLoginScreen(navigation: NavController, modelo: UserViewModel = viewModel
 	}
 }
 private suspend fun login(
-	navigation: NavController,
+	navigateToHome: () -> Unit,
 	context: Context,
 	modelo: UserViewModel,
 	email: String,
@@ -152,11 +157,7 @@ private suspend fun login(
 ) {
 	when (val result = modelo.signInWithEmailAndPassword(email, password)) {
 		is AuthRes.Success -> {
-			navigation.navigate(Screens.HomeScreen.name) {
-				popUpTo(Screens.LoginScreen.name) {
-					inclusive = true
-				}
-			}
+			navigateToHome()
 		}
 		
 		is AuthRes.Error -> {

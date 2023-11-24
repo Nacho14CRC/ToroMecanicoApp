@@ -6,18 +6,18 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.tasks.await
 
 class FirestoreManager(userModel: UserViewModel) {
 	private val firestore = FirebaseFirestore.getInstance()
 	var userId = userModel.getCurrentUser()?.uid
 	suspend fun addCita(observaciones: String) {
-		val newCita = Cita(
+	/*	val newCita = Cita(
+			id= null,
 			userId = userId.toString(),
 			observaciones = observaciones
 		).toMap()
 		
-		firestore.collection("citas").add(newCita).await()
+		firestore.collection("citas").add(newCita).await()*/
 	}
 	fun getCitasFlow(): Flow<List<Cita>> = callbackFlow {
 		val citasRef = firestore.collection("citas")
