@@ -1,12 +1,16 @@
 package com.example.toromecanicoapp.ui.screens.home
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
@@ -51,14 +55,24 @@ fun ShowHomeScreen(
 			)
 		}
 	) { innerPadding ->
-		Column(
-			modifier = Modifier.padding(innerPadding)
-		) {
-			Text(
-				text = "Home",
-				style = MaterialTheme.typography.displayMedium,
-			)
-		}
+		HomeBody(
+			modifier = modifier
+				.padding(innerPadding)
+				.fillMaxSize()
+		)
 	}
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@Composable
+private fun HomeBody(
+	modifier: Modifier = Modifier
+) {
+	
+	Column(
+		modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
+	) {
+		Text(text = "Home")
+	}
+}

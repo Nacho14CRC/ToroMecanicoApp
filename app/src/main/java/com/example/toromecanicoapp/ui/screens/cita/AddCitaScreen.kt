@@ -4,9 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -23,7 +21,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
 import com.example.toromecanicoapp.ui.navegation.Destinations
@@ -104,7 +101,6 @@ private fun AddCitaBody(
 			leadingIcon = iconoObservaciones,
 			singleLine = true
 		)
-		Spacer(modifier = Modifier.height(16.dp))
 		MostrarSubmitButton(
 			sLabel = stringResource(R.string.guardar_button_text),
 			inputValido = valido
@@ -128,7 +124,6 @@ private suspend fun agregarCita(
 		is AuthRes.Success<*> -> {
 			navigateBack()
 		}
-		
 		is AuthRes.Error -> {
 			Toast.makeText(
 				context,

@@ -31,9 +31,9 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.toromecanicoapp.ui.navegation.ToroMecanicoNavHost
-import com.example.toromecanicoapp.ui.screens.user.CuentaDetailDestination
 import com.example.toromecanicoapp.ui.screens.cita.CitasDestination
 import com.example.toromecanicoapp.ui.screens.home.HomeDestination
+import com.example.toromecanicoapp.ui.screens.user.CuentaDetailDestination
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 
 @Composable
