@@ -19,16 +19,9 @@ package com.example.toromecanicoapp.ui.navegation
 /**
  * Interface to describe the navigation destinations for the app
  */
-interface Destinations {
-    /**
-     * Unique name to define the path for a composable
-     */
-    val route: String
-
-    /**
-     * String resource id to that contains title to be displayed for the screen.
-     */
-    val titleRes: Int
-    val desIcono: String
+interface Destinos {
+    val ruta: String
+    val tituloRecurso: Int
+    val descripcionIcono: String
     
 }

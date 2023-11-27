@@ -33,4 +33,11 @@
     <string name="cita_observaciones_ph">Ingrese las observaciones</string>
     <string name="guardar_button_text">Guardar</string>
     <string name="edit_cita_title">Editar cita</string>
+    <string name="cita_detail_title">Detalle Cita</string>
+    <string name="boton_eliminar">Eliminar</string>
+    <string name="atencion">Atención</string>
+    <string name="cancelar_cita_pregunta">Seguro que desea cancelar la cita?</string>
+    <string name="no">No</string>
+    <string name="Si">Sí</string>
+    <string name="boton_cancelar">Cancelar</string>
 </resources>

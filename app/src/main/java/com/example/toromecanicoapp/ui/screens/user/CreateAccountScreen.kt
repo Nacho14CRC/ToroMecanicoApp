@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.ui.navegation.Destinations
+import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarPasswordTextField
@@ -39,15 +39,15 @@ import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
-object CreateAccountDestination : Destinations {
-	override val route = "createAcount"
-	override val titleRes = R.string.correo_usuario
-	override val desIcono = ""
+object CrearCuentaDestino : Destinos {
+	override val ruta = "createAcount"
+	override val tituloRecurso = R.string.correo_usuario
+	override val descripcionIcono = ""
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ShowCreateAccountScreen(navigateToLogin: () -> Unit, modelo: UserViewModel = viewModel()) {
+fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewModel()) {
 	val context = LocalContext.current
 	val email = rememberSaveable {
 		mutableStateOf("")
@@ -171,7 +171,7 @@ fun ShowCreateAccountScreen(navigateToLogin: () -> Unit, modelo: UserViewModel =
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						createAccount(navigateToLogin, context, modelo, email.value, password.value,nombreCompleto.value)
+						createAccount(navegarALogin, context, modelo, email.value, password.value,nombreCompleto.value)
 					}
 				}
 				Row(
@@ -184,7 +184,7 @@ fun ShowCreateAccountScreen(navigateToLogin: () -> Unit, modelo: UserViewModel =
 					)
 					MostrarTextButton(
 						sLabel = stringResource(R.string.login_button_text),
-						onClick = {     navigateToLogin() },
+						onClick = {     navegarALogin() },
 						modifier = Modifier
 					)
 				}

@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.ui.navegation.Destinations
+import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
@@ -36,14 +36,14 @@ import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
-object ResetPasswordDestination : Destinations {
-	override val route = "resetPassword"
-	override val titleRes = R.string.correo_usuario
-	override val desIcono = ""
+object RecuperarContrasenaDestino : Destinos {
+	override val ruta = "resetPassword"
+	override val tituloRecurso = R.string.correo_usuario
+	override val descripcionIcono = ""
 }
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ShowForgotPassword(navigateToLogin: () -> Unit, modelo: UserViewModel = viewModel()) {
+fun RecuperarContrasenaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewModel()) {
 	val email = rememberSaveable {
 		mutableStateOf("")
 	}
@@ -93,7 +93,7 @@ fun ShowForgotPassword(navigateToLogin: () -> Unit, modelo: UserViewModel = view
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						forgotPassword(navigateToLogin, context, modelo, email.value)
+						forgotPassword(navegarALogin, context, modelo, email.value)
 					}
 				}
 				Row(
@@ -103,7 +103,7 @@ fun ShowForgotPassword(navigateToLogin: () -> Unit, modelo: UserViewModel = view
 				) {
 					MostrarTextButton(
 						sLabel = stringResource(R.string.volver_login_button_text),
-						onClick = { navigateToLogin() },
+						onClick = { navegarALogin() },
 						modifier = Modifier
 					)
 				}

@@ -1,7 +1,7 @@
 package com.example.toromecanicoapp.data.model
 
 data class Cita(
-	var documentId: String?,
+	var id: String?,
 	val userId: String,
 	val observaciones: String
 ) {

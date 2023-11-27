@@ -16,41 +16,41 @@ import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoBottomAppBar
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
-import com.example.toromecanicoapp.ui.navegation.Destinations
+import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 
-object HomeDestination : Destinations {
-	override val route = "home"
-	override val titleRes = R.string.app_name
-	override val desIcono = "Home"
+object InicioDestino : Destinos {
+	override val ruta = "home"
+	override val tituloRecurso = R.string.app_name
+	override val descripcionIcono = "Home"
 }
 
 @Composable
-fun ShowHomeScreen(
-	navigateToLogin: () -> Unit,
-	navigateToHome: () -> Unit,
-	navigateToCitas: () -> Unit,
-	navigateToCuenta: () -> Unit,
+fun InicioScreen(
+	navegarALogin: () -> Unit,
+	navegarAInicio: () -> Unit,
+	navegarACitas: () -> Unit,
+	navegarAMiCuenta: () -> Unit,
 	currentDestination: NavDestination?,
-	userModel: UserViewModel,
+	usuarioModelo: UserViewModel,
 	modifier: Modifier = Modifier
 ) {
 	Scaffold(
 		modifier = modifier,
 		topBar = {
 			ToroMecanicoTopAppBar(
-				title = stringResource(HomeDestination.titleRes),
+				title = stringResource(InicioDestino.tituloRecurso),
 				canNavigateBack = false,
-				navigateToLogin = navigateToLogin,
-				modelo = userModel,
+				navegarALogin = navegarALogin,
+				modelo = usuarioModelo,
 				modifier = modifier
 			)
 		},
 		bottomBar = {
 			ToroMecanicoBottomAppBar(
-				navigateToHome,
-				navigateToCitas,
-				navigateToCuenta,
+				navegarAInicio,
+				navegarACitas,
+				navegarAMiCuenta,
 				currentDestination
 			)
 		}

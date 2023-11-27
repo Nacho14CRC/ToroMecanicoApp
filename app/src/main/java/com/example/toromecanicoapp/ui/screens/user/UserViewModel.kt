@@ -57,7 +57,7 @@ class UserViewModel : ViewModel() {
 			
 			return try {
 				val authResult = auth.createUserWithEmailAndPassword(email, password).await()
-				crearUsuarioDB(email, password, nombreCompleto)
+				addAdicionalInformationUser(email, password, nombreCompleto)
 				AuthRes.Success(authResult.user)
 			} catch (e: Exception) {
 				AuthRes.Error(e.message ?: "Error al crear el usuario")
@@ -71,7 +71,7 @@ class UserViewModel : ViewModel() {
 		auth.signOut()
 	}
 	
-	private fun crearUsuarioDB(email: String, password: String, nombreCompleto: String) {
+	private fun addAdicionalInformationUser(email: String, password: String, nombreCompleto: String) {
 		val userId = auth.currentUser?.uid
 		
 		val newUsuario = User(

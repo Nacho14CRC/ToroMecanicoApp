@@ -31,9 +31,9 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.toromecanicoapp.ui.navegation.ToroMecanicoNavHost
-import com.example.toromecanicoapp.ui.screens.cita.CitasDestination
-import com.example.toromecanicoapp.ui.screens.home.HomeDestination
-import com.example.toromecanicoapp.ui.screens.user.CuentaDetailDestination
+import com.example.toromecanicoapp.ui.screens.cita.CitasDestino
+import com.example.toromecanicoapp.ui.screens.home.InicioDestino
+import com.example.toromecanicoapp.ui.screens.user.MiCuentaDestino
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 
 @Composable
@@ -46,9 +46,9 @@ fun ToroMecanicoApp(context: Context, navController: NavHostController = remembe
 fun ToroMecanicoTopAppBar(
 	title: String,
 	canNavigateBack: Boolean,
-	navigateToLogin: () -> Unit,
+	navegarALogin: () -> Unit,
 	modifier: Modifier,
-	navigateUp: () -> Unit = {},
+	navegarAtras: () -> Unit = {},
 	modelo: UserViewModel
 ) {
 	
@@ -79,7 +79,7 @@ fun ToroMecanicoTopAppBar(
 		},
 		navigationIcon = {
 			if (canNavigateBack) {
-				IconButton(onClick = navigateUp) {
+				IconButton(onClick = navegarAtras) {
 					Icon(
 						imageVector = Icons.Filled.ArrowBack,
 						contentDescription = null
@@ -92,7 +92,7 @@ fun ToroMecanicoTopAppBar(
 		LogoutDialog(
 			onConfirmLogout = {
 				modelo.signOut()
-				navigateToLogin()
+				navegarALogin()
 				showDialog = false
 			}, onDismiss = { showDialog = false })
 	}
@@ -108,10 +108,10 @@ fun ToroMecanicoBottomAppBar(
 	NavigationBar {
 		if (currentDestination != null) {
 			NavigationBarItem(
-				label = { Text(text = HomeDestination.desIcono) },
+				label = { Text(text = InicioDestino.descripcionIcono) },
 				icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Icons") },
 				selected = currentDestination.hierarchy?.any {
-					it.route == HomeDestination.route
+					it.route == InicioDestino.ruta
 				} == true,
 				onClick = {
 					navigateToHome()
@@ -121,7 +121,7 @@ fun ToroMecanicoBottomAppBar(
 		
 		if (currentDestination != null) {
 			NavigationBarItem(
-				label = { Text(text = CitasDestination.desIcono) },
+				label = { Text(text = CitasDestino.descripcionIcono) },
 				icon = {
 					Icon(
 						imageVector = Icons.Default.ViewTimeline,
@@ -129,7 +129,7 @@ fun ToroMecanicoBottomAppBar(
 					)
 				},
 				selected = currentDestination.hierarchy?.any {
-					it.route == CitasDestination.route
+					it.route == CitasDestino.ruta
 				} == true,
 				onClick = {
 					navigateToCitas()
@@ -140,10 +140,15 @@ fun ToroMecanicoBottomAppBar(
 		
 		if (currentDestination != null) {
 			NavigationBarItem(
-				label = { Text(text = CuentaDetailDestination.desIcono) },
-				icon = { Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Icons") },
+				label = { Text(text = MiCuentaDestino.descripcionIcono) },
+				icon = {
+					Icon(
+						imageVector = Icons.Default.AccountCircle,
+						contentDescription = "Icons"
+					)
+				},
 				selected = currentDestination.hierarchy?.any {
-					it.route == CuentaDetailDestination.route
+					it.route == MiCuentaDestino.ruta
 				} == true,
 				onClick = {
 					navigateToCuenta()

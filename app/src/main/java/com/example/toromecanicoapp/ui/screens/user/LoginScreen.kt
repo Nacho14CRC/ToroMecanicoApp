@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.R
-import com.example.toromecanicoapp.ui.navegation.Destinations
+import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
@@ -39,17 +39,17 @@ import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
-object LoginDestination : Destinations {
-	override val route = "login"
-	override val titleRes = R.string.correo_usuario
-	override val desIcono = ""
+object LoginDestino : Destinos {
+	override val ruta = "login"
+	override val tituloRecurso = R.string.correo_usuario
+	override val descripcionIcono = ""
 }
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ShowLoginScreen(
-	navigateToResetPassword: () -> Unit,
-	navigateToCreateAccount: () -> Unit,
-	navigateToHome: () -> Unit,
+fun LoginScreen(
+	navegarARecuperarContrasena: () -> Unit,
+	navegarACrearCuenta: () -> Unit,
+	navegarAInicio: () -> Unit,
 	modelo: UserViewModel = viewModel()
 ) {
 	val email = rememberSaveable { mutableStateOf("andreiac@hotmail.es") }
@@ -116,7 +116,7 @@ fun ShowLoginScreen(
 				)
 				MostrarTextButton(
 					sLabel = stringResource(R.string.olvido_contrasena_text),
-					onClick = {	navigateToResetPassword()	},
+					onClick = {	navegarARecuperarContrasena()	},
 					modifier = Modifier.align(Alignment.End)
 				)
 				Spacer(modifier = Modifier.height(40.dp))
@@ -126,7 +126,7 @@ fun ShowLoginScreen(
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						login(navigateToHome, context, modelo, email.value, password.value)
+						login(navegarAInicio, context, modelo, email.value, password.value)
 					}
 				}
 				Spacer(modifier = Modifier.height(8.dp))
@@ -140,7 +140,7 @@ fun ShowLoginScreen(
 					)
 					MostrarTextButton(
 						sLabel = stringResource(R.string.crear_cuenta_text),
-						onClick = { navigateToCreateAccount() },
+						onClick = { navegarACrearCuenta() },
 						modifier = Modifier
 					)
 				}

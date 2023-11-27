@@ -36,57 +36,56 @@ import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoBottomAppBar
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
-import com.example.toromecanicoapp.data.db.FirestoreManager
 import com.example.toromecanicoapp.data.model.Cita
-import com.example.toromecanicoapp.ui.navegation.Destinations
-import com.example.toromecanicoapp.ui.screens.home.HomeDestination
+import com.example.toromecanicoapp.ui.navegation.Destinos
+import com.example.toromecanicoapp.ui.screens.home.InicioDestino
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 
-object CitasDestination : Destinations {
-	override val route = "citas"
-	override val titleRes = R.string.app_name
-	override val desIcono = "Citas"
+object CitasDestino : Destinos {
+	override val ruta = "citas"
+	override val tituloRecurso = R.string.app_name
+	override val descripcionIcono = "Citas"
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ShowCitasScreen(
-	navigateToCitaEntry: () -> Unit,
-	navigateToCitaDetail: (String?) -> Unit,
-	navigateToLogin: () -> Unit,
-	navigateToHome: () -> Unit,
-	navigateToCitas: () -> Unit,
-	navigateToCuenta: () -> Unit,
+fun CitasScreen(
+	navegarAIngresoCita: () -> Unit,
+	navegarADetalleCita: (String?) -> Unit,
+	navegarALogin: () -> Unit,
+	navegarAInicio: () -> Unit,
+	navegarACitas: () -> Unit,
+	navegarAMiCuenta: () -> Unit,
 	currentDestination: NavDestination?,
 	modifier: Modifier = Modifier,
-	modelo: UserViewModel
+	modelo: UserViewModel,
+	citaModel: CitaViewModel = CitaViewModel()
 ) {
-	val db = FirestoreManager(modelo)
-	val citas by db.getCitasFlow().collectAsState(emptyList())
+	val lstCitas by citaModel.GetCitas(modelo.getCurrentUser()?.uid).collectAsState(emptyList())
 	val scope = rememberCoroutineScope()
 	
 	Scaffold(
 		topBar = {
 			ToroMecanicoTopAppBar(
-				title = stringResource(HomeDestination.titleRes),
+				title = stringResource(InicioDestino.tituloRecurso),
 				canNavigateBack = false,
-				navigateToLogin = navigateToLogin,
+				navegarALogin = navegarALogin,
 				modelo = modelo,
 				modifier = modifier
 			)
 		},
 		bottomBar = {
 			ToroMecanicoBottomAppBar(
-				navigateToHome,
-				navigateToCitas,
-				navigateToCuenta,
+				navegarAInicio,
+				navegarACitas,
+				navegarAMiCuenta,
 				currentDestination
 			)
 		},
 		floatingActionButton = {
 			FloatingActionButton(
-				onClick = navigateToCitaEntry
+				onClick = navegarAIngresoCita
 			) {
 				Icon(imageVector = Icons.Default.Add, contentDescription = "Add Cita")
 			}
@@ -94,8 +93,8 @@ fun ShowCitasScreen(
 	) { innerPadding ->
 		
 		CitasBody(
-			itemList = citas,
-			onItemClick = navigateToCitaDetail,
+			lstCitas = lstCitas,
+			onCitaClick = navegarADetalleCita,
 			modifier = modifier
 				.padding(innerPadding)
 				.fillMaxSize()
@@ -105,22 +104,22 @@ fun ShowCitasScreen(
 
 @Composable
 private fun CitasBody(
-	itemList: List<Cita>, onItemClick: (String?) -> Unit, modifier: Modifier = Modifier
+	lstCitas: List<Cita>, onCitaClick: (String?) -> Unit, modifier: Modifier = Modifier
 ) {
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		modifier = modifier
 	) {
-		if (itemList.isEmpty()) {
+		if (lstCitas.isEmpty()) {
 			Text(
 				text = "No se encontraron citas",
 				textAlign = TextAlign.Center,
 				style = MaterialTheme.typography.titleLarge
 			)
 		} else {
-			CitasList(
-				itemList = itemList,
-				onItemClick = { onItemClick( it.documentId) },
+			ListaCitas(
+				lstCitas = lstCitas,
+				onCitaClick = { onCitaClick(it.id) },
 				modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
 			)
 		}
@@ -128,22 +127,22 @@ private fun CitasBody(
 }
 
 @Composable
-private fun CitasList(
-	itemList: List<Cita>, onItemClick: (Cita) -> Unit, modifier: Modifier = Modifier
+private fun ListaCitas(
+	lstCitas: List<Cita>, onCitaClick: (Cita) -> Unit, modifier: Modifier = Modifier
 ) {
 	LazyColumn {
-		items(itemList) { item ->
-			CitaItem(item = item,
+		items(lstCitas) { item ->
+			CitaItem(cita = item,
 				modifier = Modifier
 					.padding(dimensionResource(id = R.dimen.padding_small))
-					.clickable { onItemClick(item) })
+					.clickable { onCitaClick(item) })
 		}
 	}
 }
 
 @Composable
 private fun CitaItem(
-	item: Cita, modifier: Modifier = Modifier
+	cita: Cita, modifier: Modifier = Modifier
 ) {
 	Card(
 		modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -156,17 +155,17 @@ private fun CitaItem(
 				modifier = Modifier.fillMaxWidth()
 			) {
 				Text(
-					text = item.observaciones,
+					text = cita.observaciones,
 					style = MaterialTheme.typography.titleLarge,
 				)
 				Spacer(Modifier.weight(1f))
 				Text(
-					text = item.observaciones,
+					text = cita.observaciones,
 					style = MaterialTheme.typography.titleLarge
 				)
 			}
 			Text(
-				text = item.observaciones,
+				text = cita.observaciones,
 				style = MaterialTheme.typography.titleLarge
 			)
 		}

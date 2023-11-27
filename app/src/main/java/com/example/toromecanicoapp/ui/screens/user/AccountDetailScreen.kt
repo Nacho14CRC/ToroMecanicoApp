@@ -15,24 +15,24 @@ import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoBottomAppBar
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
-import com.example.toromecanicoapp.ui.navegation.Destinations
-import com.example.toromecanicoapp.ui.screens.home.HomeDestination
+import com.example.toromecanicoapp.ui.navegation.Destinos
+import com.example.toromecanicoapp.ui.screens.home.InicioDestino
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 
-object CuentaDetailDestination : Destinations {
-	override val route = "detalle_cuenta"
-	override val titleRes = R.string.identificacion_usuario
-	override val desIcono = "Cuenta"
+object MiCuentaDestino : Destinos {
+	override val ruta = "detalle_cuenta"
+	override val tituloRecurso = R.string.identificacion_usuario
+	override val descripcionIcono = "Cuenta"
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ShowCuentaScreen(
-	navigateToLogin: () -> Unit,
-	navigateToHome: () -> Unit,
-	navigateToCitas: () -> Unit,
-	navigateToCuenta: () -> Unit,
+fun MiCuentaScreen(
+	navegarALogin: () -> Unit,
+	navegarAInicio: () -> Unit,
+	navegarACitas: () -> Unit,
+	navegarAMiCuenta: () -> Unit,
 	currentDestination: NavDestination?,
 	modifier: Modifier = Modifier,
 	modelo: UserViewModel
@@ -42,18 +42,18 @@ fun ShowCuentaScreen(
 		modifier = modifier,
 		topBar = {
 			ToroMecanicoTopAppBar(
-				title = stringResource(HomeDestination.titleRes),
+				title = stringResource(InicioDestino.tituloRecurso),
 				canNavigateBack = false,
-				navigateToLogin = navigateToLogin,
+				navegarALogin = navegarALogin,
 				modelo = modelo,
 				modifier = modifier
 			)
 		},
 		bottomBar = {
 			ToroMecanicoBottomAppBar(
-				navigateToHome,
-				navigateToCitas,
-				navigateToCuenta,
+				navegarAInicio,
+				navegarACitas,
+				navegarAMiCuenta,
 				currentDestination
 			)
 		}

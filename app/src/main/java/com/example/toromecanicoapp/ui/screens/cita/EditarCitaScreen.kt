@@ -1,7 +1,6 @@
 package com.example.toromecanicoapp.ui.screens.cita
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +9,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,67 +24,70 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
-import com.example.toromecanicoapp.ui.navegation.Destinations
+import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
-import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
-object CitaEntryDestination : Destinations {
-	override val route = "cita_entry"
-	override val titleRes = R.string.agregar_cita_titulo
-	override val desIcono = ""
+object EditarCitaDestino : Destinos {
+	override val ruta = "cita_edit"
+	override val tituloRecurso = R.string.edit_cita_title
+	override val descripcionIcono = ""
+	const val citaIdArg = "citaId"
+	val rutaArgumentos = "$ruta/{$citaIdArg}"
 }
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CitaEntryScreen(
-	navigateToLogin: () -> Unit,
-	navigateBack: () -> Unit,
-	onNavigateUp: () -> Unit,
+fun EditarCitaScreen(
+	id: String,
+	navegarALogin: () -> Unit,
+	navegarAnterior: () -> Unit,
+	navegarAtras: () -> Unit,
+	usuarioModel: UserViewModel,
 	modifier: Modifier = Modifier,
-	userModel: UserViewModel,
 	citaModel: CitaViewModel = CitaViewModel()
 ) {
-	val observaciones = rememberSaveable { mutableStateOf("") }
+	val citaDetalle by citaModel.GetCitaByDocument(id).collectAsState(initial = null)
+	val coroutineScope = rememberCoroutineScope()
+	val observaciones = rememberSaveable { mutableStateOf("PRUEB") }
+	
 	val valido = remember(observaciones.value) {
 		observaciones.value.trim().isNotEmpty()
 	}
 	
 	val context = LocalContext.current
-	var userId = userModel.getCurrentUser()?.uid
 	
 	Scaffold(
 		topBar = {
 			ToroMecanicoTopAppBar(
-				title = stringResource(CitaEntryDestination.titleRes),
+				title = stringResource(EditarCitaDestino.tituloRecurso),
 				canNavigateBack = true,
-				navigateToLogin = navigateToLogin,
-				modelo = userModel,
+				navegarALogin = navegarALogin,
+				modelo = usuarioModel,
 				modifier = modifier,
-				navigateUp = onNavigateUp
+				navegarAtras = navegarAtras
 			)
 		}
 	) { innerPadding ->
-		AddCitaBody(
-			observaciones, valido, navigateBack, context, citaModel, userId,
+		EditarCitaBody(
+			observaciones, valido, navegarAnterior, context, citaModel, id,
 			modifier = modifier
 				.padding(innerPadding)
 				.fillMaxSize()
 		)
 	}
 }
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-private fun AddCitaBody(
+private fun EditarCitaBody(
 	observaciones: MutableState<String>,
 	valido: Boolean,
-	navigateBack: () -> Unit,
+	navegarAnterior: () -> Unit,
 	context: Context,
 	citaModel: CitaViewModel,
-	userId: String?,
+	id: String?,
 	modifier: Modifier = Modifier
 ) {
 	val iconoObservaciones = painterResource(id = R.drawable.ic_calendar)
@@ -107,30 +111,31 @@ private fun AddCitaBody(
 		) {
 			keyboardController?.hide()
 			scope.launch {
-				agregarCita(navigateBack, context, citaModel, userId, observaciones.value)
+				EditarCita(navegarAnterior, context, citaModel, id, observaciones.value)
 			}
 		}
 	}
 }
 
-private suspend fun agregarCita(
-	navigateBack: () -> Unit,
+private suspend fun EditarCita(
+	navegarAnterior: () -> Unit,
 	context: Context,
 	modelo: CitaViewModel,
-	userId: String?,
-	observaciones: String,
+	id: String?,
+	observaciones: String?,
 ) {
-	when (val result = modelo.addCita(userId = userId, observaciones = observaciones)) {
+	/*when (val result = modelo.EditarCita(id = id, observaciones = observaciones)) {
 		is AuthRes.Success<*> -> {
-			navigateBack()
+			navegarAnterior()
 		}
+		
 		is AuthRes.Error -> {
 			Toast.makeText(
 				context,
-				"Error al agregar la cita: ${result.errorMessage}",
+				"Error al editar la cita: ${result.errorMessage}",
 				Toast.LENGTH_SHORT
 			)
 				.show()
 		}
-	}
+	}*/
 }
