@@ -53,7 +53,7 @@ object CitasDestination : Destinations {
 @Composable
 fun ShowCitasScreen(
 	navigateToCitaEntry: () -> Unit,
-	navigateToCitaUpdate: (Int) -> Unit,
+	navigateToCitaDetail: (String?) -> Unit,
 	navigateToLogin: () -> Unit,
 	navigateToHome: () -> Unit,
 	navigateToCitas: () -> Unit,
@@ -95,7 +95,7 @@ fun ShowCitasScreen(
 		
 		CitasBody(
 			itemList = citas,
-			onItemClick = navigateToCitaUpdate,
+			onItemClick = navigateToCitaDetail,
 			modifier = modifier
 				.padding(innerPadding)
 				.fillMaxSize()
@@ -105,7 +105,7 @@ fun ShowCitasScreen(
 
 @Composable
 private fun CitasBody(
-	itemList: List<Cita>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier
+	itemList: List<Cita>, onItemClick: (String?) -> Unit, modifier: Modifier = Modifier
 ) {
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
@@ -120,7 +120,7 @@ private fun CitasBody(
 		} else {
 			CitasList(
 				itemList = itemList,
-				onItemClick = { onItemClick( 1/*TODO it.id*/) },
+				onItemClick = { onItemClick( it.documentId) },
 				modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
 			)
 		}

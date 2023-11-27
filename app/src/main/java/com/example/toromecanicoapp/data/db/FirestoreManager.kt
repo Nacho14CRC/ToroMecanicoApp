@@ -12,15 +12,19 @@ class FirestoreManager(userModel: UserViewModel) {
 	var userId = userModel.getCurrentUser()?.uid
 	
 	fun getCitasFlow(): Flow<List<Cita>> = callbackFlow {
-		val citasRef = firestore.collection("citas")
-			.whereEqualTo("userId", userId).orderBy("userId")
+		val citasRef =
+			firestore.collection("citas").whereEqualTo("userId", userId).orderBy("userId")
 		
 		val subscription = citasRef.addSnapshotListener { snapshot, _ ->
 			snapshot?.let { querySnapshot ->
 				val citas = mutableListOf<Cita>()
 				for (document in querySnapshot.documents) {
-					val note = document.toObject(Cita::class.java)
-					note?.let { citas.add(it) }
+					val documentId = document.id
+					val cita = document.toObject(Cita::class.java)
+					if (cita != null) {
+						cita.documentId = documentId
+					};
+					cita?.let { citas.add(it) }
 				}
 				trySend(citas).isSuccess
 			}

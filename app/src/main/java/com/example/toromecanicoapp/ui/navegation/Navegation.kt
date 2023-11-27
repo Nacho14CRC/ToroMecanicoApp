@@ -6,12 +6,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
 import com.example.toromecanicoapp.ui.screens.LoginDestination
 import com.example.toromecanicoapp.ui.screens.ShowLoginScreen
 import com.example.toromecanicoapp.ui.screens.cita.CitaDetailsDestination
+import com.example.toromecanicoapp.ui.screens.cita.CitaDetailsScreen
+import com.example.toromecanicoapp.ui.screens.cita.CitaEditDestination
 import com.example.toromecanicoapp.ui.screens.cita.CitaEntryDestination
 import com.example.toromecanicoapp.ui.screens.cita.CitaEntryScreen
 import com.example.toromecanicoapp.ui.screens.cita.CitasDestination
@@ -108,7 +112,7 @@ fun ToroMecanicoNavHost(
 		composable(route = CitasDestination.route) {
 			ShowCitasScreen(
 				navigateToCitaEntry = { navController.navigate(CitaEntryDestination.route) },
-				navigateToCitaUpdate = {
+				navigateToCitaDetail = {
 					navController.navigate("${CitaDetailsDestination.route}/${it}")
 				},
 				navigateToLogin = { navController.navigate(LoginDestination.route) },
@@ -142,6 +146,20 @@ fun ToroMecanicoNavHost(
 				userModel = modelo
 			)
 		}
+		composable(
+			route = CitaDetailsDestination.routeWithArgs,
+			arguments = listOf(navArgument(CitaDetailsDestination.citaIdArg) {
+				type = NavType.StringType
+			})
+		) { backStackEntry ->
+			val citaId = backStackEntry.arguments?.getString(CitaDetailsDestination.citaIdArg)
+			citaId?.let {
+				CitaDetailsScreen(citaId = it,
+					navigateToEditItem = { navController.navigate("${CitaEditDestination.route}/$it") },
+					navigateBack = { navController.navigateUp() }
+				)
+			}
+		}
 		composable(route = CuentaDetailDestination.route) {
 			ShowCuentaScreen(
 				navigateToLogin = { navController.navigate(LoginDestination.route) },
@@ -167,37 +185,6 @@ fun ToroMecanicoNavHost(
 				modelo = modelo
 			)
 		}
-		
-		
-		/*
-			composable(route = ItemEntryDestination.route) {
-				ItemEntryScreen(
-					navigateBack = { navController.popBackStack() },
-					onNavigateUp = { navController.navigateUp() }
-				)
-			}
-			composable(
-				route = ItemDetailsDestination.routeWithArgs,
-				arguments = listOf(navArgument(ItemDetailsDestination.itemIdArg) {
-					type = NavType.IntType
-				})
-			) {
-				ItemDetailsScreen(
-					navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") },
-					navigateBack = { navController.navigateUp() }
-				)
-			}
-			composable(
-				route = ItemEditDestination.routeWithArgs,
-				arguments = listOf(navArgument(ItemEditDestination.itemIdArg) {
-					type = NavType.IntType
-				})
-			) {
-				ItemEditScreen(
-					navigateBack = { navController.popBackStack() },
-					onNavigateUp = { navController.navigateUp() }
-				)
-			}*/
 	}
 }
 
