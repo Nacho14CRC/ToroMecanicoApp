@@ -188,5 +188,5 @@ fun LogoutDialog(onConfirmLogout: () -> Unit, onDismiss: () -> Unit) {
 fun FormatearDate(dateMillis: Long): String {
 	val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 	val date = Date(dateMillis)
-	return dateFormat.format(date)
+	return dateFormat.format(date) //TODO
 }
