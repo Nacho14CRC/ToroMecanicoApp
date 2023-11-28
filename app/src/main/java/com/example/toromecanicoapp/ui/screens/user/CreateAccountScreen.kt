@@ -14,13 +14,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DisplayMode
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -76,9 +80,6 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 	val telefono = rememberSaveable {
 		mutableStateOf("")
 	}
-	val tipoUsuario = rememberSaveable {
-		mutableStateOf("")
-	}
 	val password = rememberSaveable {
 		mutableStateOf("")
 	}
@@ -88,6 +89,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 	val fechaNacimiento = rememberSaveable {
 		mutableStateOf("")
 	}
+	
 	val valido = remember(correo.value, password.value) {
 		correo.value.trim().isNotEmpty() &&
 				password.value.trim().isNotEmpty()
@@ -103,10 +105,13 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 	val iconoContrasena = painterResource(id = R.drawable.ic_lock)
 	val keyboardController = LocalSoftwareKeyboardController.current
 	var openDatePicker by remember { mutableStateOf(false) }
-	val datePickerState =
-		rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
-	//var textValue by remember { mutableStateOf("") }
-	
+	val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
+	//Combo
+	val lstTipoCliente = listOf("Cliente", "Mecánico")
+	var expandirComboTipo by remember { mutableStateOf(false) }
+	val tipoUsuario = rememberSaveable {
+		mutableStateOf(lstTipoCliente[0])
+	}
 	Column(
 		modifier = Modifier
 			.fillMaxSize(),
@@ -192,7 +197,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 									)
 								}
 							},
-							)
+						)
 						
 						if (openDatePicker) {
 							Dialog(onDismissRequest = { openDatePicker = false }) {
@@ -231,7 +236,47 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 						}
 					}
 				}
-				Spacer(modifier = Modifier.height(40.dp))
+				Spacer(modifier = Modifier.height(16.dp))
+				ExposedDropdownMenuBox(
+					expanded = expandirComboTipo,
+					onExpandedChange = { expandirComboTipo = !expandirComboTipo }
+				) {
+					TextField(
+						modifier = Modifier.menuAnchor().fillMaxWidth(),
+						readOnly = true,
+						value = tipoUsuario.value,
+						onValueChange = { },
+						label = { Text("Tipo Usuario") },
+						trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandirComboTipo) },
+						leadingIcon = {
+							Icon(
+								painter = iconoUsuario,
+								contentDescription = null
+							)
+						},
+						colors = ExposedDropdownMenuDefaults.textFieldColors(
+							focusedContainerColor = MaterialTheme.colorScheme.surface,
+							unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+							disabledContainerColor = MaterialTheme.colorScheme.surface,
+						),
+					)
+					ExposedDropdownMenu(
+						expanded = expandirComboTipo,
+						onDismissRequest = { expandirComboTipo = false },
+					) {
+						lstTipoCliente.forEach { selectionOption ->
+							DropdownMenuItem(
+								text = { Text(selectionOption) },
+								onClick = {
+									tipoUsuario.value = selectionOption
+									expandirComboTipo = false
+								},
+								contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+							)
+						}
+					}
+				}
+				Spacer(modifier = Modifier.height(16.dp))
 				MostrarPasswordTextField(
 					valor = password,
 					stringResource(R.string.login_contrasena),
