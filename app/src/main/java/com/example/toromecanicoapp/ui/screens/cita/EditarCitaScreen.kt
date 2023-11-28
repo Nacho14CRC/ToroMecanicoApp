@@ -95,14 +95,16 @@ private fun EditarCitaBody(
 	val iconoObservaciones = painterResource(id = R.drawable.ic_calendar)
 	val keyboardController = LocalSoftwareKeyboardController.current
 	val scope = rememberCoroutineScope()
+	var observaciones = remember { mutableStateOf(citaDetalle?.observaciones ?: "Nulo") }
 	
 	Column(
 		modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
 		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
 	) {
 		if (citaDetalle != null) {
+			observaciones = remember { mutableStateOf(citaDetalle?.observaciones ?: "Nulo") }
 			MostrarOutlinedTextField(
-				text = remember { mutableStateOf(citaDetalle?.observaciones ?: "Nulo") },
+				text = observaciones,
 				label = stringResource(R.string.cita_observaciones),
 				placeholder = stringResource(R.string.cita_observaciones_ph),
 				leadingIcon = iconoObservaciones,
@@ -115,7 +117,9 @@ private fun EditarCitaBody(
 		) {
 			keyboardController?.hide()
 			scope.launch {
-				EditarCita(navegarAnterior, context, citaModel, id, citaDetalle)
+				if (citaDetalle != null && id != null) {
+					EditarCita(navegarAnterior, context, citaModel, id, citaDetalle.userId, observaciones.value)
+				}
 			}
 		}
 	}
@@ -125,10 +129,11 @@ private suspend fun EditarCita(
 	navegarAnterior: () -> Unit,
 	context: Context,
 	modelo: CitaViewModel,
-	id: String?,
-	citaDetalle: Cita?,
+	id: String,
+	userId: String,
+	observaciones: String,
 ) {
-	when (val result = modelo.EditarCita(id = id, citaDetalle = citaDetalle)) {
+	when (val result = modelo.EditarCita(id = id, userId = userId, observaciones = observaciones)) {
 		is AuthRes.Success<*> -> {
 			navegarAnterior()
 		}
