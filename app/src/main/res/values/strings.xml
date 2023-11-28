@@ -40,4 +40,5 @@
     <string name="no">No</string>
     <string name="Si">Sí</string>
     <string name="boton_cancelar">Cancelar</string>
+    <string name="tema_noche">Modo oscuro</string>
 </resources>
