@@ -305,7 +305,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 							nombreCompleto.value,
 							correo.value,
 							telefono.value,
-							"SDFDSFKJ",
+							tipoUsuario.value,
 							password.value,
 							fechaNacimiento.value
 						
