@@ -101,7 +101,7 @@ fun LoginScreen(
 				modifier = Modifier.fillMaxSize()
 			) {
 				MostrarOutlinedEmailTextField(
-					emailState = email,
+					valor = email,
 					label = stringResource(R.string.correo_usuario),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoUsuario,
@@ -109,7 +109,7 @@ fun LoginScreen(
 				)
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarPasswordTextField(
-					passwordState = password,
+					valor = password,
 					stringResource(R.string.login_contrasena),
 					stringResource(R.string.empty_string),
 					iconoContrasena,
