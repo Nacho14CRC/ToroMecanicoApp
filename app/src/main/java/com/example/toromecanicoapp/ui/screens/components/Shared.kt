@@ -70,7 +70,10 @@ fun MostrarOutlinedTextField(
 			)
 		},
 		singleLine = singleLine,
-		modifier = Modifier.fillMaxWidth()
+		modifier = Modifier.fillMaxWidth(),
+		keyboardOptions = KeyboardOptions.Default.copy(
+			imeAction = ImeAction.Next
+		)
 	)
 }
 
@@ -119,7 +122,8 @@ fun MostrarOutlinedEmailTextField(
 		value = valor.value,
 		onValueChange = { valor.value = it },
 		keyboardOptions = KeyboardOptions(
-			keyboardType = KeyboardType.Email
+			keyboardType = KeyboardType.Email,
+			imeAction = ImeAction.Next
 		),
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
@@ -167,7 +171,8 @@ fun MostrarPasswordTextField(
 		singleLine = true,
 		visualTransformation = if (contrasenaVisible) VisualTransformation.None else PasswordVisualTransformation(),
 		keyboardOptions = KeyboardOptions.Default.copy(
-			keyboardType = KeyboardType.Password
+			keyboardType = KeyboardType.Password,
+			imeAction = ImeAction.Next
 		),
 		modifier = Modifier.fillMaxWidth(),
 		trailingIcon = {
@@ -248,7 +253,10 @@ fun MostrarOutlinedTextPhoneField(
 			)
 		},
 		singleLine = singleLine,
-		keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+		keyboardOptions = KeyboardOptions(
+			keyboardType = KeyboardType.Phone,
+			imeAction = ImeAction.Next
+		),
 	)
 }
 
