@@ -32,6 +32,7 @@ import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextPhoneField
 import com.example.toromecanicoapp.ui.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
@@ -47,25 +48,39 @@ object CrearCuentaDestino : Destinos {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewModel()) {
+fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = viewModel()) {
 	val context = LocalContext.current
-	val email = rememberSaveable {
+	val identificacion = rememberSaveable {
 		mutableStateOf("")
 	}
 	val nombreCompleto = rememberSaveable {
 		mutableStateOf("")
 	}
+	val correo = rememberSaveable {
+		mutableStateOf("")
+	}
+	val telefono = rememberSaveable {
+		mutableStateOf("")
+	}
+	val tipoUsuario = rememberSaveable {
+		mutableStateOf("")
+	}
 	val password = rememberSaveable {
 		mutableStateOf("")
 	}
-	val valido = remember(email.value, password.value) {
-		email.value.trim().isNotEmpty() &&
+	val confirmarContrasena = rememberSaveable {
+		mutableStateOf("")
+	}
+	
+	val valido = remember(correo.value, password.value) {
+		correo.value.trim().isNotEmpty() &&
 				password.value.trim().isNotEmpty()
 	}
 	val scope = rememberCoroutineScope()
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
-	val iconoNombreCompleto = painterResource(id = R.drawable.ic_person)
 	val iconoIdentificacion = painterResource(id = R.drawable.ic_person)
+	val iconoNombreCompleto = painterResource(id = R.drawable.ic_person)
+	
 	val iconoCorreo = painterResource(id = R.drawable.ic_email)
 	val iconoTelefono = painterResource(id = R.drawable.ic_phone)
 	val iconoCalendario = painterResource(id = R.drawable.ic_calendar)
@@ -97,6 +112,14 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewMod
 				
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarOutlinedTextField(
+					text = identificacion,
+					stringResource(R.string.identificacion_usuario),
+					stringResource(R.string.identificacion_usuario_ph),
+					iconoIdentificacion,
+					true
+				)
+				Spacer(modifier = Modifier.height(16.dp))
+				MostrarOutlinedTextField(
 					text = nombreCompleto,
 					stringResource(R.string.nombre_usuario),
 					stringResource(R.string.nombre_usuario_ph),
@@ -104,18 +127,8 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewMod
 					true
 				)
 				Spacer(modifier = Modifier.height(16.dp))
-				/*MostrarOutlinedTextField(
-					stringResource(R.string.identificacion_usuario),
-					stringResource(R.string.identificacion_usuario_ph),
-					modelo.sIdentificacion,
-					iconoIdentificacion,
-					true,
-					LoginUiState.bErrorRegistro,
-					{ modelo.ModificarIdentificacion(it) }
-				)*/
-				Spacer(modifier = Modifier.height(16.dp))
 				MostrarOutlinedEmailTextField(
-					emailState = email,
+					valor = correo,
 					label = stringResource(R.string.correo_usuario),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoUsuario,
@@ -131,16 +144,13 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewMod
 							.weight(1f)
 							.padding(end = 8.dp)
 					) {
-						/*MostrarOutlinedTextPhoneField(
+						MostrarOutlinedTextPhoneField(
+							text= telefono,
 							stringResource(R.string.telefono_usuario),
 							stringResource(R.string.telefono_usuario_ph),
-							modelo.sTelefono,
 							iconoTelefono,
-							true,
-							LoginUiState.bErrorIngreso,
-							{ modelo.ModificarUsuarioIngresado(it) },
-							modifier = Modifier
-						)*/
+							true
+						)
 					}
 					Box(
 						modifier = Modifier
@@ -150,20 +160,18 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewMod
 				}
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarPasswordTextField(
-					passwordState = password,
+					valor = password,
 					stringResource(R.string.login_contrasena),
-					stringResource(R.string.empty_string),
+					stringResource(R.string.contrasena_ingresar),
 					iconoContrasena,
 				)
 				Spacer(modifier = Modifier.height(16.dp))
-				/*MostrarPasswordTextField(
+				MostrarPasswordTextField(
+					valor = confirmarContrasena,
 					stringResource(R.string.confirmar_contrasena),
-					stringResource(R.string.empty_string),
-					modelo.sConfirmarContrasena,
-					iconoContrasena,
-					LoginUiState.bErrorIngreso,
-					{ modelo.ModificarConfirmarContrasena(it)  }
-				)*/
+					stringResource(R.string.contrasena_confirmar_ingresar),
+					iconoContrasena
+				)
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarSubmitButton(
 					sLabel = stringResource(R.string.btn_crear_cuenta),
@@ -171,7 +179,17 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewMod
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						createAccount(navegarALogin, context, modelo, email.value, password.value,nombreCompleto.value)
+						createAccount(
+							navegarALogin,
+							context,
+							userModel,
+							identificacion.value,
+							nombreCompleto.value,
+							correo.value,
+							telefono.value,
+							"SDFDSFKJ",
+							password.value
+						)
 					}
 				}
 				Row(
@@ -184,7 +202,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewMod
 					)
 					MostrarTextButton(
 						sLabel = stringResource(R.string.login_button_text),
-						onClick = {     navegarALogin() },
+						onClick = { navegarALogin() },
 						modifier = Modifier
 					)
 				}
@@ -193,22 +211,30 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewMod
 		
 	}
 }
+
 private suspend fun createAccount(
 	navigateToLogin: () -> Unit,
 	context: Context,
-	modelo: UserViewModel,
-	email: String,
-	password: String,
-	nombreCompleto: String
+	userModel: UserViewModel,
+	identificacion: String,
+	nombreCompleto: String,
+	correo: String,
+	telefono: String,
+	tipoUsuario: String,
+	password: String
 ) {
-	when (val result = modelo.createUserWithEmailAndPassword(email, password,nombreCompleto)) {
+	when (val result = userModel.createUserWithEmailAndPassword(identificacion ,nombreCompleto,correo,telefono,tipoUsuario,password)) {
 		is AuthRes.Success -> {
 			Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
 			navigateToLogin()
 		}
 		
 		is AuthRes.Error -> {
-			Toast.makeText(context, "Error createAccount: ${result.errorMessage}", Toast.LENGTH_SHORT).show()
+			Toast.makeText(
+				context,
+				"Error createAccount: ${result.errorMessage}",
+				Toast.LENGTH_SHORT
+			).show()
 		}
 	}
 }

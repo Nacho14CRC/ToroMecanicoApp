@@ -80,7 +80,7 @@ fun RecuperarContrasenaScreen(navegarALogin: () -> Unit, modelo: UserViewModel =
 				Spacer(modifier = Modifier.height(40.dp))
 				
 				MostrarOutlinedEmailTextField(
-					emailState = email,
+					valor = email,
 					label = stringResource(R.string.correo_usuario),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoCorreo,

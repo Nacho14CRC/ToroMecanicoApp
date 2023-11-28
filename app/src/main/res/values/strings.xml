@@ -41,4 +41,6 @@
     <string name="Si">Sí</string>
     <string name="boton_cancelar">Cancelar</string>
     <string name="tema_noche">Modo oscuro</string>
+    <string name="contrasena_ingresar">Ingrese la contraseña\n</string>
+    <string name="contrasena_confirmar_ingresar">Confirme la contraseña\n</string>
 </resources>

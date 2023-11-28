@@ -118,15 +118,15 @@ fun MostrarOutlinedTextArea(
 
 @Composable
 fun MostrarOutlinedEmailTextField(
-	emailState: MutableState<String>,
+	valor: MutableState<String>,
 	label: String,
 	placeholder: String,
 	leadingIcon: Painter,
 	singleLine: Boolean,
 ) {
 	OutlinedTextField(
-		value = emailState.value,
-		onValueChange = { emailState.value = it },
+		value = valor.value,
+		onValueChange = { valor.value = it },
 		keyboardOptions = KeyboardOptions(
 			keyboardType = KeyboardType.Email
 		),
@@ -150,7 +150,7 @@ fun MostrarOutlinedEmailTextField(
 
 @Composable
 fun MostrarPasswordTextField(
-	passwordState: MutableState<String>,
+	valor: MutableState<String>,
 	label: String,
 	placeholder: String,
 	leadingIcon: Painter
@@ -158,8 +158,8 @@ fun MostrarPasswordTextField(
 	var contrasenaVisible by remember { mutableStateOf(false) }
 	
 	OutlinedTextField(
-		value = passwordState.value,
-		onValueChange = { passwordState.value = it },
+		value = valor.value,
+		onValueChange = { valor.value = it },
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(
@@ -234,18 +234,15 @@ fun MostrarSubmitButton(
 
 @Composable
 fun MostrarOutlinedTextPhoneField(
+	text: MutableState<String>,
 	label: String,
 	placeholder: String,
-	text: String,
 	leadingIcon: Painter,
-	singleLine: Boolean,
-	isError: Boolean,
-	onValueChange: (String) -> Unit,
-	modifier: Modifier
+	singleLine: Boolean
 ) {
 	OutlinedTextField(
-		value = text,
-		onValueChange = onValueChange,
+		value = text.value,
+		onValueChange = { text.value = it },
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(
@@ -259,9 +256,7 @@ fun MostrarOutlinedTextPhoneField(
 				contentDescription = null
 			)
 		},
-		modifier = modifier,
 		singleLine = singleLine,
-		isError = isError,
 		keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
 	)
 }

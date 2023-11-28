@@ -1,7 +1,5 @@
 package com.example.toromecanicoapp.viewmodels
 
-import android.app.AlertDialog
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,16 +46,25 @@ class UserViewModel : ViewModel() {
 	}
 	
 	suspend fun createUserWithEmailAndPassword(
-		email: String,
-		password: String,
-		nombreCompleto: String
+		identificacion: String,
+		nombreCompleto: String,
+		correo: String,
+		telefono: String,
+		tipoUsuario: String,
+		password: String
 	): AuthRes<FirebaseUser?> {
 		if (_loading.value == false) {
 			_loading.value = true
 			
 			return try {
-				val authResult = auth.createUserWithEmailAndPassword(email, password).await()
-				addAdicionalInformationUser(email, password, nombreCompleto)
+				val authResult = auth.createUserWithEmailAndPassword(correo, password).await()
+				addAdicionalInformationUser(
+					identificacion,
+					nombreCompleto,
+					telefono,
+					correo,
+					tipoUsuario
+				)
 				AuthRes.Success(authResult.user)
 			} catch (e: Exception) {
 				AuthRes.Error(e.message ?: "Error al crear el usuario")
@@ -71,13 +78,23 @@ class UserViewModel : ViewModel() {
 		auth.signOut()
 	}
 	
-	private fun addAdicionalInformationUser(email: String, password: String, nombreCompleto: String) {
+	private fun addAdicionalInformationUser(
+		identificacion: String,
+		nombreCompleto: String,
+		telefono: String,
+		correo: String,
+		tipoUsuario: String
+	) {
 		val userId = auth.currentUser?.uid
 		
 		val newUsuario = User(
+			id = null,
 			userId = userId.toString(),
-			fullName = nombreCompleto.toString(),
-			id = null
+			identificacion = identificacion,
+			nombreCompleto = nombreCompleto,
+			telefono = telefono,
+			correo = correo,
+			tipoUsuario = tipoUsuario
 		).toMap()
 		
 		FirebaseFirestore.getInstance().collection("usuarios")
@@ -90,15 +107,4 @@ class UserViewModel : ViewModel() {
 			}
 		
 	}
-	
-	//TODO AAC
-	private fun mostrarAlerta(mensaje: String, context: Context) {
-		val builder = AlertDialog.Builder(context)
-		builder.setTitle("Error de autenticación")
-		builder.setMessage(mensaje)
-		builder.setPositiveButton("Aceptar", null)
-		val alertDialog: AlertDialog = builder.create()
-		alertDialog.show()
-	}
-	
 }
