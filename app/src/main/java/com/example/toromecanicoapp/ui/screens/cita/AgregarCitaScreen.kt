@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
 import com.example.toromecanicoapp.ui.navegation.Destinos
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextArea
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.viewmodels.AuthRes
@@ -86,7 +87,7 @@ private fun AgregarCitaBody(
 	userId: String?,
 	modifier: Modifier = Modifier
 ) {
-	val iconoObservaciones = painterResource(id = R.drawable.ic_calendar)
+	val iconoObservaciones = painterResource(id = R.drawable.ic_person)
 	val keyboardController = LocalSoftwareKeyboardController.current
 	val scope = rememberCoroutineScope()
 	
@@ -94,12 +95,11 @@ private fun AgregarCitaBody(
 		modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
 		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
 	) {
-		MostrarOutlinedTextField(
+		MostrarOutlinedTextArea(
 			text = observaciones,
 			label = stringResource(R.string.cita_observaciones),
 			placeholder = stringResource(R.string.cita_observaciones_ph),
-			leadingIcon = iconoObservaciones,
-			singleLine = true
+			leadingIcon = iconoObservaciones
 		)
 		MostrarSubmitButton(
 			sLabel = stringResource(R.string.guardar_button_text),

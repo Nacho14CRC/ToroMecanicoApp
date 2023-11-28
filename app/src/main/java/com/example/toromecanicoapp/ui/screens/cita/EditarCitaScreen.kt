@@ -1,6 +1,7 @@
 package com.example.toromecanicoapp.ui.screens.cita
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,9 +24,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
+import com.example.toromecanicoapp.data.model.Cita
 import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
+import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -72,7 +74,7 @@ fun EditarCitaScreen(
 		}
 	) { innerPadding ->
 		EditarCitaBody(
-			observaciones, valido, navegarAnterior, context, citaModel, id,
+			citaDetalle, valido, navegarAnterior, context, citaModel, id,
 			modifier = modifier
 				.padding(innerPadding)
 				.fillMaxSize()
@@ -82,7 +84,7 @@ fun EditarCitaScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun EditarCitaBody(
-	observaciones: MutableState<String>,
+	citaDetalle: Cita?,
 	valido: Boolean,
 	navegarAnterior: () -> Unit,
 	context: Context,
@@ -98,20 +100,22 @@ private fun EditarCitaBody(
 		modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
 		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
 	) {
-		MostrarOutlinedTextField(
-			text = observaciones,
-			label = stringResource(R.string.cita_observaciones),
-			placeholder = stringResource(R.string.cita_observaciones_ph),
-			leadingIcon = iconoObservaciones,
-			singleLine = true
-		)
+		if (citaDetalle != null) {
+			MostrarOutlinedTextField(
+				text = remember { mutableStateOf(citaDetalle?.observaciones ?: "Nulo") },
+				label = stringResource(R.string.cita_observaciones),
+				placeholder = stringResource(R.string.cita_observaciones_ph),
+				leadingIcon = iconoObservaciones,
+				singleLine = true
+			)
+		}
 		MostrarSubmitButton(
 			sLabel = stringResource(R.string.guardar_button_text),
 			inputValido = valido
 		) {
 			keyboardController?.hide()
 			scope.launch {
-				EditarCita(navegarAnterior, context, citaModel, id, observaciones.value)
+				EditarCita(navegarAnterior, context, citaModel, id, citaDetalle)
 			}
 		}
 	}
@@ -122,9 +126,9 @@ private suspend fun EditarCita(
 	context: Context,
 	modelo: CitaViewModel,
 	id: String?,
-	observaciones: String?,
+	citaDetalle: Cita?,
 ) {
-	/*when (val result = modelo.EditarCita(id = id, observaciones = observaciones)) {
+	when (val result = modelo.EditarCita(id = id, citaDetalle = citaDetalle)) {
 		is AuthRes.Success<*> -> {
 			navegarAnterior()
 		}
@@ -137,5 +141,5 @@ private suspend fun EditarCita(
 			)
 				.show()
 		}
-	}*/
+	}
 }

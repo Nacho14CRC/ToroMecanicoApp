@@ -75,14 +75,13 @@ class CitaViewModel : ViewModel() {
 			AuthRes.Error(e.message ?: "Error al agregar la cita")
 		}
 	}
-	/*suspend fun EditarCita(id: String?, observaciones: String): AuthRes<Unit> {
-		/*return try {
-			
-			firestore.collection("citas").add(newCita).await()
+	suspend fun EditarCita(id: String?, citaDetalle: Cita?): AuthRes<Unit> {
+		return try {
+			firestore.collection("citas").add(citaDetalle!!).await()
 			AuthRes.Success(Unit)
 		} catch (e: Exception) {
 			AuthRes.Error(e.message ?: "Error al agregar la cita")
-		}*/
-	}*/
+		}
+	}
 	
 }

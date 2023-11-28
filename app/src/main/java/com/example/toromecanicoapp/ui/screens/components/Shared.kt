@@ -2,6 +2,7 @@ package com.example.toromecanicoapp.ui.screens.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -58,6 +60,39 @@ fun MostrarOutlinedTextField(
 		},
 		singleLine = singleLine,
 		modifier = Modifier.fillMaxWidth()
+	)
+}
+
+@Composable
+fun MostrarOutlinedTextArea(
+	text: MutableState<String>,
+	label: String,
+	placeholder: String,
+	leadingIcon: Painter
+) {
+	OutlinedTextField(
+		value = text.value,
+		onValueChange = { text.value = it },
+		label = { Text(text = label) },
+		placeholder = { Text(placeholder) },
+		colors = TextFieldDefaults.colors(
+			focusedContainerColor = MaterialTheme.colorScheme.surface,
+			unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+			disabledContainerColor = MaterialTheme.colorScheme.surface,
+		),
+		leadingIcon = {
+			Icon(
+				painter = leadingIcon,
+				contentDescription = null
+			)
+		},
+		singleLine = false,
+		modifier = Modifier
+			.fillMaxWidth()
+			.heightIn(min = 200.dp),
+		keyboardOptions = KeyboardOptions.Default.copy(
+			imeAction = ImeAction.Done
+		)
 	)
 }
 
