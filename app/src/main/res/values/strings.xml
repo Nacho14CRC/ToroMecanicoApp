@@ -43,4 +43,6 @@
     <string name="tema_noche">Modo oscuro</string>
     <string name="contrasena_ingresar">Ingrese la contraseña\n</string>
     <string name="contrasena_confirmar_ingresar">Confirme la contraseña\n</string>
+    <string name="texto_fecha_nacimiento">Fecha nacimiento</string>
+    <string name="texto_fecha_nacimiento_ph">Ingrese la fecha de nacimiento</string>
 </resources>

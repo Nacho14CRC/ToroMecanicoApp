@@ -8,6 +8,7 @@ data class User(
 	val correo: String,
 	val telefono: String,
 	val tipoUsuario: String,
+	val fechaNacimiento: String
 ) {
 	
 	fun toMap(): MutableMap<String, Any> {
@@ -17,7 +18,8 @@ data class User(
 			"nombreCompleto" to this.nombreCompleto,
 			"correo" to this.correo,
 			"telefono" to this.telefono,
-			"tipoUsuario" to this.tipoUsuario
+			"tipoUsuario" to this.tipoUsuario,
+			"fechaNacimiento" to this.fechaNacimiento
 		)
 	}
 }

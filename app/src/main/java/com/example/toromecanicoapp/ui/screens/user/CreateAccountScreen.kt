@@ -11,13 +11,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DisplayMode
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -27,7 +38,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.toromecanicoapp.FormatearDate
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
@@ -46,8 +59,9 @@ object CrearCuentaDestino : Destinos {
 	override val descripcionIcono = ""
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
+
 fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = viewModel()) {
 	val context = LocalContext.current
 	val identificacion = rememberSaveable {
@@ -71,7 +85,9 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 	val confirmarContrasena = rememberSaveable {
 		mutableStateOf("")
 	}
-	
+	val fechaNacimiento = rememberSaveable {
+		mutableStateOf("")
+	}
 	val valido = remember(correo.value, password.value) {
 		correo.value.trim().isNotEmpty() &&
 				password.value.trim().isNotEmpty()
@@ -80,14 +96,16 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
 	val iconoIdentificacion = painterResource(id = R.drawable.ic_person)
 	val iconoNombreCompleto = painterResource(id = R.drawable.ic_person)
-	
 	val iconoCorreo = painterResource(id = R.drawable.ic_email)
 	val iconoTelefono = painterResource(id = R.drawable.ic_phone)
 	val iconoCalendario = painterResource(id = R.drawable.ic_calendar)
 	val iconoUsuario = painterResource(id = R.drawable.ic_account_circle)
 	val iconoContrasena = painterResource(id = R.drawable.ic_lock)
 	val keyboardController = LocalSoftwareKeyboardController.current
-	
+	var openDatePicker by remember { mutableStateOf(false) }
+	val datePickerState =
+		rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
+	//var textValue by remember { mutableStateOf("") }
 	
 	Column(
 		modifier = Modifier
@@ -131,7 +149,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 					valor = correo,
 					label = stringResource(R.string.correo_usuario),
 					placeholder = stringResource(R.string.correo_usuario_ph),
-					leadingIcon = iconoUsuario,
+					leadingIcon = iconoCorreo,
 					singleLine = true
 				)
 				Spacer(modifier = Modifier.height(16.dp))
@@ -145,9 +163,9 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 							.padding(end = 8.dp)
 					) {
 						MostrarOutlinedTextPhoneField(
-							text= telefono,
+							text = telefono,
 							stringResource(R.string.telefono_usuario),
-							stringResource(R.string.telefono_usuario_ph),
+							stringResource(R.string.empty_string),
 							iconoTelefono,
 							true
 						)
@@ -156,6 +174,61 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 						modifier = Modifier
 							.weight(1f)
 					) {
+						OutlinedTextField(
+							value = fechaNacimiento.value,
+							singleLine = true,
+							onValueChange = {
+								fechaNacimiento.value = it
+							},
+							label = { Text(text = stringResource(R.string.texto_fecha_nacimiento)) },
+							placeholder = { Text(text = stringResource(R.string.empty_string)) },
+							leadingIcon = {
+								IconButton(
+									onClick = { openDatePicker = true }
+								) {
+									Icon(
+										painter = iconoCalendario,
+										contentDescription = null
+									)
+								}
+							},
+							)
+						
+						if (openDatePicker) {
+							Dialog(onDismissRequest = { openDatePicker = false }) {
+								DatePickerDialog(
+									onDismissRequest = {
+										openDatePicker = false
+									},
+									confirmButton = {
+										TextButton(
+											onClick = {
+												openDatePicker = false
+												datePickerState.selectedDateMillis?.let { selectedDateMillis ->
+													val formattedDate =
+														FormatearDate(selectedDateMillis)
+													fechaNacimiento.value = formattedDate
+												}
+											},
+											enabled = datePickerState.selectedDateMillis != null
+										) {
+											Text("Aceptar")
+										}
+									},
+									dismissButton = {
+										TextButton(
+											onClick = {
+												openDatePicker = false
+											}
+										) {
+											Text("Cancelar")
+										}
+									}
+								) {
+									DatePicker(state = datePickerState)
+								}
+							}
+						}
 					}
 				}
 				Spacer(modifier = Modifier.height(40.dp))
@@ -188,7 +261,9 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 							correo.value,
 							telefono.value,
 							"SDFDSFKJ",
-							password.value
+							password.value,
+							fechaNacimiento.value
+						
 						)
 					}
 				}
@@ -221,9 +296,18 @@ private suspend fun createAccount(
 	correo: String,
 	telefono: String,
 	tipoUsuario: String,
-	password: String
+	password: String,
+	fechaNacimiento: String
 ) {
-	when (val result = userModel.createUserWithEmailAndPassword(identificacion ,nombreCompleto,correo,telefono,tipoUsuario,password)) {
+	when (val result = userModel.createUserWithEmailAndPassword(
+		identificacion,
+		nombreCompleto,
+		correo,
+		telefono,
+		tipoUsuario,
+		password,
+		fechaNacimiento
+	)) {
 		is AuthRes.Success -> {
 			Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
 			navigateToLogin()
@@ -238,3 +322,5 @@ private suspend fun createAccount(
 		}
 	}
 }
+
+

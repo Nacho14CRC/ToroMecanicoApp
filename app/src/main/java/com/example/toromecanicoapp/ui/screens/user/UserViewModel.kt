@@ -51,7 +51,8 @@ class UserViewModel : ViewModel() {
 		correo: String,
 		telefono: String,
 		tipoUsuario: String,
-		password: String
+		password: String,
+		fechaNacimiento: String
 	): AuthRes<FirebaseUser?> {
 		if (_loading.value == false) {
 			_loading.value = true
@@ -63,7 +64,8 @@ class UserViewModel : ViewModel() {
 					nombreCompleto,
 					telefono,
 					correo,
-					tipoUsuario
+					tipoUsuario,
+					fechaNacimiento
 				)
 				AuthRes.Success(authResult.user)
 			} catch (e: Exception) {
@@ -83,7 +85,8 @@ class UserViewModel : ViewModel() {
 		nombreCompleto: String,
 		telefono: String,
 		correo: String,
-		tipoUsuario: String
+		tipoUsuario: String,
+		fechaNacimiento: String
 	) {
 		val userId = auth.currentUser?.uid
 		
@@ -94,7 +97,8 @@ class UserViewModel : ViewModel() {
 			nombreCompleto = nombreCompleto,
 			telefono = telefono,
 			correo = correo,
-			tipoUsuario = tipoUsuario
+			tipoUsuario = tipoUsuario,
+			fechaNacimiento = fechaNacimiento
 		).toMap()
 		
 		FirebaseFirestore.getInstance().collection("usuarios")

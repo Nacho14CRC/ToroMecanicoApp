@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.theme.Shapes
 import com.example.toromecanicoapp.ui.theme.Typography
-import java.util.Date
 
 /*Inputs*/
 @Composable
@@ -241,17 +240,3 @@ fun MostrarOutlinedTextPhoneField(
 	)
 }
 
-
-@Composable
-fun MostrarOutlinedDateField(
-	label: String,
-	placeholder: String,
-	text: Date?,
-	leadingIcon: Painter,
-	singleLine: Boolean,
-	isError: Boolean,
-	onValueChange: (String) -> Unit,
-	modifier: Modifier
-) {
-//
-}
