@@ -240,3 +240,108 @@ fun MostrarOutlinedTextPhoneField(
 	)
 }
 
+@Composable
+fun RadioGroupSample() {
+	val radioOptions = listOf("General", "Eléctrico", "Enderezado y pintura", "Atención de seguros")
+	val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
+	Column(Modifier.selectableGroup()) {
+		Text(text = "Seleccione un servicio:")
+		radioOptions.forEach { text ->
+			Row(
+				Modifier
+					.fillMaxWidth()
+					.height(56.dp)
+					.selectable(
+						selected = (text == selectedOption),
+						onClick = { onOptionSelected(text) },
+						role = Role.RadioButton
+					)
+					.padding(horizontal = 16.dp),
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				RadioButton(
+					selected = (text == selectedOption),
+					onClick = null
+				)
+				Text(
+					text = text,
+					style = MaterialTheme.typography.bodyLarge,
+					modifier = Modifier.padding(start = 16.dp)
+				)
+			}
+		}
+	}
+}
+
+@Composable
+fun TriStateCheckboxSample() {
+	Column {
+		val (general, onStateGeneral) = remember { mutableStateOf(false) }
+		val (electrico, onStateElectrico) = remember { mutableStateOf(false) }
+		val (enderezadoPintura, onStateEnderezadoPintura) = remember { mutableStateOf(false) }
+		val (seguro, onStateSeguro) = remember { mutableStateOf(false) }
+		val parentState = remember(general, electrico, enderezadoPintura, seguro) {
+			if (general && electrico && enderezadoPintura && seguro) ToggleableState.On
+			else if (!general && !electrico && !enderezadoPintura && !seguro) ToggleableState.Off
+			else ToggleableState.Indeterminate
+		}
+		val textoPrincipal = when {
+			parentState == ToggleableState.On -> "Quitar selección"
+			parentState == ToggleableState.Off -> "Seleccionar todos los servicios"
+			else -> "Seleccionar los servicios restantes"
+		}
+
+		val onParentClick = {
+			val s = parentState != ToggleableState.On
+			onStateGeneral(s)
+			onStateElectrico(s)
+			onStateEnderezadoPintura(s)
+			onStateSeguro(s)
+		}
+
+		Row(
+			verticalAlignment = Alignment.CenterVertically,
+			horizontalArrangement = Arrangement.spacedBy(8.dp)
+		) {
+			TriStateCheckbox(
+				state = parentState,
+				onClick = onParentClick,
+			)
+			Text(text = textoPrincipal)
+		}
+
+		Column(Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp)) {
+			Row(
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.spacedBy(8.dp)
+			) {
+				Checkbox(general, onStateGeneral)
+				Text(text = "General")
+			}
+
+			Row(
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.spacedBy(8.dp)
+			) {
+				Checkbox(electrico, onStateElectrico)
+				Text(text = "Eléctrico")
+			}
+
+			Row(
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.spacedBy(8.dp)
+			) {
+				Checkbox(enderezadoPintura, onStateEnderezadoPintura)
+				Text(text = "Enderezado y pintura")
+			}
+
+			Row(
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.spacedBy(8.dp)
+			) {
+				Checkbox(seguro, onStateSeguro)
+				Text(text = "Atención de seguros")
+			}
+		}
+	}
+}

@@ -25,8 +25,9 @@ import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
 import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextArea
-import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
+import com.example.toromecanicoapp.ui.screens.components.RadioGroupSample
+import com.example.toromecanicoapp.ui.screens.components.TriStateCheckboxSample
 import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
@@ -95,6 +96,7 @@ private fun AgregarCitaBody(
 		modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
 		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
 	) {
+		TriStateCheckboxSample()
 		MostrarOutlinedTextArea(
 			text = observaciones,
 			label = stringResource(R.string.cita_observaciones),
