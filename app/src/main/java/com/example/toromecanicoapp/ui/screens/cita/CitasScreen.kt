@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,7 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
@@ -65,32 +68,25 @@ fun CitasScreen(
 	val lstCitas by citaModel.GetCitas(modelo.getCurrentUser()?.uid).collectAsState(emptyList())
 	val scope = rememberCoroutineScope()
 	
-	Scaffold(
-		topBar = {
-			ToroMecanicoTopAppBar(
-				title = stringResource(InicioDestino.tituloRecurso),
-				canNavigateBack = false,
-				navegarALogin = navegarALogin,
-				modelo = modelo,
-				modifier = modifier
-			)
-		},
-		bottomBar = {
-			ToroMecanicoBottomAppBar(
-				navegarAInicio,
-				navegarACitas,
-				navegarAMiCuenta,
-				currentDestination
-			)
-		},
-		floatingActionButton = {
-			FloatingActionButton(
-				onClick = navegarAIngresoCita
-			) {
-				Icon(imageVector = Icons.Default.Add, contentDescription = "Add Cita")
-			}
+	Scaffold(topBar = {
+		ToroMecanicoTopAppBar(
+			title = stringResource(InicioDestino.tituloRecurso),
+			canNavigateBack = false,
+			navegarALogin = navegarALogin,
+			modelo = modelo,
+			modifier = modifier
+		)
+	}, bottomBar = {
+		ToroMecanicoBottomAppBar(
+			navegarAInicio, navegarACitas, navegarAMiCuenta, currentDestination
+		)
+	}, floatingActionButton = {
+		FloatingActionButton(
+			onClick = navegarAIngresoCita
+		) {
+			Icon(imageVector = Icons.Default.Add, contentDescription = "Add Cita")
 		}
-	) { innerPadding ->
+	}) { innerPadding ->
 		
 		CitasBody(
 			lstCitas = lstCitas,
@@ -107,8 +103,7 @@ private fun CitasBody(
 	lstCitas: List<Cita>, onCitaClick: (String?) -> Unit, modifier: Modifier = Modifier
 ) {
 	Column(
-		horizontalAlignment = Alignment.CenterHorizontally,
-		modifier = modifier
+		horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier
 	) {
 		if (lstCitas.isEmpty()) {
 			Text(
@@ -134,7 +129,7 @@ private fun ListaCitas(
 		items(lstCitas) { item ->
 			CitaItem(cita = item,
 				modifier = Modifier
-					.padding(dimensionResource(id = R.dimen.padding_small))
+					.padding(16.dp)
 					.clickable { onCitaClick(item) })
 		}
 	}
@@ -142,7 +137,7 @@ private fun ListaCitas(
 
 @Composable
 private fun CitaItem(
-	cita: Cita, modifier: Modifier = Modifier
+	cita: Cita, modifier: Modifier
 ) {
 	Card(
 		modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -155,19 +150,15 @@ private fun CitaItem(
 				modifier = Modifier.fillMaxWidth()
 			) {
 				Text(
-					text = cita.observaciones,
-					style = MaterialTheme.typography.titleLarge,
-				)
-				Spacer(Modifier.weight(1f))
-				Text(
-					text = cita.observaciones,
-					style = MaterialTheme.typography.titleLarge
+					text = buildAnnotatedString {
+						
+						withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+							append("Cita: ")
+						}
+						append(cita.fechaCita)
+					}, style = MaterialTheme.typography.titleLarge
 				)
 			}
-			Text(
-				text = cita.observaciones,
-				style = MaterialTheme.typography.titleLarge
-			)
 		}
 	}
 }

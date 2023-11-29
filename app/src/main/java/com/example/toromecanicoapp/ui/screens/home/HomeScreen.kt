@@ -42,7 +42,7 @@ import com.example.toromecanicoapp.viewmodels.UserViewModel
 object InicioDestino : Destinos {
 	override val ruta = "home"
 	override val tituloRecurso = R.string.app_name
-	override val descripcionIcono = "Home"
+	override val descripcionIcono = "Inicio"
 }
 
 @Composable
@@ -182,7 +182,7 @@ fun TopClientes(
 ) {
 	Spacer(modifier = Modifier.height(40.dp))
 	Text(
-		text = "Top Clientes",
+		text = "Clientes destacados",
 		style = MaterialTheme.typography.displaySmall,
 		modifier = Modifier.padding(vertical = 4.dp, horizontal = 22.dp)
 	)

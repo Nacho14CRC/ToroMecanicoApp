@@ -3,7 +3,6 @@ package com.example.toromecanicoapp.ui.screens.cita
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -144,17 +143,21 @@ fun DetalleCitaCard(
 			verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
 		) {
 			Row(modifier = modifier) {
-				Text(text = "Observaciones")
-				Spacer(modifier = Modifier.weight(1f))
+				Text(text = "Fecha: ", fontWeight = FontWeight.Bold)
 				if (cita != null) {
-					Text(text = cita.observaciones, fontWeight = FontWeight.Bold)
+					Text(text = cita.fechaCita)
 				}
 			}
 			Row(modifier = modifier) {
-				Text(text = "userId")
-				Spacer(modifier = Modifier.weight(1f))
+				Text(text = "Mecánico: ", fontWeight = FontWeight.Bold)
 				if (cita != null) {
-					Text(text = cita.userId, fontWeight = FontWeight.Bold)
+					Text(text = cita.mecanico)
+				}
+			}
+			Row(modifier = modifier) {
+				Text(text = "Observaciones: ", fontWeight = FontWeight.Bold)
+				if (cita != null) {
+					Text(text = cita.observaciones)
 				}
 			}
 		}
