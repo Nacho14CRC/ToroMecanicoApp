@@ -3,12 +3,16 @@ package com.example.toromecanicoapp.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.toromecanicoapp.data.model.Cita
 import com.example.toromecanicoapp.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 sealed class AuthRes<out T> {
@@ -19,9 +23,35 @@ sealed class AuthRes<out T> {
 class UserViewModel : ViewModel() {
 	private val auth: FirebaseAuth by lazy { Firebase.auth }
 	private val _loading = MutableLiveData(false)
+	private val firestore = FirebaseFirestore.getInstance()
 	
 	fun getCurrentUser(): FirebaseUser? {
 		return auth.currentUser
+	}
+
+	fun GetByDocument(id: String): Flow<User> = callbackFlow {
+		/*val usuariosRef = firestore.collection("usuarios").whereEqualTo("user_id", id)*/
+		val usuariosRef = firestore.collection("usuarios")
+			.whereEqualTo("user_id", id)
+
+		val subscription = usuariosRef.addSnapshotListener { snapshot, error ->
+			if (error != null) {
+				close(error)
+				return@addSnapshotListener
+			}
+			snapshot?.let { querySnapshot ->
+				try {
+					val usuario = querySnapshot.documents[0].toObject(User::class.java)
+					if (usuario != null) {
+						trySend(usuario).isSuccess
+					}
+				} catch (e: Exception) {
+					close(e)
+				}
+			}
+		}
+
+		awaitClose { subscription.remove() }
 	}
 	
 	suspend fun signInWithEmailAndPassword(

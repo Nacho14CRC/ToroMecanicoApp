@@ -1,7 +1,7 @@
 package com.example.toromecanicoapp.data.model
 
 data class User(
-	val id: String?,
+	var id: String?,
 	val userId: String,
 	val identificacion: String,
 	val nombreCompleto: String,
@@ -10,7 +10,7 @@ data class User(
 	val tipoUsuario: String,
 	val fechaNacimiento: String
 ) {
-	
+	constructor() : this("", "", "", "", "", "", "", "")
 	fun toMap(): MutableMap<String, Any> {
 		return mutableMapOf(
 			"user_id" to this.userId,

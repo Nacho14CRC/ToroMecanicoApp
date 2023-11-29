@@ -28,6 +28,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,7 +45,9 @@ import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoBottomAppBar
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
+import com.example.toromecanicoapp.data.model.User
 import com.example.toromecanicoapp.ui.navegation.Destinos
+import com.example.toromecanicoapp.ui.screens.cita.CitaViewModel
 import com.example.toromecanicoapp.ui.screens.home.InicioDestino
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 
@@ -57,15 +61,18 @@ object MiCuentaDestino : Destinos {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MiCuentaScreen(
+	id: String,
 	navegarALogin: () -> Unit,
 	navegarAInicio: () -> Unit,
 	navegarACitas: () -> Unit,
 	navegarAMiCuenta: () -> Unit,
 	currentDestination: NavDestination?,
 	modifier: Modifier = Modifier,
-	modelo: UserViewModel
+	modelo: UserViewModel,
+	usuarioModel: UserViewModel = UserViewModel()
 ) {
-	
+	val idUsuario = usuarioModel.getCurrentUser()?.uid
+	val usuario by usuarioModel.GetByDocument(idUsuario.toString()).collectAsState(initial = null)
 	Scaffold(
 		modifier = modifier,
 		topBar = {
@@ -95,7 +102,7 @@ fun MiCuentaScreen(
 					.wrapContentHeight()
 			) {
 				item {
-					TarjetaUsuario()
+					TarjetaUsuario(usuario)
 				}
 				item {
 					ModoOscuro()
@@ -108,6 +115,7 @@ fun MiCuentaScreen(
 @ExperimentalMaterial3Api
 @Composable
 fun TarjetaUsuario(
+	usuario: User?,
 	modifier: Modifier = Modifier
 ) {
 	Card(
@@ -128,11 +136,13 @@ fun TarjetaUsuario(
 				horizontalArrangement = Arrangement.SpaceBetween,
 				verticalAlignment = Alignment.CenterVertically
 			) {
-				Text(
-					text = "Andrei Alonso \nArguedas Corrales",
-					fontWeight = FontWeight.Bold,
-					style = MaterialTheme.typography.displayLarge
-				)
+				if(usuario != null) {
+					Text(
+						text = usuario.nombreCompleto,
+						fontWeight = FontWeight.Bold,
+						style = MaterialTheme.typography.displayLarge
+					)
+				}
 				Image(
 					painter = painterResource(id = R.drawable.ic_account_circle),
 					contentDescription = "avatar",

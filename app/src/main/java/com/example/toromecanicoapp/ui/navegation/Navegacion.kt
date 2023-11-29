@@ -185,6 +185,7 @@ fun ToroMecanicoNavHost(
 		
 		composable(route = MiCuentaDestino.ruta) {
 			MiCuentaScreen(
+				idUsuario.toString(),
 				navegarALogin = { navController.navigate(LoginDestino.ruta) },
 				navegarAInicio = {
 					navController.navigate(InicioDestino.ruta) {
