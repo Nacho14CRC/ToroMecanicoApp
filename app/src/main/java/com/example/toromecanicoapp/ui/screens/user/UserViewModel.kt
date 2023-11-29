@@ -3,7 +3,6 @@ package com.example.toromecanicoapp.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.toromecanicoapp.data.model.Cita
 import com.example.toromecanicoapp.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -81,8 +80,7 @@ class UserViewModel : ViewModel() {
 		correo: String,
 		telefono: String,
 		tipoUsuario: String,
-		password: String,
-		fechaNacimiento: String
+		password: String
 	): AuthRes<FirebaseUser?> {
 		if (_loading.value == false) {
 			_loading.value = true
@@ -94,8 +92,7 @@ class UserViewModel : ViewModel() {
 					nombreCompleto,
 					telefono,
 					correo,
-					tipoUsuario,
-					fechaNacimiento
+					tipoUsuario
 				)
 				AuthRes.Success(authResult.user)
 			} catch (e: Exception) {
@@ -115,8 +112,7 @@ class UserViewModel : ViewModel() {
 		nombreCompleto: String,
 		telefono: String,
 		correo: String,
-		tipoUsuario: String,
-		fechaNacimiento: String
+		tipoUsuario: String
 	) {
 		val userId = auth.currentUser?.uid
 		
@@ -127,8 +123,7 @@ class UserViewModel : ViewModel() {
 			nombreCompleto = nombreCompleto,
 			telefono = telefono,
 			correo = correo,
-			tipoUsuario = tipoUsuario,
-			fechaNacimiento = fechaNacimiento
+			tipoUsuario = tipoUsuario
 		).toMap()
 		
 		FirebaseFirestore.getInstance().collection("usuarios")

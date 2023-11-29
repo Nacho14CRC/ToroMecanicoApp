@@ -3,7 +3,6 @@ package com.example.toromecanicoapp.ui.screens.user
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,22 +10,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,13 +35,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.toromecanicoapp.FormatearDate
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.navegation.Destinos
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
-import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextPhoneField
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextNumericoField
+import com.example.toromecanicoapp.ui.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
 import com.example.toromecanicoapp.viewmodels.AuthRes
@@ -84,32 +77,49 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 	val confirmarContrasena = rememberSaveable {
 		mutableStateOf("")
 	}
-	val fechaNacimiento = rememberSaveable {
-		mutableStateOf("")
-	}
-	
-	val valido = remember(correo.value, password.value) {
-		correo.value.trim().isNotEmpty() &&
-				password.value.trim().isNotEmpty()
-	}
 	val scope = rememberCoroutineScope()
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
-	val iconoIdentificacion = painterResource(id = R.drawable.ic_person)
-	val iconoNombreCompleto = painterResource(id = R.drawable.ic_person)
+	val iconoIdentificacion = painterResource(id = R.drawable.ic_identificacion)
+	val iconoNombreCompleto = painterResource(id = R.drawable.ic_nombre_completo)
 	val iconoCorreo = painterResource(id = R.drawable.ic_email)
 	val iconoTelefono = painterResource(id = R.drawable.ic_phone)
-	val iconoCalendario = painterResource(id = R.drawable.ic_calendar)
-	val iconoUsuario = painterResource(id = R.drawable.ic_account_circle)
+	val iconoTipoUsuario = painterResource(id = R.drawable.ic_tipo_usuario)
 	val iconoContrasena = painterResource(id = R.drawable.ic_lock)
 	val keyboardController = LocalSoftwareKeyboardController.current
-	var openDatePicker by remember { mutableStateOf(false) }
-	val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
 	//Combo
-	val lstTipoCliente = listOf("Cliente", "Mecánico")
+	val lstTipoCliente = listOf("", "Cliente", "Mecánico")
 	var expandirComboTipo by remember { mutableStateOf(false) }
 	val tipoUsuario = rememberSaveable {
 		mutableStateOf(lstTipoCliente[0])
 	}
+	
+	val errorIdentificacion = remember { mutableStateOf<String?>(null) }
+	val errorNombreCompleto = remember { mutableStateOf<String?>(null) }
+	val errorCorreo = remember { mutableStateOf<String?>(null) }
+	val errorTelefono = remember { mutableStateOf<String?>(null) }
+	val errorFechaNacimiento = remember { mutableStateOf<String?>(null) }
+	val errorTipoUsuario = remember { mutableStateOf<String?>(null) }
+	val errorContrasena = remember { mutableStateOf<String?>(null) }
+	val errorContrasenaConfirmar = remember { mutableStateOf<String?>(null) }
+	
+	val bHabilitarBoton = remember(
+		identificacion.value,
+		nombreCompleto.value,
+		correo.value,
+		telefono.value,
+		tipoUsuario.value,
+		password.value,
+		confirmarContrasena.value
+	) {
+		identificacion.value.trim().isNotEmpty() &&
+				nombreCompleto.value.trim().isNotEmpty() &&
+				correo.value.trim().isNotEmpty() &&
+				telefono.value.trim().isNotEmpty() &&
+				tipoUsuario.value.trim().isNotEmpty() &&
+				password.value.trim().isNotEmpty() &&
+				confirmarContrasena.value.trim().isNotEmpty()
+	}
+	
 	Column(
 		modifier = Modifier
 			.fillMaxSize(),
@@ -131,13 +141,15 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 					style = MaterialTheme.typography.labelSmall,
 				)
 				
-				Spacer(modifier = Modifier.height(40.dp))
-				MostrarOutlinedTextField(
+				Spacer(modifier = Modifier.height(8.dp))
+				MostrarOutlinedTextNumericoField(
 					text = identificacion,
 					stringResource(R.string.identificacion_usuario),
 					stringResource(R.string.identificacion_usuario_ph),
 					iconoIdentificacion,
-					true
+					true,
+					mensajeError = errorIdentificacion,
+					modifier = Modifier.fillMaxWidth()
 				)
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarOutlinedTextField(
@@ -145,110 +157,46 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 					stringResource(R.string.nombre_usuario),
 					stringResource(R.string.nombre_usuario_ph),
 					iconoNombreCompleto,
-					true
+					true,
+					mensajeError = errorNombreCompleto
 				)
 				Spacer(modifier = Modifier.height(16.dp))
-				/*MostrarOutlinedEmailTextField(
+				MostrarOutlinedEmailTextField(
 					valor = correo,
 					label = stringResource(R.string.correo_usuario),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoCorreo,
-					singleLine = trueTODO
-				)*/
+					singleLine = true,
+					mensajeError = errorCorreo
+				)
 				Spacer(modifier = Modifier.height(16.dp))
-				Row(
-					modifier = Modifier.fillMaxWidth(),
-					horizontalArrangement = Arrangement.SpaceBetween
-				) {
-					Box(
-						modifier = Modifier
-							.weight(1f)
-							.padding(end = 8.dp)
-					) {
-						MostrarOutlinedTextPhoneField(
-							text = telefono,
-							stringResource(R.string.telefono_usuario),
-							stringResource(R.string.empty_string),
-							iconoTelefono,
-							true
-						)
-					}
-					Box(
-						modifier = Modifier
-							.weight(1f)
-					) {
-						OutlinedTextField(
-							value = fechaNacimiento.value,
-							singleLine = true,
-							onValueChange = {
-								fechaNacimiento.value = it
-							},
-							label = { Text(text = stringResource(R.string.texto_fecha_nacimiento)) },
-							placeholder = { Text(text = stringResource(R.string.empty_string)) },
-							leadingIcon = {
-								IconButton(
-									onClick = { openDatePicker = true }
-								) {
-									Icon(
-										painter = iconoCalendario,
-										contentDescription = null
-									)
-								}
-							},
-						)
-						
-						if (openDatePicker) {
-							Dialog(onDismissRequest = { openDatePicker = false }) {
-								DatePickerDialog(
-									onDismissRequest = {
-										openDatePicker = false
-									},
-									confirmButton = {
-										TextButton(
-											onClick = {
-												openDatePicker = false
-												datePickerState.selectedDateMillis?.let { selectedDateMillis ->
-													val formattedDate =
-														FormatearDate(selectedDateMillis)
-													fechaNacimiento.value = formattedDate
-												}
-											},
-											enabled = datePickerState.selectedDateMillis != null
-										) {
-											Text("Aceptar")
-										}
-									},
-									dismissButton = {
-										TextButton(
-											onClick = {
-												openDatePicker = false
-											}
-										) {
-											Text("Cancelar")
-										}
-									}
-								) {
-									DatePicker(state = datePickerState)
-								}
-							}
-						}
-					}
-				}
+				
+				MostrarOutlinedTextNumericoField(
+					text = telefono,
+					stringResource(R.string.telefono_usuario),
+					stringResource(R.string.empty_string),
+					iconoTelefono,
+					true,
+					mensajeError = errorTelefono,
+					modifier = Modifier.fillMaxWidth()
+				)
 				Spacer(modifier = Modifier.height(16.dp))
 				ExposedDropdownMenuBox(
 					expanded = expandirComboTipo,
 					onExpandedChange = { expandirComboTipo = !expandirComboTipo }
 				) {
 					TextField(
-						modifier = Modifier.menuAnchor().fillMaxWidth(),
+						modifier = Modifier
+							.menuAnchor()
+							.fillMaxWidth(),
 						readOnly = true,
 						value = tipoUsuario.value,
 						onValueChange = { },
-						label = { Text("Tipo Usuario") },
+						label = { Text("Tipo usuario") },
 						trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandirComboTipo) },
 						leadingIcon = {
 							Icon(
-								painter = iconoUsuario,
+								painter = iconoTipoUsuario,
 								contentDescription = null
 							)
 						},
@@ -275,23 +223,25 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 					}
 				}
 				Spacer(modifier = Modifier.height(16.dp))
-				/*MostrarPasswordTextField(
+				MostrarPasswordTextField(
 					valor = password,
 					stringResource(R.string.login_contrasena),
 					stringResource(R.string.contrasena_ingresar),
 					iconoContrasena,
-				)*/
+					mensajeError = errorContrasena
+				)
 				Spacer(modifier = Modifier.height(16.dp))
-				/*MostrarPasswordTextField(
+				MostrarPasswordTextField(
 					valor = confirmarContrasena,
 					stringResource(R.string.confirmar_contrasena),
 					stringResource(R.string.contrasena_confirmar_ingresar),
-					iconoContrasena
-				)*/
-				Spacer(modifier = Modifier.height(40.dp))
+					iconoContrasena,
+					mensajeError = errorContrasenaConfirmar
+				)
+				Spacer(modifier = Modifier.height(15.dp))
 				MostrarSubmitButton(
 					sLabel = stringResource(R.string.btn_crear_cuenta),
-					habilitarBoton = valido
+					habilitarBoton = bHabilitarBoton
 				) {
 					keyboardController?.hide()
 					scope.launch {
@@ -305,7 +255,14 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 							telefono.value,
 							tipoUsuario.value,
 							password.value,
-							fechaNacimiento.value
+							confirmarContrasena.value,
+							errorIdentificacion,
+							errorNombreCompleto,
+							errorCorreo,
+							errorTelefono,
+							errorFechaNacimiento,
+							errorContrasena,
+							errorContrasenaConfirmar
 						
 						)
 					}
@@ -340,28 +297,91 @@ private suspend fun createAccount(
 	telefono: String,
 	tipoUsuario: String,
 	password: String,
-	fechaNacimiento: String
+	confirmarContrasena: String,
+	errorIdentificacion: MutableState<String?>,
+	errorNombreCompleto: MutableState<String?>,
+	errorCorreo: MutableState<String?>,
+	errorTelefono: MutableState<String?>,
+	errorFechaNacimiento: MutableState<String?>,
+	errorContrasena: MutableState<String?>,
+	errorContrasenaConfirmar: MutableState<String?>
 ) {
-	when (val result = userModel.createUserWithEmailAndPassword(
-		identificacion,
-		nombreCompleto,
-		correo,
-		telefono,
-		tipoUsuario,
-		password,
-		fechaNacimiento
-	)) {
-		is AuthRes.Success -> {
-			Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
-			navigateToLogin()
+	var valido = true
+	
+	//Identificacion
+	if (identificacion.trim().isNullOrEmpty()) {
+		valido = false
+	} else {
+		val regex = Regex("^[0-9]+$")
+		if (!identificacion.matches(regex)) {
+			errorIdentificacion.value = "Solo se permiten dígitos numéricos"
+			valido = false
 		}
-		
-		is AuthRes.Error -> {
-			Toast.makeText(
-				context,
-				"Error createAccount: ${result.errorMessage}",
-				Toast.LENGTH_SHORT
-			).show()
+	}
+	//Nombre
+	if (nombreCompleto.trim().isNullOrEmpty()) {
+		valido = false
+	}
+	if (correo.trim().isNullOrEmpty()) {
+		valido = false
+	} else {
+		if (!android.util.Patterns.EMAIL_ADDRESS.matcher(correo.trim()).matches()) {
+			errorCorreo.value = "Correo inválido"
+			valido = false
+		}
+	}
+	if (telefono.trim().isNullOrEmpty()) {
+		valido = false
+	} else {
+		val regex = Regex("^\\d{4}-\\d{4}$")
+		if (!telefono.matches(regex)) {
+			errorTelefono.value = "Formato correcto: ####-####"
+			valido = false
+		}
+	}
+	if (password.trim().isNullOrEmpty()) {
+		valido = false
+	} else {
+		if (password.trim().length < 6) {
+			errorContrasena.value = "La contraseña debe tener al menos 6 caracteres"
+			valido = false
+		}
+	}
+	if (confirmarContrasena.trim().isNullOrEmpty()) {
+		valido = false
+	} else {
+		if (confirmarContrasena.trim().length < 6) {
+			errorContrasenaConfirmar.value = "La contraseña debe tener al menos 6 caracteres"
+			valido = false
+		}
+		if (confirmarContrasena != password) {
+			errorContrasenaConfirmar.value = "La confirmación no coincide con la contraseña"
+			valido = false
+		}
+	}
+	
+	
+	if (valido) {
+		when (val result = userModel.createUserWithEmailAndPassword(
+			identificacion,
+			nombreCompleto,
+			correo,
+			telefono,
+			tipoUsuario,
+			password
+		)) {
+			is AuthRes.Success -> {
+				Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
+				navigateToLogin()
+			}
+			
+			is AuthRes.Error -> {
+				Toast.makeText(
+					context,
+					"Error: ${result.errorMessage}",
+					Toast.LENGTH_SHORT
+				).show()
+			}
 		}
 	}
 }

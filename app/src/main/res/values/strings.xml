@@ -15,7 +15,7 @@
     <string name="rutaCrearCuenta">r2</string>
     <string name="rutaLogin">r1\n</string>
     <string name="rutaOlviarContrasena">r3</string>
-    <string name="nombre_usuario">Nombre Completo</string>
+    <string name="nombre_usuario">Nombre completo</string>
     <string name="nombre_usuario_ph">Ingrese su nombre completo</string>
     <string name="identificacion_usuario">Identificación</string>
     <string name="identificacion_usuario_ph">Ingrese la identificación</string>
@@ -44,6 +44,6 @@
     <string name="contrasena_ingresar">Ingrese la contraseña\n</string>
     <string name="contrasena_confirmar_ingresar">Confirme la contraseña\n</string>
     <string name="texto_fecha_nacimiento">Fecha nacimiento</string>
-    <string name="texto_fecha_nacimiento_ph">Ingrese la fecha de nacimiento</string>
+    <string name="texto_fecha_nacimiento_ph"></string>
     <string name="texto_fecha_cita">Fecha cita</string>
 </resources>

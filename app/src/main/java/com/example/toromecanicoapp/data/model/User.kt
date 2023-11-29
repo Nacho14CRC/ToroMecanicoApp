@@ -7,10 +7,9 @@ data class User(
 	val nombreCompleto: String,
 	val correo: String,
 	val telefono: String,
-	val tipoUsuario: String,
-	val fechaNacimiento: String
+	val tipoUsuario: String
 ) {
-	constructor() : this("", "", "", "", "", "", "", "")
+	constructor() : this("", "", "", "", "", "", "")
 	fun toMap(): MutableMap<String, Any> {
 		return mutableMapOf(
 			"user_id" to this.userId,
@@ -18,8 +17,7 @@ data class User(
 			"nombreCompleto" to this.nombreCompleto,
 			"correo" to this.correo,
 			"telefono" to this.telefono,
-			"tipoUsuario" to this.tipoUsuario,
-			"fechaNacimiento" to this.fechaNacimiento
+			"tipoUsuario" to this.tipoUsuario
 		)
 	}
 }

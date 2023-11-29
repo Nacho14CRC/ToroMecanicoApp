@@ -47,7 +47,6 @@ import com.example.toromecanicoapp.ToroMecanicoBottomAppBar
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
 import com.example.toromecanicoapp.data.model.User
 import com.example.toromecanicoapp.ui.navegation.Destinos
-import com.example.toromecanicoapp.ui.screens.cita.CitaViewModel
 import com.example.toromecanicoapp.ui.screens.home.InicioDestino
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 
@@ -140,7 +139,9 @@ fun TarjetaUsuario(
 					Text(
 						text = usuario.nombreCompleto,
 						fontWeight = FontWeight.Bold,
-						style = MaterialTheme.typography.displayLarge
+						style = MaterialTheme.typography.displayLarge,
+						modifier = Modifier
+							.weight(0.40f)
 					)
 				}
 				Image(
@@ -186,7 +187,7 @@ fun TarjetaUsuario(
 						.wrapContentHeight()
 						.weight(1f)
 				) {
-					Text(text = "Id", fontWeight = FontWeight.Bold)
+					Text(text = "Identificación", fontWeight = FontWeight.Bold)
 					if(usuario != null) {
 						Text(text = usuario.identificacion)
 					}
@@ -197,7 +198,7 @@ fun TarjetaUsuario(
 						.weight(1f)
 				) {
 					Text(
-						text = "Tipo",
+						text = "Tipo usuario",
 						modifier = Modifier.fillMaxWidth(),
 						fontWeight = FontWeight.Bold
 					)

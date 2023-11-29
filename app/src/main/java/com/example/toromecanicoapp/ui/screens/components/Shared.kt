@@ -54,11 +54,15 @@ fun MostrarOutlinedTextField(
 	label: String,
 	placeholder: String,
 	leadingIcon: Painter,
-	singleLine: Boolean
+	singleLine: Boolean,
+	mensajeError: MutableState<String?>,
 ) {
 	OutlinedTextField(
 		value = text.value,
-		onValueChange = { text.value = it },
+		onValueChange = {
+			text.value = it
+			mensajeError.value = null
+		},
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(
@@ -78,6 +82,19 @@ fun MostrarOutlinedTextField(
 			imeAction = ImeAction.Next
 		)
 	)
+	mensajeError.value?.let { message ->
+		if (message.isNotEmpty()) {
+			Text(
+				text = message,
+				color = Color.Red,
+				fontSize = 12.sp,
+				modifier = Modifier
+					.padding(top = 2.dp, start = 16.dp)
+					.fillMaxWidth()
+					.wrapContentHeight()
+			)
+		}
+	}
 }
 
 @Composable
@@ -155,7 +172,7 @@ fun MostrarOutlinedEmailTextField(
 				color = Color.Red,
 				fontSize = 12.sp,
 				modifier = Modifier
-					.padding(top = 4.dp, start = 16.dp)
+					.padding(top = 2.dp, start = 16.dp)
 					.fillMaxWidth()
 					.wrapContentHeight()
 			)
@@ -220,7 +237,7 @@ fun MostrarPasswordTextField(
 				color = Color.Red,
 				fontSize = 12.sp,
 				modifier = Modifier
-					.padding(top = 4.dp, start = 16.dp)
+					.padding(top = 2.dp, start = 16.dp)
 					.fillMaxWidth()
 					.wrapContentHeight()
 			)
@@ -267,16 +284,21 @@ fun MostrarSubmitButton(
 }
 
 @Composable
-fun MostrarOutlinedTextPhoneField(
+fun MostrarOutlinedTextNumericoField(
 	text: MutableState<String>,
 	label: String,
 	placeholder: String,
 	leadingIcon: Painter,
-	singleLine: Boolean
+	singleLine: Boolean,
+	mensajeError: MutableState<String?>,
+	modifier: Modifier
 ) {
 	OutlinedTextField(
 		value = text.value,
-		onValueChange = { text.value = it },
+		onValueChange = {
+			text.value = it
+			mensajeError.value = null
+		},
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(
@@ -290,12 +312,25 @@ fun MostrarOutlinedTextPhoneField(
 				contentDescription = null
 			)
 		},
+		modifier = modifier,
 		singleLine = singleLine,
 		keyboardOptions = KeyboardOptions(
 			keyboardType = KeyboardType.Phone,
 			imeAction = ImeAction.Next
 		),
 	)
+	mensajeError.value?.let { message ->
+		if (message.isNotEmpty()) {
+			Text(
+				text = message,
+				color = Color.Red,
+				fontSize = 12.sp,
+				modifier = Modifier
+					.padding(top = 2.dp, start = 16.dp)
+					.wrapContentHeight()
+			)
+		}
+	}
 }
 
 @Composable
