@@ -187,7 +187,9 @@ fun TarjetaUsuario(
 						.weight(1f)
 				) {
 					Text(text = "Id", fontWeight = FontWeight.Bold)
-					Text(text = "F55455656")
+					if(usuario != null) {
+						Text(text = usuario.identificacion)
+					}
 				}
 				Column(
 					modifier = Modifier
@@ -199,7 +201,9 @@ fun TarjetaUsuario(
 						modifier = Modifier.fillMaxWidth(),
 						fontWeight = FontWeight.Bold
 					)
-					Text(text = "Cliente", modifier = Modifier.fillMaxWidth())
+					if(usuario != null) {
+						Text(text = usuario.tipoUsuario, modifier = Modifier.fillMaxWidth())
+					}
 				}
 			}
 			
@@ -215,7 +219,9 @@ fun TarjetaUsuario(
 						.weight(1f)
 				) {
 					Text(text = "Telefono", fontWeight = FontWeight.Bold)
-					Text(text = "3262652")
+					if(usuario != null) {
+						Text(text = usuario.telefono)
+					}
 				}
 				Column(
 					modifier = Modifier
@@ -227,7 +233,9 @@ fun TarjetaUsuario(
 						modifier = Modifier.fillMaxWidth(),
 						fontWeight = FontWeight.Bold
 					)
-					Text(text = "FFFF", modifier = Modifier.fillMaxWidth())
+					if(usuario != null) {
+						Text(text = usuario.correo, modifier = Modifier.fillMaxWidth())
+					}
 				}
 			}
 		}
