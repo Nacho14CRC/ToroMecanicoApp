@@ -66,7 +66,7 @@ class CitaViewModel : ViewModel() {
 		userId: String?,
 		observaciones: String,
 		fechaCita: String,
-		comboMecanico: String
+		mecanico: String
 	): AuthRes<Unit> {
 		return try {
 			val newCita = Cita(
@@ -74,7 +74,7 @@ class CitaViewModel : ViewModel() {
 				userId = userId.toString(),
 				observaciones = observaciones,
 				fechaCita = fechaCita,
-				mecanico = comboMecanico,
+				mecanico = mecanico,
 			).toMap()
 			firestore.collection("citas").add(newCita).await()
 			AuthRes.Success(Unit)
@@ -83,14 +83,14 @@ class CitaViewModel : ViewModel() {
 		}
 	}
 	
-	suspend fun EditarCita(id: String, userId: String, observaciones: String): AuthRes<Unit> {
+	suspend fun EditarCita(id: String, userId: String,fechaCita:String,mecanico:String, observaciones: String): AuthRes<Unit> {
 		return try {
 			val newCita = Cita(
 				id = id,
 				userId = userId,
 				observaciones = observaciones,
-				fechaCita = "TODO",
-				mecanico = "TODO",
+				fechaCita = fechaCita,
+				mecanico = mecanico,
 			).toMap()
 			firestore.collection("citas").document(id).set(newCita).await()
 			AuthRes.Success(Unit)

@@ -52,7 +52,7 @@ fun LoginScreen(
 	navegarAInicio: () -> Unit,
 	modelo: UserViewModel = viewModel()
 ) {
-	val email = rememberSaveable { mutableStateOf("andreiac@hotmail.es") }
+	val email = rememberSaveable { mutableStateOf("andreifff@msn.com") }
 	val password = rememberSaveable { mutableStateOf("123456") }
 	val context = LocalContext.current
 	val valido = remember(email.value, password.value) {
