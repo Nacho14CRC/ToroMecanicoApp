@@ -2,10 +2,13 @@ package com.example.toromecanicoapp.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -95,6 +98,13 @@ private fun HomeBody(
 		item {
 			TopMecanicos()
 		}
+		item {
+			TopClientes()
+		}
+		
+		item {
+			Publicidad()
+		}
 	}
 }
 
@@ -102,43 +112,51 @@ private fun HomeBody(
 fun TopMecanicos(
 	modifier: Modifier = Modifier
 ) {
+	Spacer(modifier = Modifier.height(40.dp))
 	Text(
-		text = "Top Mecánicos",
+		text = "Mecánicos destacados",
 		style = MaterialTheme.typography.displaySmall,
 		modifier = Modifier.padding(vertical = 4.dp, horizontal = 22.dp)
 	)
 	
 	val cardData = listOf(
-		"1",
-		"2",
-		"3",
-		"4"
+		"Pedro",
+		"Juan",
+		"Karla"
 	)
 	
 	Row(
 		modifier = Modifier
+			.fillMaxWidth()
 			.padding(horizontal = 16.dp),
-		horizontalArrangement = Arrangement.spacedBy(12.dp)
+		horizontalArrangement = Arrangement.SpaceBetween
 	) {
 		cardData.forEach {
-			Card(
-				modifier = modifier
-					.wrapContentHeight()
-					.padding(all = 8.dp),
-				shape = RoundedCornerShape(size = 8.dp),
-				elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+			Box(
+				modifier = Modifier
+					.weight(1f)
+					.fillMaxWidth()
 			) {
-				CardContent(it)
+				Card(
+					modifier = modifier
+						.wrapContentHeight()
+						.padding(all = 8.dp),
+					shape = RoundedCornerShape(size = 8.dp),
+					elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+				) {
+					CardContentMecanicos(it)
+				}
 			}
 		}
 	}
 }
 
 @Composable
-fun CardContent(label: String) {
+fun CardContentMecanicos(label: String) {
 	Column(
 		modifier = Modifier
-			.padding(start = 15.dp, top = 8.dp, end = 15.dp, bottom = 8.dp)
+			.fillMaxWidth()
+			.padding(top = 8.dp, bottom = 8.dp)
 	) {
 		Image(
 			painter = painterResource(id = R.drawable.ic_account_circle),
@@ -157,6 +175,119 @@ fun CardContent(label: String) {
 		)
 	}
 }
+
+@Composable
+fun TopClientes(
+	modifier: Modifier = Modifier
+) {
+	Spacer(modifier = Modifier.height(40.dp))
+	Text(
+		text = "Top Clientes",
+		style = MaterialTheme.typography.displaySmall,
+		modifier = Modifier.padding(vertical = 4.dp, horizontal = 22.dp)
+	)
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(horizontal = 16.dp),
+		horizontalArrangement = Arrangement.SpaceBetween
+	) {
+		Box(
+			modifier = Modifier
+				.weight(1f)
+				.fillMaxWidth()
+		) {
+			Card(
+				modifier = modifier
+					.wrapContentHeight()
+					.padding(all = 8.dp),
+				shape = RoundedCornerShape(size = 8.dp),
+				elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+			) {
+				Column(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(top = 40.dp, bottom = 40.dp)
+				) {
+					Text(
+						text = "Gerardo Martinez",
+						modifier = Modifier
+							.align(Alignment.CenterHorizontally)
+					)
+				}
+			}
+		}
+		Box(
+			modifier = Modifier
+				.weight(1f)
+				.fillMaxWidth()
+		) {
+			Card(
+				modifier = modifier
+					.wrapContentHeight()
+					.padding(all = 8.dp),
+				shape = RoundedCornerShape(size = 8.dp),
+				elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+			) {
+				Column(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(top = 40.dp, bottom = 40.dp)
+				) {
+					Text(
+						text = "Lunes Martinez",
+						modifier = Modifier
+							.align(Alignment.CenterHorizontally)
+					)
+				}
+			}
+		}
+	}
+}
+
+@Composable
+fun Publicidad(
+	modifier: Modifier = Modifier
+) {
+	Spacer(modifier = Modifier.height(40.dp))
+	Text(
+		text = "Publicidad",
+		style = MaterialTheme.typography.displaySmall,
+		modifier = Modifier.padding(vertical = 4.dp, horizontal = 22.dp)
+	)
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(horizontal = 16.dp),
+		horizontalArrangement = Arrangement.SpaceBetween
+	) {
+		Box(
+			modifier = Modifier
+				.weight(1f)
+				.fillMaxWidth()
+		) {
+			Card(
+				modifier = modifier
+					.wrapContentHeight()
+					.padding(all = 8.dp),
+				shape = RoundedCornerShape(size = 8.dp),
+				elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+			) {
+				Column(
+					modifier = Modifier
+						.fillMaxWidth().height(200.dp)
+				) {
+					Image(
+						painter = painterResource(R.drawable.publicidad),
+						contentDescription = null,
+						contentScale = ContentScale.FillWidth
+					)
+				}
+			}
+		}
+	}
+}
+
 
 @Preview(showBackground = true)
 @Composable
