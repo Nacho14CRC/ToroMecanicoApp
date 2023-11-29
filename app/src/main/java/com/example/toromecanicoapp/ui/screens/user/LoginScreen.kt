@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,6 +45,7 @@ object LoginDestino : Destinos {
 	override val tituloRecurso = R.string.correo_usuario
 	override val descripcionIcono = ""
 }
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
@@ -55,15 +57,20 @@ fun LoginScreen(
 	val email = rememberSaveable { mutableStateOf("andreifff@msn.com") }
 	val password = rememberSaveable { mutableStateOf("123456") }
 	val context = LocalContext.current
-	val valido = remember(email.value, password.value) {
-		email.value.trim().isNotEmpty() &&
-				password.value.trim().isNotEmpty()
-	}
 	val keyboardController = LocalSoftwareKeyboardController.current
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
-	val iconoUsuario = painterResource(id = R.drawable.ic_account_circle)
+	val iconoCorreo = painterResource(id = R.drawable.ic_email)
 	val iconoContrasena = painterResource(id = R.drawable.ic_lock)
 	val scope = rememberCoroutineScope()
+	
+	//Validacion de pantalla
+	val bHabilitarBoton = remember(email.value, password.value) {
+		email.value.trim().isNotEmpty() && password.value.trim().isNotEmpty()
+	}
+	val errorCorreo = remember { mutableStateOf<String?>(null) }
+	val errorContrasena = remember { mutableStateOf<String?>(null) }
+	
+	
 	
 	Column(
 		modifier = Modifier.fillMaxSize(),
@@ -104,8 +111,9 @@ fun LoginScreen(
 					valor = email,
 					label = stringResource(R.string.correo_usuario),
 					placeholder = stringResource(R.string.correo_usuario_ph),
-					leadingIcon = iconoUsuario,
-					singleLine = true
+					leadingIcon = iconoCorreo,
+					singleLine = true,
+					mensajeError = errorCorreo
 				)
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarPasswordTextField(
@@ -113,20 +121,31 @@ fun LoginScreen(
 					stringResource(R.string.login_contrasena),
 					stringResource(R.string.empty_string),
 					iconoContrasena,
+					mensajeError = errorContrasena
 				)
 				MostrarTextButton(
 					sLabel = stringResource(R.string.olvido_contrasena_text),
-					onClick = {	navegarARecuperarContrasena()	},
+					onClick = { navegarARecuperarContrasena() },
 					modifier = Modifier.align(Alignment.End)
 				)
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarSubmitButton(
 					sLabel = stringResource(R.string.login_button_text),
-					inputValido = valido
+					habilitarBoton = bHabilitarBoton
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						login(navegarAInicio, context, modelo, email.value, password.value)
+						scope.launch {
+							login(
+								navegarAInicio,
+								context,
+								modelo,
+								email.value,
+								password.value,
+								errorCorreo,
+								errorContrasena
+							)
+						}
 					}
 				}
 				Spacer(modifier = Modifier.height(8.dp))
@@ -148,22 +167,46 @@ fun LoginScreen(
 		}
 	}
 }
+
 private suspend fun login(
 	navigateToHome: () -> Unit,
 	context: Context,
 	modelo: UserViewModel,
 	email: String,
-	password: String
+	password: String,
+	errorCorreo: MutableState<String?>,
+	errorContrasena: MutableState<String?>
 ) {
-	when (val result = modelo.signInWithEmailAndPassword(email, password)) {
-		is AuthRes.Success -> {
-			navigateToHome()
-		}
-		
-		is AuthRes.Error -> {
-			Toast.makeText(context, "Error login: ${result.errorMessage}", Toast.LENGTH_SHORT)
-				.show()
+	var valido = true
+	if (email.trim().isNullOrEmpty()) {
+		valido = false
+	} else {
+		if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) {
+			errorCorreo.value = "Correo inválido"
+			valido = false
 		}
 	}
+	
+	if (password.trim().isNullOrEmpty()) {
+		valido = false
+	} else {
+		if (password.trim().length < 6) {
+			errorContrasena.value = "La contraseña debe tener al menos 6 caracteres"
+			valido = false
+		}
+	}
+	if (valido) {
+		when (val result = modelo.signInWithEmailAndPassword(email, password)) {
+			is AuthRes.Success -> {
+				navigateToHome()
+			}
+			
+			is AuthRes.Error -> {
+				Toast.makeText(context, "Error: ${result.errorMessage}", Toast.LENGTH_SHORT)
+					.show()
+			}
+		}
+	}
+	
 }
 

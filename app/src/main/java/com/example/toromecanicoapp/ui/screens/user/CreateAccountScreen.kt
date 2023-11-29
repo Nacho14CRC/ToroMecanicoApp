@@ -47,10 +47,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.FormatearDate
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.navegation.Destinos
-import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedTextPhoneField
-import com.example.toromecanicoapp.ui.screens.components.MostrarPasswordTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
 import com.example.toromecanicoapp.viewmodels.AuthRes
@@ -150,13 +148,13 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 					true
 				)
 				Spacer(modifier = Modifier.height(16.dp))
-				MostrarOutlinedEmailTextField(
+				/*MostrarOutlinedEmailTextField(
 					valor = correo,
 					label = stringResource(R.string.correo_usuario),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoCorreo,
-					singleLine = true
-				)
+					singleLine = trueTODO
+				)*/
 				Spacer(modifier = Modifier.height(16.dp))
 				Row(
 					modifier = Modifier.fillMaxWidth(),
@@ -277,23 +275,23 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 					}
 				}
 				Spacer(modifier = Modifier.height(16.dp))
-				MostrarPasswordTextField(
+				/*MostrarPasswordTextField(
 					valor = password,
 					stringResource(R.string.login_contrasena),
 					stringResource(R.string.contrasena_ingresar),
 					iconoContrasena,
-				)
+				)*/
 				Spacer(modifier = Modifier.height(16.dp))
-				MostrarPasswordTextField(
+				/*MostrarPasswordTextField(
 					valor = confirmarContrasena,
 					stringResource(R.string.confirmar_contrasena),
 					stringResource(R.string.contrasena_confirmar_ingresar),
 					iconoContrasena
-				)
+				)*/
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarSubmitButton(
 					sLabel = stringResource(R.string.btn_crear_cuenta),
-					inputValido = valido
+					habilitarBoton = valido
 				) {
 					keyboardController?.hide()
 					scope.launch {

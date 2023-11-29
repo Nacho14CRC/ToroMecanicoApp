@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -40,6 +42,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.theme.Shapes
 import com.example.toromecanicoapp.ui.theme.Typography
@@ -117,10 +120,14 @@ fun MostrarOutlinedEmailTextField(
 	placeholder: String,
 	leadingIcon: Painter,
 	singleLine: Boolean,
+	mensajeError: MutableState<String?>,
 ) {
 	OutlinedTextField(
 		value = valor.value,
-		onValueChange = { valor.value = it },
+		onValueChange = {
+			valor.value = it
+			mensajeError.value = null
+		},
 		keyboardOptions = KeyboardOptions(
 			keyboardType = KeyboardType.Email,
 			imeAction = ImeAction.Next
@@ -141,20 +148,38 @@ fun MostrarOutlinedEmailTextField(
 		singleLine = singleLine,
 		modifier = Modifier.fillMaxWidth()
 	)
+	mensajeError.value?.let { message ->
+		if (message.isNotEmpty()) {
+			Text(
+				text = message,
+				color = Color.Red,
+				fontSize = 12.sp,
+				modifier = Modifier
+					.padding(top = 4.dp, start = 16.dp)
+					.fillMaxWidth()
+					.wrapContentHeight()
+			)
+		}
+	}
 }
+
 
 @Composable
 fun MostrarPasswordTextField(
 	valor: MutableState<String>,
 	label: String,
 	placeholder: String,
-	leadingIcon: Painter
+	leadingIcon: Painter,
+	mensajeError: MutableState<String?>,
 ) {
 	var contrasenaVisible by remember { mutableStateOf(false) }
 	
 	OutlinedTextField(
 		value = valor.value,
-		onValueChange = { valor.value = it },
+		onValueChange = {
+			valor.value = it
+			mensajeError.value = null
+		},
 		label = { Text(text = label) },
 		placeholder = { Text(placeholder) },
 		colors = TextFieldDefaults.colors(
@@ -188,6 +213,19 @@ fun MostrarPasswordTextField(
 			}
 		}
 	)
+	mensajeError.value?.let { message ->
+		if (message.isNotEmpty()) {
+			Text(
+				text = message,
+				color = Color.Red,
+				fontSize = 12.sp,
+				modifier = Modifier
+					.padding(top = 4.dp, start = 16.dp)
+					.fillMaxWidth()
+					.wrapContentHeight()
+			)
+		}
+	}
 }
 
 /*Botones*/
@@ -208,7 +246,7 @@ fun MostrarTextButton(sLabel: String, onClick: () -> Unit, modifier: Modifier) {
 @Composable
 fun MostrarSubmitButton(
 	sLabel: String,
-	inputValido: Boolean,
+	habilitarBoton: Boolean,
 	onClick: () -> Unit
 ) {
 	Button(
@@ -217,7 +255,7 @@ fun MostrarSubmitButton(
 			.height(48.dp),
 		onClick = { onClick() },
 		shape = Shapes.extraLarge,
-		enabled = inputValido
+		enabled = habilitarBoton
 	) {
 		Text(
 			text = sLabel,
@@ -262,7 +300,8 @@ fun MostrarOutlinedTextPhoneField(
 
 @Composable
 fun RadioGroupSample() {
-	val radioOptions = listOf("General", "Eléctrico", "Enderezado y pintura", "Atención de seguros")
+	val radioOptions =
+		listOf("General", "Eléctrico", "Enderezado y pintura", "Atención de seguros")
 	val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
 	Column(Modifier.selectableGroup()) {
 		Text(text = "Seleccione un servicio:")

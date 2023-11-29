@@ -247,7 +247,7 @@ private fun EditarCitaBody(
 			)
 			MostrarSubmitButton(
 				sLabel = stringResource(R.string.guardar_button_text),
-				inputValido = valido
+				habilitarBoton = valido
 			) {
 				keyboardController?.hide()
 				scope.launch {

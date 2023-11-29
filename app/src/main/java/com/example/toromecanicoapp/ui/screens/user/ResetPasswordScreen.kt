@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.navegation.Destinos
-import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
 import com.example.toromecanicoapp.viewmodels.AuthRes
@@ -79,17 +78,17 @@ fun RecuperarContrasenaScreen(navegarALogin: () -> Unit, modelo: UserViewModel =
 				
 				Spacer(modifier = Modifier.height(40.dp))
 				
-				MostrarOutlinedEmailTextField(
+				/*MostrarOutlinedEmailTextField(
 					valor = email,
 					label = stringResource(R.string.correo_usuario),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoCorreo,
-					singleLine = true
-				)
+					singleLine = true//TODO
+				)*/
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarSubmitButton(
 					sLabel = stringResource(R.string.btn_restablecer),
-					inputValido = valido
+					habilitarBoton = valido
 				) {
 					keyboardController?.hide()
 					scope.launch {

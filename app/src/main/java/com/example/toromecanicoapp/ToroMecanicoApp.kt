@@ -38,7 +38,6 @@ import com.example.toromecanicoapp.viewmodels.UserViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 @Composable
 fun ToroMecanicoApp(context: Context, navController: NavHostController = rememberNavController()) {
 	ToroMecanicoNavHost(context, navController = navController)
