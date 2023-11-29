@@ -45,4 +45,5 @@
     <string name="contrasena_confirmar_ingresar">Confirme la contraseña\n</string>
     <string name="texto_fecha_nacimiento">Fecha nacimiento</string>
     <string name="texto_fecha_nacimiento_ph">Ingrese la fecha de nacimiento</string>
+    <string name="texto_fecha_cita">Fecha cita</string>
 </resources>

@@ -62,12 +62,19 @@ class CitaViewModel : ViewModel() {
 		citaRef.delete().await()
 	}
 	
-	suspend fun AgregarCita(userId: String?, observaciones: String): AuthRes<Unit> {
+	suspend fun AgregarCita(
+		userId: String?,
+		observaciones: String,
+		fechaCita: String,
+		comboMecanico: String
+	): AuthRes<Unit> {
 		return try {
 			val newCita = Cita(
 				id = null,
 				userId = userId.toString(),
-				observaciones = observaciones
+				observaciones = observaciones,
+				fechaCita = fechaCita,
+				mecanico = comboMecanico,
 			).toMap()
 			firestore.collection("citas").add(newCita).await()
 			AuthRes.Success(Unit)
@@ -75,12 +82,15 @@ class CitaViewModel : ViewModel() {
 			AuthRes.Error(e.message ?: "Error al agregar la cita")
 		}
 	}
+	
 	suspend fun EditarCita(id: String, userId: String, observaciones: String): AuthRes<Unit> {
 		return try {
 			val newCita = Cita(
 				id = id,
 				userId = userId,
-				observaciones = observaciones
+				observaciones = observaciones,
+				fechaCita = "TODO",
+				mecanico = "TODO",
 			).toMap()
 			firestore.collection("citas").document(id).set(newCita).await()
 			AuthRes.Success(Unit)
