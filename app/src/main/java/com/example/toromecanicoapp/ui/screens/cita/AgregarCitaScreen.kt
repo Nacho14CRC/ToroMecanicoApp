@@ -2,12 +2,14 @@ package com.example.toromecanicoapp.ui.screens.cita
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DisplayMode
@@ -25,6 +27,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,11 +36,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.toromecanicoapp.FormatearDate
 import com.example.toromecanicoapp.R
@@ -107,11 +113,12 @@ private fun AgregarCitaBody(
 	val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
 	//Listas
-	val lstMecanicos = listOf("Andrei", "Nacho")
+	val lstMecanicos = listOf("", "Andrei", "Nacho")
 	
 	//Iconos
 	val iconoObservaciones = painterResource(id = R.drawable.ic_person)
 	val iconoCalendario = painterResource(id = R.drawable.ic_calendar)
+	val iconoMecanico = painterResource(id = R.drawable.ic_calendar)
 	//Campos
 	val fechaCita = rememberSaveable {
 		mutableStateOf("")
@@ -121,76 +128,91 @@ private fun AgregarCitaBody(
 	val comboMecanico = rememberSaveable {
 		mutableStateOf(lstMecanicos[0])
 	}
+	val errorFecha = remember { mutableStateOf<String?>(null) }
 	
-	//Validacion
-	val valido = remember(observaciones.value) {
-		observaciones.value.trim().isNotEmpty()
+	val bHabilitarBoton = remember(
+		fechaCita.value,
+		comboMecanico.value,
+		observaciones.value
+	) {
+		fechaCita.value.trim().isNotEmpty() &&
+				comboMecanico.value.trim().isNotEmpty() &&
+				observaciones.value.trim().isNotEmpty()
 	}
 	
 	Column(
 		modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
-		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
 	) {
-		Row(
-			modifier = Modifier
-		) {
-			OutlinedTextField(
-				value = fechaCita.value,
-				singleLine = true,
-				onValueChange = {
-					fechaCita.value = it
-				},
-				label = { Text(text = stringResource(R.string.texto_fecha_cita)) },
-				placeholder = { Text(text = stringResource(R.string.empty_string)) },
-				leadingIcon = {
-					IconButton(
-						onClick = { openDatePicker = true }
-					) {
-						Icon(
-							painter = iconoCalendario,
-							contentDescription = null
-						)
-					}
-				},
-				modifier = Modifier.fillMaxWidth()
-			)
-			
-			if (openDatePicker) {
-				Dialog(onDismissRequest = { openDatePicker = false }) {
-					DatePickerDialog(
-						onDismissRequest = {
-							openDatePicker = false
-						},
-						confirmButton = {
-							TextButton(
-								onClick = {
-									openDatePicker = false
-									datePickerState.selectedDateMillis?.let { selectedDateMillis ->
-										val formattedDate =
-											FormatearDate(selectedDateMillis)
-										fechaCita.value = formattedDate
-									}
-								},
-								enabled = datePickerState.selectedDateMillis != null
-							) {
-								Text("Aceptar")
-							}
-						},
-						dismissButton = {
-							TextButton(
-								onClick = {
-									openDatePicker = false
+		OutlinedTextField(
+			value = fechaCita.value,
+			singleLine = true,
+			onValueChange = {
+				fechaCita.value = it
+				errorFecha.value = null
+			},
+			label = { Text(text = stringResource(R.string.texto_fecha_cita)) },
+			placeholder = { Text(text = stringResource(R.string.empty_string)) },
+			leadingIcon = {
+				IconButton(
+					onClick = { openDatePicker = true }
+				) {
+					Icon(
+						painter = iconoCalendario,
+						contentDescription = null
+					)
+				}
+			},
+			modifier = Modifier.fillMaxWidth()
+		)
+		errorFecha.value?.let { message ->
+			if (message.isNotEmpty()) {
+				Text(
+					text = message,
+					color = Color.Red,
+					fontSize = 12.sp,
+					modifier = Modifier
+						.padding(start = 16.dp)
+						.wrapContentHeight()
+				)
+			}
+		}
+		
+		if (openDatePicker) {
+			Dialog(onDismissRequest = { openDatePicker = false }) {
+				DatePickerDialog(
+					onDismissRequest = {
+						openDatePicker = false
+					},
+					confirmButton = {
+						TextButton(
+							onClick = {
+								openDatePicker = false
+								datePickerState.selectedDateMillis?.let { selectedDateMillis ->
+									val formattedDate =
+										FormatearDate(selectedDateMillis)
+									fechaCita.value = formattedDate
 								}
-							) {
-								Text("Cancelar")
-							}
+							},
+							enabled = datePickerState.selectedDateMillis != null
+						) {
+							Text("Aceptar")
 						}
-					) {
-						DatePicker(state = datePickerState)
+					},
+					dismissButton = {
+						TextButton(
+							onClick = {
+								openDatePicker = false
+							}
+						) {
+							Text("Cancelar")
+						}
 					}
+				) {
+					DatePicker(state = datePickerState)
 				}
 			}
 		}
+		Spacer(modifier = Modifier.height(16.dp))
 		Row(
 			modifier = Modifier
 		) {
@@ -236,6 +258,7 @@ private fun AgregarCitaBody(
 				}
 			}
 		}
+		Spacer(modifier = Modifier.height(16.dp))
 		Row(
 			modifier = Modifier
 		) {
@@ -246,16 +269,26 @@ private fun AgregarCitaBody(
 				leadingIcon = iconoObservaciones
 			)
 		}
+		Spacer(modifier = Modifier.height(16.dp))
 		Row(
 			modifier = Modifier
 		) {
 			MostrarSubmitButton(
 				sLabel = stringResource(R.string.guardar_button_text),
-				habilitarBoton = valido
+				habilitarBoton = bHabilitarBoton
 			) {
 				keyboardController?.hide()
 				scope.launch {
-					AgregarCita(navigateBack, context, citaModel, userId, observaciones.value,fechaCita.value,comboMecanico.value)
+					AgregarCita(
+						navigateBack,
+						context,
+						citaModel,
+						userId,
+						observaciones.value,
+						fechaCita.value,
+						comboMecanico.value,
+						errorFecha
+					)
 				}
 			}
 		}
@@ -271,19 +304,35 @@ private suspend fun AgregarCita(
 	observaciones: String,
 	fechaCita: String,
 	comboMecanico: String,
+	errorFecha: MutableState<String?>,
 ) {
-	when (val result = modelo.AgregarCita(userId = userId, observaciones = observaciones,fechaCita,comboMecanico)) {
-		is AuthRes.Success<*> -> {
-			navigateBack()
-		}
+	var valido = true
+	val regex = Regex("^\\d{2}/\\d{2}/\\d{4}$")
+	if (!fechaCita.matches(regex)) {
+		errorFecha.value = "Formato valido: dd/mm/yyyy"
+		valido = false
+	}
+	if (valido) {
 		
-		is AuthRes.Error -> {
-			Toast.makeText(
-				context,
-				"Error al agregar la cita: ${result.errorMessage}",
-				Toast.LENGTH_SHORT
-			)
-				.show()
+		
+		when (val result = modelo.AgregarCita(
+			userId = userId,
+			observaciones = observaciones,
+			fechaCita,
+			comboMecanico
+		)) {
+			is AuthRes.Success<*> -> {
+				navigateBack()
+			}
+			
+			is AuthRes.Error -> {
+				Toast.makeText(
+					context,
+					"Error: ${result.errorMessage}",
+					Toast.LENGTH_SHORT
+				)
+					.show()
+			}
 		}
 	}
 }
