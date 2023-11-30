@@ -120,9 +120,9 @@ private fun EditarCitaBody(
 	val lstMecanicos = listOf("", "Andrei", "Nacho")
 	
 	//Iconos
-	val iconoObservaciones = painterResource(id = R.drawable.ic_calendar)
+	val iconoObservaciones = painterResource(id = R.drawable.ic_observaciones)
 	val iconoCalendario = painterResource(id = R.drawable.ic_calendar)
-	val iconoMecanico = painterResource(id = R.drawable.ic_calendar)
+	val iconoMecanico = painterResource(id = R.drawable.ic_mecanico)
 	//Campos
 	var observaciones = remember { mutableStateOf(citaDetalle?.observaciones ?: "Nulo") }
 	var fechaCita = remember { mutableStateOf(citaDetalle?.fechaCita ?: "Nulo") }
@@ -158,7 +158,7 @@ private fun EditarCitaBody(
 					fechaCita.value = it
 					errorFecha.value = null
 				},
-				label = { Text(text = stringResource(R.string.texto_fecha_cita)) },
+				label = { Text(text = stringResource(R.string.fecha_cita_campo)) },
 				placeholder = { Text(text = stringResource(R.string.empty_string)) },
 				leadingIcon = {
 					IconButton(
@@ -236,7 +236,7 @@ private fun EditarCitaBody(
 					trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandirComboMecanico) },
 					leadingIcon = {
 						Icon(
-							painter = iconoCalendario,
+							painter = iconoMecanico,
 							contentDescription = null
 						)
 					},
@@ -266,13 +266,13 @@ private fun EditarCitaBody(
 			Spacer(modifier = Modifier.height(16.dp))
 			MostrarOutlinedTextArea(
 				text = observaciones,
-				label = stringResource(R.string.cita_observaciones),
+				label = stringResource(R.string.cita_observaciones_campo),
 				placeholder = stringResource(R.string.cita_observaciones_ph),
 				leadingIcon = iconoObservaciones
 			)
 			Spacer(modifier = Modifier.height(16.dp))
 			MostrarSubmitButton(
-				sLabel = stringResource(R.string.guardar_button_text),
+				sLabel = stringResource(R.string.btn_guardar_text),
 				habilitarBoton = bHabilitarBoton
 			) {
 				keyboardController?.hide()

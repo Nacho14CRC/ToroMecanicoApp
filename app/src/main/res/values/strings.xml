@@ -1,49 +1,50 @@
 <resources>
     <string name="app_name">Toro Mecánico</string>
-    <string name="login_usuario">Usuario</string>
-    <string name="login_contrasena">Contraseña</string>
-    <string name="login_usuario_ph">Ingrese el usuario de acceso</string>
     <string name="empty_string" />
-    <string name="login_button_text">Iniciar sesión</string>
-    <string name="olvido_contrasena_text">¿Olvidó su contraseña?</string>
-    <string name="crear_cuenta_text">Crear cuenta</string>
-    <string name="crearCuentaNueva">Crear cuenta nueva!</string>
-    <string name="antes_crear_cuenta">Comienza tu aventura!</string>
-    <string name="bienvenida">Bienvenido a ToroMecánico!</string>
-    <string name="restablecer_contrasena">Restablecer contraseña</string>
-    <string name="restablecer_contrasena_text">Texto para restablecer!</string>
-    <string name="rutaCrearCuenta">r2</string>
-    <string name="rutaLogin">r1\n</string>
-    <string name="rutaOlviarContrasena">r3</string>
-    <string name="nombre_usuario">Nombre completo</string>
+    <string name="bienvenida_text">Bienvenido a ToroMecánico!</string>
+    <string name="comenzar_cuenta_text">Comienza tu aventura!</string>
+
+    <string name="btn_iniciar_sesion_text">Iniciar sesión</string>
+    <string name="btn_guardar_text">Guardar</string>
+    <string name="btn_restablecer_text">Restablecer</string>
+    <string name="btn_crear_cuenta_text">Crear</string>
+    <string name="btn_eliminar">Eliminar</string>
+
+    <string name="link_olvido_contrasena_text">¿Olvidó su contraseña?</string>
+    <string name="link_crear_cuenta_text">Crear cuenta</string>
+    <string name="link_volver_iniciosesion_text">Volver al inicio</string>
+
+    <string name="restablecer_contrasena_principal">Restablecer contraseña</string>
+    <string name="restablecer_contrasena_secundario">Se enviara un correo para recuperarla!</string>
+    <string name="crear_cuenta_nueva_secundario">Crear cuenta nueva!</string>
+    <string name="tiene_cuenta_secundario">¿Tienes una cuenta?</string>
+
+    <string name="contrasena_campo">Contraseña</string>
+    <string name="nombre_completo_campo">Nombre completo</string>
+    <string name="identificacion_campo">Identificación</string>
+    <string name="correo_campo">Correo</string>
+    <string name="confirmar_contrasena_campo">Confirmar contraseña</string>
+    <string name="telefono_campo">Telefono</string>
+    <string name="cita_observaciones_campo">Observaciones</string>
+    <string name="fecha_cita_campo">Fecha</string>
+
     <string name="nombre_usuario_ph">Ingrese su nombre completo</string>
-    <string name="identificacion_usuario">Identificación</string>
     <string name="identificacion_usuario_ph">Ingrese la identificación</string>
-    <string name="correo_usuario">Correo</string>
     <string name="correo_usuario_ph">Ingrese el correo</string>
-    <string name="confirmar_contrasena">Confirmar contraseña</string>
-    <string name="btn_crear_cuenta">Crear</string>
-    <string name="btn_restablecer">Restablecer</string>
-    <string name="antes_iniciar">¿Tienes una cuenta?</string>
-    <string name="telefono_usuario">Telefono</string>
     <string name="telefono_usuario_ph">Ingrese el telefono</string>
-    <string name="volver_login_button_text">Volver al login</string>
-    <string name="agregar_cita_titulo">Agregar cita</string>
-    <string name="cita_observaciones">Observaciones\n</string>
     <string name="cita_observaciones_ph">Ingrese las observaciones</string>
-    <string name="guardar_button_text">Guardar</string>
+    <string name="contrasena_ph">Ingrese la contraseña</string>
+    <string name="contrasena_confirmar_ph">Confirme la contraseña</string>
+
+    <string name="agregar_cita_title">Agregar cita</string>
     <string name="edit_cita_title">Editar cita</string>
-    <string name="cita_detail_title">Detalle Cita</string>
-    <string name="boton_eliminar">Eliminar</string>
-    <string name="atencion">Atención</string>
-    <string name="cancelar_cita_pregunta">Seguro que desea cancelar la cita?</string>
-    <string name="no">No</string>
+    <string name="detail_cita_title">Detalle Cita</string>
+
+    <string name="dlg_atencion">Atención</string>
+    <string name="dlg_pregunta_cancelar">¿Seguro que desea cancelar la cita?</string>
+    <string name="No">No</string>
     <string name="Si">Sí</string>
-    <string name="boton_cancelar">Cancelar</string>
-    <string name="tema_noche">Modo oscuro</string>
-    <string name="contrasena_ingresar">Ingrese la contraseña\n</string>
-    <string name="contrasena_confirmar_ingresar">Confirme la contraseña\n</string>
-    <string name="texto_fecha_nacimiento">Fecha nacimiento</string>
-    <string name="texto_fecha_nacimiento_ph"></string>
-    <string name="texto_fecha_cita">Fecha</string>
+    <string name="dlg_btn_cancelar">Cancelar</string>
+
+    <string name="tema_noche_text">Modo oscuro</string>
 </resources>

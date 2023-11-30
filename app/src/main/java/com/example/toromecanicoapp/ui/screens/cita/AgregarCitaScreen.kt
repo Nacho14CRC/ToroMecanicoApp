@@ -57,7 +57,7 @@ import kotlinx.coroutines.launch
 
 object AgregarCitaDestino : Destinos {
 	override val ruta = "cita_entry"
-	override val tituloRecurso = R.string.agregar_cita_titulo
+	override val tituloRecurso = R.string.agregar_cita_title
 	override val descripcionIcono = ""
 }
 
@@ -116,9 +116,9 @@ private fun AgregarCitaBody(
 	val lstMecanicos = listOf("", "Andrei", "Nacho")
 	
 	//Iconos
-	val iconoObservaciones = painterResource(id = R.drawable.ic_person)
+	val iconoObservaciones = painterResource(id = R.drawable.ic_observaciones)
 	val iconoCalendario = painterResource(id = R.drawable.ic_calendar)
-	val iconoMecanico = painterResource(id = R.drawable.ic_calendar)
+	val iconoMecanico = painterResource(id = R.drawable.ic_mecanico)
 	//Campos
 	val fechaCita = rememberSaveable {
 		mutableStateOf("")
@@ -150,7 +150,7 @@ private fun AgregarCitaBody(
 				fechaCita.value = it
 				errorFecha.value = null
 			},
-			label = { Text(text = stringResource(R.string.texto_fecha_cita)) },
+			label = { Text(text = stringResource(R.string.fecha_cita_campo)) },
 			placeholder = { Text(text = stringResource(R.string.empty_string)) },
 			leadingIcon = {
 				IconButton(
@@ -231,7 +231,7 @@ private fun AgregarCitaBody(
 					trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandirComboMecanico) },
 					leadingIcon = {
 						Icon(
-							painter = iconoCalendario,
+							painter = iconoMecanico,
 							contentDescription = null
 						)
 					},
@@ -264,7 +264,7 @@ private fun AgregarCitaBody(
 		) {
 			MostrarOutlinedTextArea(
 				text = observaciones,
-				label = stringResource(R.string.cita_observaciones),
+				label = stringResource(R.string.cita_observaciones_campo),
 				placeholder = stringResource(R.string.cita_observaciones_ph),
 				leadingIcon = iconoObservaciones
 			)
@@ -274,7 +274,7 @@ private fun AgregarCitaBody(
 			modifier = Modifier
 		) {
 			MostrarSubmitButton(
-				sLabel = stringResource(R.string.guardar_button_text),
+				sLabel = stringResource(R.string.btn_guardar_text),
 				habilitarBoton = bHabilitarBoton
 			) {
 				keyboardController?.hide()

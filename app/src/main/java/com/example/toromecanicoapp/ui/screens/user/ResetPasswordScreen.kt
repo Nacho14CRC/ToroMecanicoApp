@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ui.navegation.Destinos
+import com.example.toromecanicoapp.ui.screens.components.MostrarOutlinedEmailTextField
 import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.ui.screens.components.MostrarTextButton
 import com.example.toromecanicoapp.viewmodels.AuthRes
@@ -37,23 +39,25 @@ import kotlinx.coroutines.launch
 
 object RecuperarContrasenaDestino : Destinos {
 	override val ruta = "resetPassword"
-	override val tituloRecurso = R.string.correo_usuario
+	override val tituloRecurso = R.string.correo_campo
 	override val descripcionIcono = ""
 }
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RecuperarContrasenaScreen(navegarALogin: () -> Unit, modelo: UserViewModel = viewModel()) {
-	val email = rememberSaveable {
+	val correo = rememberSaveable {
 		mutableStateOf("")
 	}
-	val valido = remember(email.value) {
-		email.value.trim().isNotEmpty()
+	val valido = remember(correo.value) {
+		correo.value.trim().isNotEmpty()
 	}
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
 	val iconoCorreo = painterResource(id = R.drawable.ic_email)
 	val keyboardController = LocalSoftwareKeyboardController.current
 	val scope = rememberCoroutineScope()
 	val context = LocalContext.current
+	val errorCorreo = remember { mutableStateOf<String?>(null) }
 	
 	Column(
 		modifier = Modifier
@@ -67,32 +71,33 @@ fun RecuperarContrasenaScreen(navegarALogin: () -> Unit, modelo: UserViewModel =
 				modifier = Modifier.fillMaxSize()
 			) {
 				Text(
-					text = stringResource(R.string.restablecer_contrasena),
+					text = stringResource(R.string.restablecer_contrasena_principal),
 					style = MaterialTheme.typography.displayMedium,
 				)
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
-					text = stringResource(R.string.restablecer_contrasena_text),
+					text = stringResource(R.string.restablecer_contrasena_secundario),
 					style = MaterialTheme.typography.labelSmall,
 				)
 				
 				Spacer(modifier = Modifier.height(40.dp))
 				
-				/*MostrarOutlinedEmailTextField(
-					valor = email,
-					label = stringResource(R.string.correo_usuario),
+				MostrarOutlinedEmailTextField(
+					valor = correo,
+					label = stringResource(R.string.correo_campo),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoCorreo,
-					singleLine = true//TODO
-				)*/
+					singleLine = true,
+					mensajeError = errorCorreo
+				)
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarSubmitButton(
-					sLabel = stringResource(R.string.btn_restablecer),
+					sLabel = stringResource(R.string.btn_restablecer_text),
 					habilitarBoton = valido
 				) {
 					keyboardController?.hide()
 					scope.launch {
-						forgotPassword(navegarALogin, context, modelo, email.value)
+						forgotPassword(navegarALogin, context, modelo, correo.value, errorCorreo)
 					}
 				}
 				Row(
@@ -101,7 +106,7 @@ fun RecuperarContrasenaScreen(navegarALogin: () -> Unit, modelo: UserViewModel =
 					verticalAlignment = Alignment.CenterVertically
 				) {
 					MostrarTextButton(
-						sLabel = stringResource(R.string.volver_login_button_text),
+						sLabel = stringResource(R.string.link_volver_iniciosesion_text),
 						onClick = { navegarALogin() },
 						modifier = Modifier
 					)
@@ -116,16 +121,30 @@ private suspend fun forgotPassword(
 	navigateToLogin: () -> Unit,
 	context: Context,
 	modelo: UserViewModel,
-	email: String
+	correo: String,
+	errorCorreo: MutableState<String?>
 ) {
-	when (val result = modelo.resetPassword(email)) {
-		is AuthRes.Success -> {
-			Toast.makeText(context, "Correo enviado", Toast.LENGTH_SHORT).show()
-			navigateToLogin()
+	var valido = true
+	
+	if (correo.trim().isNullOrEmpty()) {
+		valido = false
+	} else {
+		if (!android.util.Patterns.EMAIL_ADDRESS.matcher(correo.trim()).matches()) {
+			errorCorreo.value = "Correo inválido"
+			valido = false
 		}
-		
-		is AuthRes.Error -> {
-			Toast.makeText(context, "Error al enviar el correo", Toast.LENGTH_SHORT).show()
+	}
+	
+	if (valido) {
+		when (val result = modelo.resetPassword(correo)) {
+			is AuthRes.Success -> {
+				Toast.makeText(context, "Correo enviado", Toast.LENGTH_SHORT).show()
+				navigateToLogin()
+			}
+			
+			is AuthRes.Error -> {
+				Toast.makeText(context, "Error al enviar el correo", Toast.LENGTH_SHORT).show()
+			}
 		}
 	}
 }

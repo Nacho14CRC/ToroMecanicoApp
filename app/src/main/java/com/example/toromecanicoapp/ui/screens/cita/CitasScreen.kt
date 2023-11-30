@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoBottomAppBar
@@ -151,12 +152,14 @@ private fun CitaItem(
 			) {
 				Text(
 					text = buildAnnotatedString {
-						
 						withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
 							append("Cita: ")
 						}
-						append(cita.fechaCita)
-					}, style = MaterialTheme.typography.titleLarge
+						withStyle(style = SpanStyle(fontSize = 16.sp)) {
+							append(cita.fechaCita)
+						}
+					},
+					style = MaterialTheme.typography.titleLarge
 				)
 			}
 		}

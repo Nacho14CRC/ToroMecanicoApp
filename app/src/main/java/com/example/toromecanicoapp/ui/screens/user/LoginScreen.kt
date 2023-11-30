@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 
 object LoginDestino : Destinos {
 	override val ruta = "login"
-	override val tituloRecurso = R.string.correo_usuario
+	override val tituloRecurso = R.string.correo_campo
 	override val descripcionIcono = ""
 }
 
@@ -54,7 +54,7 @@ fun LoginScreen(
 	navegarAInicio: () -> Unit,
 	modelo: UserViewModel = viewModel()
 ) {
-	val email = rememberSaveable { mutableStateOf("andreifff@msn.com") }
+	val email = rememberSaveable { mutableStateOf("aarguedascorrales@gmail.com") }
 	val password = rememberSaveable { mutableStateOf("123456") }
 	val context = LocalContext.current
 	val keyboardController = LocalSoftwareKeyboardController.current
@@ -94,7 +94,7 @@ fun LoginScreen(
 				)
 				Spacer(modifier = Modifier.height(60.dp))
 				Text(
-					text = stringResource(R.string.bienvenida),
+					text = stringResource(R.string.bienvenida_text),
 					style = MaterialTheme.typography.displayMedium,
 				)
 			}
@@ -109,7 +109,7 @@ fun LoginScreen(
 			) {
 				MostrarOutlinedEmailTextField(
 					valor = email,
-					label = stringResource(R.string.correo_usuario),
+					label = stringResource(R.string.correo_campo),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoCorreo,
 					singleLine = true,
@@ -118,19 +118,19 @@ fun LoginScreen(
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarPasswordTextField(
 					valor = password,
-					stringResource(R.string.login_contrasena),
+					stringResource(R.string.contrasena_campo),
 					stringResource(R.string.empty_string),
 					iconoContrasena,
 					mensajeError = errorContrasena
 				)
 				MostrarTextButton(
-					sLabel = stringResource(R.string.olvido_contrasena_text),
+					sLabel = stringResource(R.string.link_olvido_contrasena_text),
 					onClick = { navegarARecuperarContrasena() },
 					modifier = Modifier.align(Alignment.End)
 				)
 				Spacer(modifier = Modifier.height(40.dp))
 				MostrarSubmitButton(
-					sLabel = stringResource(R.string.login_button_text),
+					sLabel = stringResource(R.string.btn_iniciar_sesion_text),
 					habilitarBoton = bHabilitarBoton
 				) {
 					keyboardController?.hide()
@@ -155,10 +155,10 @@ fun LoginScreen(
 					verticalAlignment = Alignment.CenterVertically
 				) {
 					Text(
-						text = stringResource(R.string.antes_crear_cuenta)
+						text = stringResource(R.string.comenzar_cuenta_text)
 					)
 					MostrarTextButton(
-						sLabel = stringResource(R.string.crear_cuenta_text),
+						sLabel = stringResource(R.string.link_crear_cuenta_text),
 						onClick = { navegarACrearCuenta() },
 						modifier = Modifier
 					)

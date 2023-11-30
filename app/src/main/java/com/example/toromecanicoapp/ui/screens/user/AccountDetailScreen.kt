@@ -63,7 +63,7 @@ import com.google.firebase.storage.FirebaseStorage
 
 object MiCuentaDestino : Destinos {
 	override val ruta = "detalle_cuenta"
-	override val tituloRecurso = R.string.identificacion_usuario
+	override val tituloRecurso = R.string.identificacion_campo
 	override val descripcionIcono = "Cuenta"
 }
 
@@ -339,7 +339,7 @@ fun ModoOscuro(darkTheme: Boolean=false, onThemeUpdated: () -> Unit) {
 			)
 			Text(
 				modifier = Modifier.wrapContentSize(),
-				text = stringResource(id = R.string.tema_noche)
+				text = stringResource(id = R.string.tema_noche_text)
 			)
 		}
 		Switch(

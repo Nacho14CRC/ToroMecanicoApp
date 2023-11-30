@@ -50,7 +50,7 @@ import kotlinx.coroutines.launch
 
 object CrearCuentaDestino : Destinos {
 	override val ruta = "createAcount"
-	override val tituloRecurso = R.string.correo_usuario
+	override val tituloRecurso = R.string.correo_campo
 	override val descripcionIcono = ""
 }
 
@@ -132,19 +132,19 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 				modifier = Modifier.fillMaxSize()
 			) {
 				Text(
-					text = stringResource(R.string.crear_cuenta_text),
+					text = stringResource(R.string.link_crear_cuenta_text),
 					style = MaterialTheme.typography.displayMedium,
 				)
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
-					text = stringResource(R.string.crearCuentaNueva),
+					text = stringResource(R.string.crear_cuenta_nueva_secundario),
 					style = MaterialTheme.typography.labelSmall,
 				)
 				
 				Spacer(modifier = Modifier.height(8.dp))
 				MostrarOutlinedTextNumericoField(
 					text = identificacion,
-					stringResource(R.string.identificacion_usuario),
+					stringResource(R.string.identificacion_campo),
 					stringResource(R.string.identificacion_usuario_ph),
 					iconoIdentificacion,
 					true,
@@ -154,7 +154,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarOutlinedTextField(
 					text = nombreCompleto,
-					stringResource(R.string.nombre_usuario),
+					stringResource(R.string.nombre_completo_campo),
 					stringResource(R.string.nombre_usuario_ph),
 					iconoNombreCompleto,
 					true,
@@ -163,7 +163,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarOutlinedEmailTextField(
 					valor = correo,
-					label = stringResource(R.string.correo_usuario),
+					label = stringResource(R.string.correo_campo),
 					placeholder = stringResource(R.string.correo_usuario_ph),
 					leadingIcon = iconoCorreo,
 					singleLine = true,
@@ -173,7 +173,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 				
 				MostrarOutlinedTextNumericoField(
 					text = telefono,
-					stringResource(R.string.telefono_usuario),
+					stringResource(R.string.telefono_campo),
 					stringResource(R.string.empty_string),
 					iconoTelefono,
 					true,
@@ -225,22 +225,22 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarPasswordTextField(
 					valor = password,
-					stringResource(R.string.login_contrasena),
-					stringResource(R.string.contrasena_ingresar),
+					stringResource(R.string.contrasena_campo),
+					stringResource(R.string.contrasena_ph),
 					iconoContrasena,
 					mensajeError = errorContrasena
 				)
 				Spacer(modifier = Modifier.height(16.dp))
 				MostrarPasswordTextField(
 					valor = confirmarContrasena,
-					stringResource(R.string.confirmar_contrasena),
-					stringResource(R.string.contrasena_confirmar_ingresar),
+					stringResource(R.string.confirmar_contrasena_campo),
+					stringResource(R.string.contrasena_confirmar_ph),
 					iconoContrasena,
 					mensajeError = errorContrasenaConfirmar
 				)
 				Spacer(modifier = Modifier.height(15.dp))
 				MostrarSubmitButton(
-					sLabel = stringResource(R.string.btn_crear_cuenta),
+					sLabel = stringResource(R.string.btn_crear_cuenta_text),
 					habilitarBoton = bHabilitarBoton
 				) {
 					keyboardController?.hide()
@@ -273,10 +273,10 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 					verticalAlignment = Alignment.CenterVertically
 				) {
 					Text(
-						text = stringResource(R.string.antes_iniciar)
+						text = stringResource(R.string.tiene_cuenta_secundario)
 					)
 					MostrarTextButton(
-						sLabel = stringResource(R.string.login_button_text),
+						sLabel = stringResource(R.string.btn_iniciar_sesion_text),
 						onClick = { navegarALogin() },
 						modifier = Modifier
 					)

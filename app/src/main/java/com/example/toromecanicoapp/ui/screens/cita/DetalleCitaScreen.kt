@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 
 object DetalleCitaDestino : Destinos {
 	override val ruta = "cita_details"
-	override val tituloRecurso = R.string.cita_detail_title
+	override val tituloRecurso = R.string.detail_cita_title
 	override val descripcionIcono = ""
 	const val idCitaArg = "citaId"
 	val rutaArg = "$ruta/{$idCitaArg}"
@@ -116,7 +116,7 @@ private fun DetalleCitaBody(
 			),
 			modifier = Modifier.fillMaxWidth()
 		) {
-			Text(stringResource(R.string.boton_cancelar))
+			Text(stringResource(R.string.dlg_btn_cancelar))
 		}
 		if (deleteConfirmationRequired) {
 			CanncelarCitaConfirmationDialog(
@@ -175,12 +175,12 @@ private fun CanncelarCitaConfirmationDialog(
 	onCancelarCita: () -> Unit, onDismiss: () -> Unit, modifier: Modifier = Modifier
 ) {
 	AlertDialog(onDismissRequest = { onDismiss },
-		title = { Text(stringResource(R.string.atencion)) },
-		text = { Text(stringResource(R.string.cancelar_cita_pregunta)) },
+		title = { Text(stringResource(R.string.dlg_atencion)) },
+		text = { Text(stringResource(R.string.dlg_pregunta_cancelar)) },
 		modifier = modifier,
 		dismissButton = {
 			Button(onClick = onDismiss) {
-				Text(text = stringResource(R.string.no))
+				Text(text = stringResource(R.string.No))
 			}
 		},
 		confirmButton = {

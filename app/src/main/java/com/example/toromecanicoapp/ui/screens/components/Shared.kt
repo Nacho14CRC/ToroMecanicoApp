@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.selection.selectable
@@ -121,9 +120,9 @@ fun MostrarOutlinedTextArea(
 			)
 		},
 		singleLine = false,
+		minLines =7,
 		modifier = Modifier
-			.fillMaxWidth()
-			.heightIn(min = 200.dp),
+			.fillMaxWidth(),
 		keyboardOptions = KeyboardOptions.Default.copy(
 			imeAction = ImeAction.Done
 		)
