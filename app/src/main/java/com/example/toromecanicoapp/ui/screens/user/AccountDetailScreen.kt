@@ -2,12 +2,10 @@ package com.example.toromecanicoapp.ui.screens.user
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -80,7 +78,9 @@ fun MiCuentaScreen(
 	currentDestination: NavDestination?,
 	modifier: Modifier = Modifier,
 	modelo: UserViewModel,
-	usuarioModel: UserViewModel = UserViewModel()
+	usuarioModel: UserViewModel = UserViewModel(),
+	darkTheme: Boolean,
+	onThemeUpdated: () -> Unit
 ) {
 	val idUsuario = usuarioModel.getCurrentUser()?.uid
 	val usuario by usuarioModel.GetByDocument(idUsuario.toString()).collectAsState(initial = null)
@@ -114,7 +114,7 @@ fun MiCuentaScreen(
 			) {
 				item {
 					TarjetaUsuario(idUsuario, usuario)
-					ModoOscuro()
+					ModoOscuro(darkTheme, onThemeUpdated)
 				}
 			}
 		}
@@ -318,10 +318,8 @@ fun cargarImagenAlStorage(uri: Uri, userId: String, context: Context, callback: 
 }
 
 @Composable
-fun ModoOscuro() {
-	val isDarkTheme =
-		LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-	val checkedState = remember { mutableStateOf(isDarkTheme) }
+fun ModoOscuro(darkTheme: Boolean=false, onThemeUpdated: () -> Unit) {
+	 val checkedState = remember { mutableStateOf(darkTheme) }
 	
 	Row(
 		modifier = Modifier
@@ -348,11 +346,7 @@ fun ModoOscuro() {
 			checked = checkedState.value,
 			onCheckedChange = { isChecked ->
 				checkedState.value = isChecked
-				if (isChecked) {
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-				} else {
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-				}
+				onThemeUpdated()
 			}
 		)
 	}

@@ -36,6 +36,8 @@ import com.google.firebase.auth.FirebaseUser
 fun ToroMecanicoNavHost(
 	context: Context,
 	navController: NavHostController,
+	darkTheme:Boolean,
+	onThemeUpdated:()-> Unit,
 	modifier: Modifier = Modifier,
 ) {
 	var usuarioModel: UserViewModel = viewModel()
@@ -163,7 +165,10 @@ fun ToroMecanicoNavHost(
 				},
 				navegarAMiCuenta = { navController.navigate(MiCuentaDestino.ruta) },
 				currentDestination,
-				modelo = usuarioModel
+				modelo = usuarioModel,
+				darkTheme =darkTheme,
+				onThemeUpdated = onThemeUpdated
+				
 			)
 		}
 	}

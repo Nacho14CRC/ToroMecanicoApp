@@ -39,8 +39,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 @Composable
-fun ToroMecanicoApp(context: Context, navController: NavHostController = rememberNavController()) {
-	ToroMecanicoNavHost(context, navController = navController)
+fun ToroMecanicoApp(context: Context,darkTheme:Boolean, onThemeUpdated:()-> Unit,navController: NavHostController = rememberNavController(), ) {
+	ToroMecanicoNavHost(context, navController = navController,darkTheme,onThemeUpdated)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
