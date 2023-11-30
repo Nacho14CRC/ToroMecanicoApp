@@ -27,12 +27,11 @@ class UserViewModel : ViewModel() {
 	fun getCurrentUser(): FirebaseUser? {
 		return auth.currentUser
 	}
-
-	fun GetByDocument(id: String): Flow<User> = callbackFlow {
-		/*val usuariosRef = firestore.collection("usuarios").whereEqualTo("user_id", id)*/
+	
+	fun GetByDocument(id: String): Flow<User?> = callbackFlow {
 		val usuariosRef = firestore.collection("usuarios")
 			.whereEqualTo("user_id", id)
-
+		
 		val subscription = usuariosRef.addSnapshotListener { snapshot, error ->
 			if (error != null) {
 				close(error)
@@ -40,16 +39,19 @@ class UserViewModel : ViewModel() {
 			}
 			snapshot?.let { querySnapshot ->
 				try {
-					val usuario = querySnapshot.documents[0].toObject(User::class.java)
+					val usuario = querySnapshot.documents.firstOrNull()?.toObject(User::class.java)
 					if (usuario != null) {
 						trySend(usuario).isSuccess
+						close() // Cerrar el flujo después de enviar el usuario
+					} else {
+						close() // Cerrar el flujo si no se encuentra ningún usuario
 					}
 				} catch (e: Exception) {
 					close(e)
 				}
 			}
 		}
-
+		
 		awaitClose { subscription.remove() }
 	}
 	

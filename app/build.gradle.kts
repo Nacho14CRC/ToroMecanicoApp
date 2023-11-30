@@ -73,5 +73,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage:20.0.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    //
 
 }

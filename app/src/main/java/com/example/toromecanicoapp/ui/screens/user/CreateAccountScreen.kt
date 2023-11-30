@@ -192,7 +192,7 @@ fun CrearCuentaScreen(navegarALogin: () -> Unit, userModel: UserViewModel = view
 						readOnly = true,
 						value = tipoUsuario.value,
 						onValueChange = { },
-						label = { Text("Tipo usuario") },
+						label = { Text("Tipo de usuario") },
 						trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandirComboTipo) },
 						leadingIcon = {
 							Icon(

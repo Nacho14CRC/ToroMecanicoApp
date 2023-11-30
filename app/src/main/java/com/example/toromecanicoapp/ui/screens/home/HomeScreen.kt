@@ -235,7 +235,7 @@ fun TopClientes(
 						.padding(top = 40.dp, bottom = 40.dp)
 				) {
 					Text(
-						text = "Lunes Martinez",
+						text = "Alonso Martinez",
 						modifier = Modifier
 							.align(Alignment.CenterHorizontally)
 					)

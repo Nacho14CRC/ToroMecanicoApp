@@ -54,22 +54,13 @@ fun ToroMecanicoNavHost(
 		composable(route = LoginDestino.ruta) {
 			LoginScreen(
 				navegarARecuperarContrasena = {
-					navController.navigate(RecuperarContrasenaDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(RecuperarContrasenaDestino.ruta)
 				},
 				navegarACrearCuenta = {
-					navController.navigate(CrearCuentaDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(CrearCuentaDestino.ruta)
 				},
 				navegarAInicio = {
-					navController.navigate(InicioDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(InicioDestino.ruta)
 				},
 				usuarioModel
 			);
@@ -89,23 +80,12 @@ fun ToroMecanicoNavHost(
 			InicioScreen(
 				navegarALogin = { navController.navigate(LoginDestino.ruta) },
 				navegarAInicio = {
-					navController.navigate(InicioDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(InicioDestino.ruta)
 				},
 				navegarACitas = {
-					navController.navigate(CitasDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(CitasDestino.ruta)
 				},
-				navegarAMiCuenta = {
-					navController.navigate(MiCuentaDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
-				},
+				navegarAMiCuenta = { navController.navigate(MiCuentaDestino.ruta) },
 				currentDestination,
 				usuarioModelo = usuarioModel
 			)
@@ -118,23 +98,12 @@ fun ToroMecanicoNavHost(
 				},
 				navegarALogin = { navController.navigate(LoginDestino.ruta) },
 				navegarAInicio = {
-					navController.navigate(InicioDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(InicioDestino.ruta)
 				},
 				navegarACitas = {
-					navController.navigate(CitasDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(CitasDestino.ruta)
 				},
-				navegarAMiCuenta = {
-					navController.navigate(MiCuentaDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
-				},
+				navegarAMiCuenta = { navController.navigate(MiCuentaDestino.ruta) },
 				currentDestination,
 				modelo = usuarioModel
 			)
@@ -185,26 +154,14 @@ fun ToroMecanicoNavHost(
 		
 		composable(route = MiCuentaDestino.ruta) {
 			MiCuentaScreen(
-				idUsuario.toString(),
 				navegarALogin = { navController.navigate(LoginDestino.ruta) },
 				navegarAInicio = {
-					navController.navigate(InicioDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(InicioDestino.ruta)
 				},
 				navegarACitas = {
-					navController.navigate(CitasDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
+					navController.navigate(CitasDestino.ruta)
 				},
-				navegarAMiCuenta = {
-					navController.navigate(MiCuentaDestino.ruta) {
-						popUpTo(navController.graph.id)
-						launchSingleTop = true
-					}
-				},
+				navegarAMiCuenta = { navController.navigate(MiCuentaDestino.ruta) },
 				currentDestination,
 				modelo = usuarioModel
 			)
