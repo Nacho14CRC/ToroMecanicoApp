@@ -31,10 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
 import com.example.toromecanicoapp.data.model.Cita
+import com.example.toromecanicoapp.data.model.User
 import com.example.toromecanicoapp.ui.navegation.Destinos
+import com.example.toromecanicoapp.ui.screens.components.MostrarSubmitButton
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -53,7 +56,8 @@ fun DetalleCitaScreen(
 	navegarAnterior: () -> Unit,
 	navegarAtras: () -> Unit,
 	navegarAEditarCita: (String?) -> Unit,
-	usuarioModel: UserViewModel,
+	usuario: User?,
+	usuarioModel: UserViewModel = viewModel(),
 	modifier: Modifier = Modifier,
 	citaModel: CitaViewModel = CitaViewModel()
 ) {
@@ -71,18 +75,34 @@ fun DetalleCitaScreen(
 			)
 		},
 		floatingActionButton = {
-			FloatingActionButton(
-				onClick = { navegarAEditarCita(citaDetalle?.id) }
-			) {
-				Icon(imageVector = Icons.Default.Edit, contentDescription = null)
+			if (usuario?.tipoUsuario != "Mecánico") {
+				FloatingActionButton(
+					onClick = { navegarAEditarCita(citaDetalle?.id) }
+				) {
+					Icon(imageVector = Icons.Default.Edit, contentDescription = null)
+				}
 			}
 		}
 	) { innerPadding ->
 		DetalleCitaBody(
 			citaDetalle = citaDetalle,
+			usuario = usuario,
 			onCancelar = {
 				coroutineScope.launch {
 					citaModel.CancelarCita(citaDetalle?.id)
+					navegarAnterior()
+				}
+			},
+			onAtender = {
+				coroutineScope.launch {
+					citaModel.EditarCita(
+						citaDetalle?.id.toString(),
+						citaDetalle?.userId.toString(),
+						citaDetalle?.fechaCita.toString(),
+						citaDetalle?.mecanico.toString(),
+						citaDetalle?.observaciones.toString(),
+						"ATE"
+					)
 					navegarAnterior()
 				}
 			},
@@ -96,38 +116,50 @@ fun DetalleCitaScreen(
 @Composable
 private fun DetalleCitaBody(
 	citaDetalle: Cita?,
+	usuario: User?,
 	onCancelar: () -> Unit,
+	onAtender: () -> Unit,
 	modifier: Modifier = Modifier
 ) {
 	Column(
 		modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
 		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
 	) {
-		var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+		var cancelarConfirmationRequired by rememberSaveable { mutableStateOf(false) }
 		DetalleCitaCard(
 			cita = citaDetalle, modifier = Modifier.fillMaxWidth()
 		)
-		OutlinedButton(
-			onClick = { deleteConfirmationRequired = true },
-			shape = MaterialTheme.shapes.small,
-			colors = ButtonDefaults.outlinedButtonColors(
-				containerColor = MaterialTheme.colorScheme.error,
-				contentColor = MaterialTheme.colorScheme.onPrimary
-			),
-			modifier = Modifier.fillMaxWidth()
-		) {
-			Text(stringResource(R.string.dlg_btn_cancelar))
+		if (usuario?.tipoUsuario != "Mecánico") {
+			OutlinedButton(
+				onClick = { cancelarConfirmationRequired = true },
+				shape = MaterialTheme.shapes.small,
+				colors = ButtonDefaults.outlinedButtonColors(
+					containerColor = MaterialTheme.colorScheme.error,
+					contentColor = MaterialTheme.colorScheme.onPrimary
+				),
+				modifier = Modifier.fillMaxWidth()
+			) {
+				Text(stringResource(R.string.dlg_btn_cancelar))
+			}
+			if (cancelarConfirmationRequired) {
+				CanncelarCitaConfirmationDialog(
+					onCancelarCita = {
+						cancelarConfirmationRequired = false
+						onCancelar()
+					},
+					onDismiss = { cancelarConfirmationRequired = false },
+					modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+				)
+			}
+		} else {
+			MostrarSubmitButton(
+				sLabel = stringResource(R.string.atendido_text),
+				habilitarBoton = true
+			) {
+				onAtender()
+			}
 		}
-		if (deleteConfirmationRequired) {
-			CanncelarCitaConfirmationDialog(
-				onCancelarCita = {
-					deleteConfirmationRequired = false
-					onCancelar()
-				},
-				onDismiss = { deleteConfirmationRequired = false },
-				modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
-			)
-		}
+		
 	}
 }
 

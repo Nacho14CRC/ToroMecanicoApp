@@ -34,7 +34,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -76,14 +75,12 @@ fun MiCuentaScreen(
 	navegarACitas: () -> Unit,
 	navegarAMiCuenta: () -> Unit,
 	currentDestination: NavDestination?,
-	modifier: Modifier = Modifier,
-	modelo: UserViewModel,
+	usuario: User?,
+	modifier: Modifier = Modifier ,
 	usuarioModel: UserViewModel = UserViewModel(),
 	darkTheme: Boolean,
 	onThemeUpdated: () -> Unit
 ) {
-	val idUsuario = usuarioModel.getCurrentUser()?.uid
-	val usuario by usuarioModel.GetByDocument(idUsuario.toString()).collectAsState(initial = null)
 	Scaffold(
 		modifier = modifier,
 		topBar = {
@@ -91,7 +88,7 @@ fun MiCuentaScreen(
 				title = stringResource(InicioDestino.tituloRecurso),
 				canNavigateBack = false,
 				navegarALogin = navegarALogin,
-				modelo = modelo,
+				modelo = usuarioModel,
 				modifier = modifier
 			)
 		},
@@ -113,7 +110,7 @@ fun MiCuentaScreen(
 					.wrapContentHeight()
 			) {
 				item {
-					TarjetaUsuario(idUsuario, usuario)
+					TarjetaUsuario(usuario?.userId, usuario)
 					ModoOscuro(darkTheme, onThemeUpdated)
 				}
 			}

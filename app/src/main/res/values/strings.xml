@@ -47,4 +47,5 @@
     <string name="dlg_btn_cancelar">Cancelar</string>
 
     <string name="tema_noche_text">Modo oscuro</string>
+    <string name="atendido_text">Atendido</string>
 </resources>

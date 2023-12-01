@@ -45,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.FormatearDate
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
@@ -69,7 +70,7 @@ fun AgregarCitaScreen(
 	navegarAnterior: () -> Unit,
 	navegarAtras: () -> Unit,
 	modifier: Modifier = Modifier,
-	userModel: UserViewModel,
+	userModel: UserViewModel = viewModel(),
 	citaModel: CitaViewModel = CitaViewModel()
 ) {
 	val context = LocalContext.current
@@ -113,7 +114,7 @@ private fun AgregarCitaBody(
 	val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
 	//Listas
-	val lstMecanicos = listOf("", "Andrei", "Nacho")
+	val lstMecanicos = listOf("", "Alonso","Meca2")
 	
 	//Iconos
 	val iconoObservaciones = painterResource(id = R.drawable.ic_observaciones)

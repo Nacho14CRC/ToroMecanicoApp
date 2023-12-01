@@ -5,16 +5,18 @@ data class Cita(
 	val userId: String,
 	val observaciones: String,
 	val fechaCita: String,
-	val mecanico: String
+	val mecanico: String,
+	val estado: String
 ) {
-	constructor() : this( "", "", "","","")
+	constructor() : this( "", "", "","","","")
 	
 	fun toMap(): MutableMap<String, Any> {
 		return mutableMapOf(
 			"userId" to this.userId,
 			"observaciones" to this.observaciones,
 			"fechaCita" to this.fechaCita,
-			"mecanico" to this.mecanico
+			"mecanico" to this.mecanico,
+			"estado" to this.estado
 		)
 	}
 }

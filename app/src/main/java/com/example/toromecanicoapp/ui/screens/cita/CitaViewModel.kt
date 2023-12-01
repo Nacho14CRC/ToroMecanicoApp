@@ -2,8 +2,10 @@ package com.example.toromecanicoapp.ui.screens.cita
 
 import androidx.lifecycle.ViewModel
 import com.example.toromecanicoapp.data.model.Cita
+import com.example.toromecanicoapp.data.model.User
 import com.example.toromecanicoapp.viewmodels.AuthRes
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -12,10 +14,18 @@ import kotlinx.coroutines.tasks.await
 class CitaViewModel : ViewModel() {
 	private val firestore = FirebaseFirestore.getInstance()
 	
-	fun GetCitas(userId: String?): Flow<List<Cita>> = callbackFlow {
-		val citasRef =
-			firestore.collection("citas").whereEqualTo("userId", userId).orderBy("userId")
-		
+	fun GetCitas(user: User?): Flow<List<Cita>> = callbackFlow {
+		val citasRef: Query = if (user?.tipoUsuario != "Mecánico") {
+			firestore.collection("citas")
+				.whereEqualTo("userId", user?.id)
+				.whereEqualTo("estado", "PEN")
+				.orderBy("userId")
+		} else {
+			firestore.collection("citas")
+				.whereEqualTo("mecanico", user?.nombreCompleto)
+				.whereEqualTo("estado", "PEN")
+				.orderBy("userId")
+		}
 		val subscription = citasRef.addSnapshotListener { snapshot, _ ->
 			snapshot?.let { querySnapshot ->
 				val citas = mutableListOf<Cita>()
@@ -75,6 +85,7 @@ class CitaViewModel : ViewModel() {
 				observaciones = observaciones,
 				fechaCita = fechaCita,
 				mecanico = mecanico,
+				estado = "PEN"
 			).toMap()
 			firestore.collection("citas").add(newCita).await()
 			AuthRes.Success(Unit)
@@ -83,7 +94,14 @@ class CitaViewModel : ViewModel() {
 		}
 	}
 	
-	suspend fun EditarCita(id: String, userId: String,fechaCita:String,mecanico:String, observaciones: String): AuthRes<Unit> {
+	suspend fun EditarCita(
+		id: String,
+		userId: String,
+		fechaCita: String,
+		mecanico: String,
+		observaciones: String,
+		estado: String
+	): AuthRes<Unit> {
 		return try {
 			val newCita = Cita(
 				id = id,
@@ -91,6 +109,7 @@ class CitaViewModel : ViewModel() {
 				observaciones = observaciones,
 				fechaCita = fechaCita,
 				mecanico = mecanico,
+				estado = estado
 			).toMap()
 			firestore.collection("citas").document(id).set(newCita).await()
 			AuthRes.Success(Unit)

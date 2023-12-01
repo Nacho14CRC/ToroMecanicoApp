@@ -36,11 +36,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoBottomAppBar
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
 import com.example.toromecanicoapp.data.model.Cita
+import com.example.toromecanicoapp.data.model.User
 import com.example.toromecanicoapp.ui.navegation.Destinos
 import com.example.toromecanicoapp.ui.screens.home.InicioDestino
 import com.example.toromecanicoapp.viewmodels.UserViewModel
@@ -62,11 +64,12 @@ fun CitasScreen(
 	navegarACitas: () -> Unit,
 	navegarAMiCuenta: () -> Unit,
 	currentDestination: NavDestination?,
+	usuario: User?,
 	modifier: Modifier = Modifier,
-	modelo: UserViewModel,
+	modelo: UserViewModel = viewModel(),
 	citaModel: CitaViewModel = CitaViewModel()
 ) {
-	val lstCitas by citaModel.GetCitas(modelo.getCurrentUser()?.uid).collectAsState(emptyList())
+	val lstCitas by citaModel.GetCitas(usuario).collectAsState(emptyList())
 	val scope = rememberCoroutineScope()
 	
 	Scaffold(topBar = {
@@ -82,11 +85,14 @@ fun CitasScreen(
 			navegarAInicio, navegarACitas, navegarAMiCuenta, currentDestination
 		)
 	}, floatingActionButton = {
+		if (usuario?.tipoUsuario != "Mecánico") {
 		FloatingActionButton(
 			onClick = navegarAIngresoCita
 		) {
 			Icon(imageVector = Icons.Default.Add, contentDescription = "Add Cita")
 		}
+		}
+		
 	}) { innerPadding ->
 		
 		CitasBody(
@@ -101,7 +107,9 @@ fun CitasScreen(
 
 @Composable
 private fun CitasBody(
-	lstCitas: List<Cita>, onCitaClick: (String?) -> Unit, modifier: Modifier = Modifier
+	lstCitas: List<Cita>,
+	onCitaClick: (String?) -> Unit,
+	modifier: Modifier = Modifier
 ) {
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier

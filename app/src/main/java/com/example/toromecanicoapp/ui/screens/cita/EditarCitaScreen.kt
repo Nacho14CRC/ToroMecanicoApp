@@ -45,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.toromecanicoapp.FormatearDate
 import com.example.toromecanicoapp.R
 import com.example.toromecanicoapp.ToroMecanicoTopAppBar
@@ -71,7 +72,7 @@ fun EditarCitaScreen(
 	navegarALogin: () -> Unit,
 	navegarAnterior: () -> Unit,
 	navegarAtras: () -> Unit,
-	usuarioModel: UserViewModel,
+	usuarioModel: UserViewModel = viewModel(),
 	modifier: Modifier = Modifier,
 	citaModel: CitaViewModel = CitaViewModel()
 ) {
@@ -117,7 +118,7 @@ private fun EditarCitaBody(
 	val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
 	
 	//Listas
-	val lstMecanicos = listOf("", "Andrei", "Nacho")
+	val lstMecanicos = listOf("", "Alonso","Meca2")
 	
 	//Iconos
 	val iconoObservaciones = painterResource(id = R.drawable.ic_observaciones)
@@ -320,7 +321,8 @@ private suspend fun EditarCita(
 			userId = userId,
 			fechaCita = fechaCita,
 			mecanico = comboMecanico,
-			observaciones = observaciones
+			observaciones = observaciones,
+			estado = "PEN"
 		)) {
 			is AuthRes.Success<*> -> {
 				navegarAnterior()

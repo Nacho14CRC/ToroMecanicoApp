@@ -2,7 +2,11 @@ package com.example.toromecanicoapp.ui.navegation
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -11,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
+import com.example.toromecanicoapp.data.model.User
 import com.example.toromecanicoapp.ui.screens.LoginDestino
 import com.example.toromecanicoapp.ui.screens.LoginScreen
 import com.example.toromecanicoapp.ui.screens.cita.AgregarCitaDestino
@@ -36,13 +41,26 @@ import com.google.firebase.auth.FirebaseUser
 fun ToroMecanicoNavHost(
 	context: Context,
 	navController: NavHostController,
-	darkTheme:Boolean,
-	onThemeUpdated:()-> Unit,
+	darkTheme: Boolean,
+	onThemeUpdated: () -> Unit,
 	modifier: Modifier = Modifier,
+	usuarioModel: UserViewModel = viewModel()
 ) {
-	var usuarioModel: UserViewModel = viewModel()
-	val idUsuario: FirebaseUser? = usuarioModel.getCurrentUser()
-	val inicio = ObtenerScreenInicio(idUsuario)
+	
+	val user: FirebaseUser? = usuarioModel.getCurrentUser()
+	val inicio = ObtenerScreenInicio(user)
+	
+	var usuarioSesion by remember { mutableStateOf<User?>(null) }
+	if (user != null) {
+		LaunchedEffect(user.uid) {
+			usuarioModel.GetByDocument(user.uid.toString()).collect { usuarioBD ->
+				usuarioSesion = usuarioBD
+				if (user != null) {
+					usuarioSesion?.id = user.uid
+				}
+			}
+		}
+	}
 	
 	val navBackStackEntry by navController.currentBackStackEntryAsState()
 	val currentDestination = navBackStackEntry?.destination
@@ -64,18 +82,16 @@ fun ToroMecanicoNavHost(
 				navegarAInicio = {
 					navController.navigate(InicioDestino.ruta)
 				},
-				usuarioModel
 			);
 		}
 		composable(route = CrearCuentaDestino.ruta) {
 			CrearCuentaScreen(
-				navegarALogin = { navController.navigate(LoginDestino.ruta) },
-				usuarioModel
+				navegarALogin = { navController.navigate(LoginDestino.ruta) }
 			);
 		}
 		composable(route = RecuperarContrasenaDestino.ruta) {
 			RecuperarContrasenaScreen(
-				navegarALogin = { navController.navigate(LoginDestino.ruta) }, usuarioModel
+				navegarALogin = { navController.navigate(LoginDestino.ruta) }
 			);
 		}
 		composable(route = InicioDestino.ruta) {
@@ -88,8 +104,7 @@ fun ToroMecanicoNavHost(
 					navController.navigate(CitasDestino.ruta)
 				},
 				navegarAMiCuenta = { navController.navigate(MiCuentaDestino.ruta) },
-				currentDestination,
-				usuarioModelo = usuarioModel
+				currentDestination
 			)
 		}
 		composable(route = CitasDestino.ruta) {
@@ -107,15 +122,14 @@ fun ToroMecanicoNavHost(
 				},
 				navegarAMiCuenta = { navController.navigate(MiCuentaDestino.ruta) },
 				currentDestination,
-				modelo = usuarioModel
+				usuarioSesion
 			)
 		}
 		composable(route = AgregarCitaDestino.ruta) {
 			AgregarCitaScreen(
 				navegarALogin = { navController.navigate(LoginDestino.ruta) },
 				navegarAnterior = { navController.popBackStack() },
-				navegarAtras = { navController.navigateUp() },
-				userModel = usuarioModel
+				navegarAtras = { navController.navigateUp() }
 			)
 		}
 		composable(
@@ -132,7 +146,7 @@ fun ToroMecanicoNavHost(
 					navegarAnterior = { navController.popBackStack() },
 					navegarAtras = { navController.navigateUp() },
 					navegarAEditarCita = { navController.navigate("${EditarCitaDestino.ruta}/$it") },
-					usuarioModel = usuarioModel
+					usuarioSesion
 				)
 			}
 		}
@@ -148,8 +162,7 @@ fun ToroMecanicoNavHost(
 					id = it,
 					navegarALogin = { navController.navigate(LoginDestino.ruta) },
 					navegarAnterior = { navController.popBackStack() },
-					navegarAtras = { navController.navigateUp() },
-					usuarioModel = usuarioModel
+					navegarAtras = { navController.navigateUp() }
 				)
 			}
 		}
@@ -165,10 +178,9 @@ fun ToroMecanicoNavHost(
 				},
 				navegarAMiCuenta = { navController.navigate(MiCuentaDestino.ruta) },
 				currentDestination,
-				modelo = usuarioModel,
-				darkTheme =darkTheme,
+				usuarioSesion,
+				darkTheme = darkTheme,
 				onThemeUpdated = onThemeUpdated
-				
 			)
 		}
 	}
