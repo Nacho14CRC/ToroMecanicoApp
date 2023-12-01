@@ -1,9 +1,19 @@
 package com.example.toromecanicoapp.ui.screens.cita
 
+import android.Manifest
+import android.app.Activity
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.telephony.SmsManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.example.toromecanicoapp.data.model.Cita
 import com.example.toromecanicoapp.data.model.User
 import com.example.toromecanicoapp.viewmodels.AuthRes
+import com.google.android.gms.auth.api.phone.SmsRetrieverStatusCodes
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
@@ -70,6 +80,36 @@ class CitaViewModel : ViewModel() {
 	suspend fun CancelarCita(documentId: String?) {
 		val citaRef = firestore.collection("citas").document(documentId.toString())
 		citaRef.delete().await()
+	}
+	
+	fun EnviarMensajeCita(context: Context, telefonoMensaje: String, mensaje: String) {
+		if (ContextCompat.checkSelfPermission(
+				context,
+				Manifest.permission.SEND_SMS
+			) != PackageManager.PERMISSION_GRANTED
+		) {
+			ActivityCompat.requestPermissions(
+				context as Activity,
+				arrayOf(Manifest.permission.SEND_SMS),
+				SmsRetrieverStatusCodes.USER_PERMISSION_REQUIRED
+			)
+		} else {
+			val smsManager = SmsManager.getDefault()
+			val sentIntent = Intent("SMS_SENT")
+			val deliveredIntent = Intent("SMS_DELIVERED")
+			
+			val sentPI = PendingIntent.getBroadcast(
+				context, 0, sentIntent,
+				PendingIntent.FLAG_IMMUTABLE
+			)
+			val deliveredPI = PendingIntent.getBroadcast(
+				context, 0, deliveredIntent,
+				PendingIntent.FLAG_IMMUTABLE
+			)
+			
+			smsManager.sendTextMessage(telefonoMensaje, null, mensaje, sentPI, deliveredPI)
+			
+		}
 	}
 	
 	suspend fun AgregarCita(

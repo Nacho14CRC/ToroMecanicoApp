@@ -71,7 +71,6 @@ fun LoginScreen(
 	val errorContrasena = remember { mutableStateOf<String?>(null) }
 	
 	
-	
 	Column(
 		modifier = Modifier.fillMaxSize(),
 	) {
