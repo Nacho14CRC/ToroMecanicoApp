@@ -132,7 +132,7 @@ private fun DetalleCitaBody(
 		if (usuario?.tipoUsuario != "Mecánico") {
 			OutlinedButton(
 				onClick = { cancelarConfirmationRequired = true },
-				shape = MaterialTheme.shapes.small,
+				shape = MaterialTheme.shapes.extraLarge,
 				colors = ButtonDefaults.outlinedButtonColors(
 					containerColor = MaterialTheme.colorScheme.error,
 					contentColor = MaterialTheme.colorScheme.onPrimary
