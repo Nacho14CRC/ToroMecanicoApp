@@ -36,7 +36,7 @@ import com.example.toromecanicoapp.ui.screens.home.InicioDestino
 import com.example.toromecanicoapp.ui.screens.user.MiCuentaDestino
 import com.example.toromecanicoapp.viewmodels.UserViewModel
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.Calendar
 import java.util.Locale
 @Composable
 fun ToroMecanicoApp(context: Context,darkTheme:Boolean, onThemeUpdated:()-> Unit,navController: NavHostController = rememberNavController(), ) {
@@ -186,6 +186,9 @@ fun LogoutDialog(onConfirmLogout: () -> Unit, onDismiss: () -> Unit) {
 
 fun FormatearDate(dateMillis: Long): String {
 	val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-	val date = Date(dateMillis)
-	return dateFormat.format(date) //TODO
+	val calendar = Calendar.getInstance()
+	calendar.timeInMillis = dateMillis
+	calendar.add(Calendar.DAY_OF_MONTH, 1)
+	val dateWithOneDayAdded = calendar.time
+	return dateFormat.format(dateWithOneDayAdded)
 }
