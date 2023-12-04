@@ -7,7 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ViewTimeline
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -126,7 +126,7 @@ fun ToroMecanicoBottomAppBar(
 				label = { Text(text = CitasDestino.descripcionIcono) },
 				icon = {
 					Icon(
-						imageVector = Icons.Default.ViewTimeline,
+						imageVector = Icons.Default.List,
 						contentDescription = "Icons"
 					)
 				},

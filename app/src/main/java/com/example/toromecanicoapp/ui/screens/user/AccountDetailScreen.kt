@@ -47,7 +47,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -213,10 +212,13 @@ fun TarjetaUsuario(
 						galleryResultLauncher.launch("image/*")
 					},
 					modifier = Modifier
-						.height(28.dp)
+						.height(34.dp)
 						.width(76.dp)
 				) {
-					Text("Editar", fontSize = 10.sp)
+					Icon(
+						painter =  painterResource(id = R.drawable.ic_subir_foto),
+						contentDescription = null,
+					)
 				}
 			}
 			
