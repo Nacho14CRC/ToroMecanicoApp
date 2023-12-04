@@ -27,6 +27,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -114,7 +115,13 @@ private fun AgregarCitaBody(
 	val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
 	val mediumPadding = dimensionResource(R.dimen.padding_medium)
 	//Listas
-	val lstMecanicos = listOf("", "Alonso","Meca2")
+	//val lstMecanicos = listOf("", "Alonso","Meca2")
+	var lstMecanicos by remember { mutableStateOf<List<String>>(emptyList()) }
+	LaunchedEffect(Unit) {
+		citaModel.ObtenerNombresMecanicos().collect { nombres ->
+			lstMecanicos = listOf("") + nombres
+		}
+	}
 	
 	//Iconos
 	val iconoObservaciones = painterResource(id = R.drawable.ic_observaciones)
@@ -127,7 +134,7 @@ private fun AgregarCitaBody(
 	val observaciones = rememberSaveable { mutableStateOf("") }
 	var expandirComboMecanico by remember { mutableStateOf(false) }
 	val comboMecanico = rememberSaveable {
-		mutableStateOf(lstMecanicos[0])
+		mutableStateOf(lstMecanicos.getOrNull(0) ?: "")
 	}
 	val errorFecha = remember { mutableStateOf<String?>(null) }
 	

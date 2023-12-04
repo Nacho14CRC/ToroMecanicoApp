@@ -82,6 +82,33 @@ class CitaViewModel : ViewModel() {
 		citaRef.delete().await()
 	}
 	
+	fun  ObtenerNombresMecanicos(): Flow<List<String>> = callbackFlow {
+		val usuariosRef = firestore.collection("usuarios").whereEqualTo("tipoUsuario", "Mecánico")
+		val subscription = usuariosRef.addSnapshotListener { snapshot, error ->
+			if (error != null) {
+				close(error) // Close the flow with an error if there's an issue
+				return@addSnapshotListener
+			}
+			
+			snapshot?.let { querySnapshot ->
+				try {
+					val nombres = querySnapshot.documents.mapNotNull { it.toObject(User::class.java)?.nombreCompleto }
+					if (nombres.isNotEmpty()) {
+						trySend(nombres) // Send the list of names to the flow
+					} else {
+						// Handle the case where no names are available
+						close() // Close the flow if no names are available
+					}
+				} catch (e: Exception) {
+					close(e) // Close the flow with an error if an exception occurs
+				}
+			}
+		}
+		
+		// Cancel the listener when the flow is collected
+		awaitClose { subscription.remove() }
+	}
+	
 	fun EnviarMensajeCita(context: Context, telefonoMensaje: String, mensaje: String) {
 		if (ContextCompat.checkSelfPermission(
 				context,

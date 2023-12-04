@@ -109,7 +109,7 @@ fun MiCuentaScreen(
 					.wrapContentHeight()
 			) {
 				item {
-					TarjetaUsuario(usuario?.userId, usuario)
+					TarjetaUsuario(usuario?.id, usuario)
 					ModoOscuro(darkTheme, onThemeUpdated)
 				}
 			}

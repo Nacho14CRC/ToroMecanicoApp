@@ -26,6 +26,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -118,7 +119,12 @@ private fun EditarCitaBody(
 	val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
 	
 	//Listas
-	val lstMecanicos = listOf("", "Alonso","Meca2")
+	var lstMecanicos by remember { mutableStateOf<List<String>>(emptyList()) }
+	LaunchedEffect(Unit) {
+		citaModel.ObtenerNombresMecanicos().collect { nombres ->
+			lstMecanicos = listOf("") + nombres
+		}
+	}
 	
 	//Iconos
 	val iconoObservaciones = painterResource(id = R.drawable.ic_observaciones)
